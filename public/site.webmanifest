@@ -1,0 +1,8 @@
+{
+  "name": "Site name",
+  "short_name": "Site",
+  "icons": [],
+  "theme_color": "#020203",
+  "background_color": "#020203",
+  "display": "standalone"
+}

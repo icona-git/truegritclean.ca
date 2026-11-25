@@ -1,0 +1,28 @@
+---
+Name: app-extensions
+---
+# Server-side enforcement of the userforms spam-protection (reCAPTCHA) field.
+# userforms nests every field inside a CompositeField, which Form::validate() never
+# recurses into, so NocaptchaField::validate() is never called: the captcha renders but
+# nothing checks it (fleet-wide fail-open, confirmed exploited on an ICONA client site in
+# 2026-09). See app/src/Forms/SpamProtectionFieldValidator.php for the full trace.
+#
+# UserFormRefusalExtension: a refused submission comes back to the form's own page even when the browser
+# sends no Referer (the framework would send it to the home page), and the spam check's message shows at
+# the top of the form. It changes nothing about what is refused.
+SilverStripe\UserForms\Form\UserForm:
+  extensions:
+    - App\Extensions\UserForm_Extension
+    - App\Extensions\UserFormRefusalExtension
+
+# A form with no email recipient accepts submissions and delivers them nowhere. Intake is the whole point
+# of these sites, so the CMS warns instead of failing silently. The config belongs on the PAGE: the flag is
+# declared by the SilverStripe\UserForms\UserForm trait, which UserDefinedForm uses, not by the front-end
+# Form class above.
+SilverStripe\UserForms\Model\UserDefinedForm:
+  recipients_warning_enabled: true
+
+# AnchorFill(): a Fill() crop that keeps the left or right side, for Page::HeroImageFill() (HeroFocusX).
+SilverStripe\Assets\Image:
+  extensions:
+    - App\Extensions\ImageAnchorFillExtension

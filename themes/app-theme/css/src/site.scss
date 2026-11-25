@@ -1,0 +1,11 @@
+// Site Stylesheet
+// No Bootstrap. Pure custom CSS.
+// Build: sass css/src/site.scss:css/dist/site.css
+
+@import 'tokens';           // CSS custom properties + SCSS breakpoint variables
+@import 'reset';            // Minimal modern reset
+@import 'typography';       // .typography content scope
+@import 'layout';           // .wrap, .section, .split, display utilities
+@import 'components';       // Header, footer, hero, nav, mobile menu, forms, etc.
+@import 'blocks';           // Elemental block styles
+@import 'pages';            // Blog, person, contact page-specific styles

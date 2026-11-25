@@ -1,0 +1,64 @@
+// ─── Breadcrumbs ──────────────────────────────────────────────────────────────
+// BreadcrumbsTemplate.ss: nav#breadcrumbs.breadcrumbs > ol.breadcrumbs__list > li.breadcrumbs__item, each
+// holding a link or, for the current page, span[aria-current]. A gold chevron is drawn before every item
+// after the first, in CSS, so screen readers never read a separator.
+
+.breadcrumbs {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  margin-bottom: 1.5rem; // in a content column: space before the heading or body
+}
+
+.breadcrumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.breadcrumbs__item {
+  display: flex;
+  align-items: center;
+  color: var(--c-charcoal-400);
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+    }
+  }
+
+  [aria-current="page"] {
+    font-weight: 600;
+  }
+
+  & + &::before {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-right: 1.5px solid var(--c-gold);
+    border-bottom: 1.5px solid var(--c-gold);
+    transform: rotate(-45deg);
+    margin-inline: 0.5rem;
+    position: relative;
+    top: -1px;
+  }
+}
+
+// The strip under the hero (App/Includes/BreadcrumbBar.ss), for layouts with no place for the trail in a
+// content column.
+.breadcrumb-bar {
+  background: var(--c-white);
+
+  .breadcrumbs {
+    margin: 0;
+    padding-block: 0.875rem;
+  }
+}

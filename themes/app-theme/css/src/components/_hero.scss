@@ -1,0 +1,212 @@
+// ─── Hero label — shared gold label above headings in all hero variants ───────
+
+.hero__label {
+  font-family: var(--font-heading);
+  font-size: var(--text-h5);
+  font-weight: 500;
+  letter-spacing: var(--ls-h5);
+  color: var(--c-gold);
+  margin-bottom: 0.75rem;
+}
+
+// ─── Default Page Hero ────────────────────────────────────────────────────────
+
+.hero {
+  position: relative;
+  background-color: var(--c-dark);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 300px;
+  @media (min-width: #{$bp-lg}) {
+    min-height: 400px;
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--c-white);
+    padding-block: 4rem;
+    // The header is absolutely positioned over the hero, so reserve its band
+    // plus breathing room — otherwise .hero__label sits under the logo.
+    padding-top: calc(var(--header-h) + 1.5rem);
+    @media (min-width: #{$bp-lg}) {
+      &.wrap {
+        max-width: 65%;
+      }
+    }
+  }
+
+  h1, .hero__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-h1);
+    font-weight: 400;
+    line-height: var(--lh-h1);
+    letter-spacing: var(--ls-h1);
+    color: var(--c-white);
+    margin: 0;
+  }
+
+  p {
+    color: var(--c-charcoal-100);
+    font-size: var(--text-intro);
+    line-height: var(--lh-body);
+    margin-top: 1.25rem;
+  }
+
+  .hero__label {
+    color: var(--c-gold);
+    margin-top: 0;
+  }
+}
+
+// Scrim on the default hero (Hero.ss): a dark layer between the photo and the text, so the white headline
+// keeps at least 4.5:1 (WCAG 1.4.3) over any photo. Over pure white, 0.58 gives #6C6C6C, and white on that is
+// 5.2:1; 0.54 is the minimum. 0.58 is the overlay value the bleed variant below carries, commented out.
+// Hero.ss adds the class only when a photo is shown: without one the hero is its background colour, untouched.
+// The grey intro and the gold label are dimmer than white and can still fall short over the brightest part
+// of a photo: check a bright photo on staging. The home and person heroes keep their text off the photo.
+.hero--scrim::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 2, 3, 0.58);
+  pointer-events: none;
+}
+
+
+// ─── Hero Bleed Intro Variant ─────────────────────────────────────────────────
+// The .hero-bleed-wrap carries the background image across both the dark hero
+// section AND the white intro section. The intro section uses a CSS luminance
+// mask (the knockout SVG) to punch the logo shape transparent, revealing the
+// shared background image beneath.
+
+.hero-bleed-wrap {
+  position: relative;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-color: var(--c-dark);
+}
+
+.hero--bleed {
+  background-color: transparent;
+
+  // Dark overlay on the hero area only — does not extend into .hero-intro
+  // Hide this for now.
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   inset: 0;
+  //   background: rgba(2, 2, 3, 0.58);
+  //   pointer-events: none;
+  //   z-index: 0;
+  // }
+
+
+  .hero__inner {
+    z-index: 1;
+  }
+}
+
+.hero-intro {
+  position: relative;
+  background: var(--c-white);
+
+  // min-height ensures the SVG (1800×400 natural size, scaled to height=100%)
+  // is always at least 1800px wide — covering any standard desktop viewport.
+  min-height: 25rem;
+
+  // Luminance mask: SVG white fill = element visible (white bg shows).
+  // SVG transparent void (logo letterforms) = element transparent → parent
+  // .hero-bleed-wrap background image shows through.
+  // Two-layer mask: gradient fills the whole div opaque, SVG layer subtracts
+  // the letterform shapes via exclude/xor — leaving transparent "windows"
+  // at the mark's positions that reveal the hero-bleed-wrap photo behind.
+  mask-image:
+    url('/_resources/themes/app-theme/images/mask.svg'),
+    linear-gradient(black, black);
+    mask-size: 380px auto, cover;
+    // On wide viewports the .wrap centres inside .hero-intro, so the mark
+    // must track that offset: max() clamps to --page-pad on narrow screens.
+    mask-position: max(var(--page-pad), calc((100% - var(--wrap-max)) / 2 + var(--page-pad))) -10px, center;
+    mask-repeat: no-repeat, no-repeat;
+    mask-composite: exclude, add;
+    -webkit-mask-image:
+      url('/_resources/themes/app-theme/images/mask.svg'),
+      linear-gradient(black, black);
+    -webkit-mask-size: 380px auto, cover;
+    -webkit-mask-position: max(var(--page-pad), calc((100% - var(--wrap-max)) / 2 + var(--page-pad))) -10px, center;
+    -webkit-mask-repeat: no-repeat, no-repeat;
+    -webkit-mask-composite: xor, source-over;
+
+  .hero-intro__content {
+    display: flex;
+    padding-block: var(--section-pad);
+    // Push content start past the 380px knockout mark + gap so text
+    // only occupies the white (non-transparent) region to the right.
+    padding-inline-start: calc(var(--page-pad) + 380px + 3rem);
+  }
+
+  .hero-intro__text {
+    flex: 1;
+    max-width: 48rem;
+  }
+
+  h2, h3 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h1);
+    font-weight: 400;
+    line-height: var(--lh-h1);
+    letter-spacing: var(--ls-h1);
+    color: var(--c-dark);
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-size: var(--text-body-lg);
+    font-weight: 300;
+    line-height: var(--lh-body);
+    color: var(--c-text-dark);
+    margin-bottom: 1rem;
+  }
+
+  // Mobile: disable mask entirely — white div, full-width text
+  @media (max-width: #{$bp-md}) {
+    min-height: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
+
+    .hero-intro__content {
+      padding-inline-start: var(--page-pad);
+    }
+
+    .hero-intro__text {
+      flex: none;
+      width: 100%;
+    }
+  }
+}
+
+
+// ─── Hero focus (Page.HeroFocusX) ─────────────────────────────────────────────
+// Which side of the photo stays in view when its box crops it: the editor's control for "text never
+// covers a face". Only the horizontal position is set, so each hero keeps its own vertical one.
+// !important because every hero sets background-position through its own selectors, some with an id,
+// and this is an explicit editor setting. Below 992px the server-side crops follow the same setting
+// (Page::HeroImageFill()). Centre is what every hero did before the setting existed.
+
+.hero-focus--left   { background-position-x: left !important; }
+.hero-focus--center { background-position-x: center !important; }
+.hero-focus--right  { background-position-x: right !important; }

@@ -1,0 +1,112 @@
+// ─── Typography ──────────────────────────────────────────────────────────────
+// Scoped to .typography — wraps CMS-authored content areas.
+// Site headings outside CMS content are styled at the component/block level.
+
+.typography {
+
+  p {
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  a {
+    color: var(--c-dark);
+    text-decoration: underline;
+    &:hover { color: var(--c-gold); }
+  }
+
+  strong, b { font-weight: 700; }
+  em, i      { font-style: italic; }
+
+  h1, h2, h3 {
+    color: var(--c-dark);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+  }
+  h1 { font-size: var(--text-h1); }
+  h2 { font-size: var(--text-h2); }
+  h3 { font-size: var(--text-h3); }
+
+  h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--c-gold);
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  h4 { font-size: var(--text-h3); }
+  h5 { font-size: 1.125rem; }
+  h6 { font-size: 1rem; }
+
+  ul, ol {
+    margin-bottom: 1.5rem;
+    li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    li {
+      list-style: square;
+    }
+  }
+
+  ol {
+    padding-left: 1.5rem;
+    li { list-style: decimal; }
+  }
+
+  blockquote {
+    border-left: 3px solid var(--c-charcoal-50);
+    margin: 1.5rem 0;
+    padding: 0.75rem 1.5rem;
+    font-style: italic;
+    color: var(--c-charcoal-200);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--c-charcoal-50);
+    margin: 2rem 0;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    &.left   { float: left;  max-width: 50%; margin: 0.25rem 1.25rem 0.75rem 0; }
+    &.right  { float: right; max-width: 50%; margin: 0.25rem 0 0.75rem 1.25rem; }
+    &.center { display: block; margin-inline: auto; clear: both; }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    td, th {
+      padding: 0.5rem 0.75rem;
+      vertical-align: top;
+      text-align: left;
+      border-bottom: 1px solid var(--c-charcoal-50);
+    }
+    th { font-weight: 700; border-bottom: 2px solid var(--c-charcoal-50); }
+  }
+
+  // YouTube shortcode wrapper
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+  }
+
+}

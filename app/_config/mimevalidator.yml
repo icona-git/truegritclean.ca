@@ -1,0 +1,13 @@
+---
+Name: app-mimeuploadvalidator
+After: '#mimeuploadvalidator'
+Only:
+  moduleexists: 'silverstripe/mimevalidator'
+---
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Assets\Upload_Validator:
+    class: SilverStripe\MimeValidator\MimeUploadValidator
+
+# Nothing else here. SVG is deliberately NOT added to File.allowed_extensions: see the note in
+# app/_config/mysite.yml. A second, unguarded document in this file used to re-add it, which made that
+# note false until 2026-09-22.

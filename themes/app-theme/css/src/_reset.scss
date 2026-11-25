@@ -1,0 +1,70 @@
+// ─── Minimal Modern Reset ────────────────────────────────────────────────────
+// Replaces Bootstrap reboot. Only what's needed.
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--c-text-dark);
+  line-height: 1.5;
+  background: var(--c-charcoal-400);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  overflow-wrap: break-word;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: var(--ls-h2);
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+input, textarea, select {
+  font: inherit;
+}
+
+// Hide SS admin bar message
+#SilverStripeNavigatorMessage {
+  display: none;
+}

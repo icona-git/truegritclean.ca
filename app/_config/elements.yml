@@ -1,0 +1,31 @@
+# SilverStripe Elemental Blocks Configuration
+# https://github.com/dnadesign/silverstripe-elemental
+
+# Use Page as our base
+Page:
+  extensions:
+    - DNADesign\Elemental\Extensions\ElementalPageExtension
+  allowed_elements:
+     - App\Elements\SectionContentBlock
+     - App\Elements\BucketsBlock
+     - App\Elements\SpecialListBlock
+     - App\Elements\PersonBlock
+# App\Pages\CustomBlogPost:
+#   extensions:
+#     - DNADesign\Elemental\Extensions\ElementalPageExtension: false
+
+# Don't include the default front end css styles.
+DNADesign\Elemental\Controllers\ElementController:
+  include_default_styles: false
+
+DNADesign\Elemental\Models\BaseElement:
+  extensions:
+    - App\Extensions\MyBaseElementExtension
+
+---
+Name: app-link-customization
+---
+SilverStripe\LinkField\Models\Link:
+  extensions:
+    # This project uses non-versioned links
+    versioned: null

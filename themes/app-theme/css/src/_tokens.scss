@@ -1,0 +1,98 @@
+// ─── Design Tokens ───────────────────────────────────────────────────────────
+// All design decisions live here. No Bootstrap.
+//
+// SCSS variables are used for breakpoints (CSS custom props can't be used in
+// media queries). Everything else is a CSS custom property for runtime access.
+
+// ─── SCSS Breakpoints ────────────────────────────────────────────────────────
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+
+// ─── CSS Custom Properties ───────────────────────────────────────────────────
+:root {
+
+  // Colors (values per the design spec)
+  --c-gold:          #C3964B;   // Brand Gold — accent text, active states, subheadings
+  --c-dark:          #020203;   // Charcoal Brand — near-black, primary background
+  --c-charcoal-400:  #303030;   // Dark grey — secondary backgrounds
+  --c-charcoal-300:  #5D5D5E;   // Mid grey — dividers, muted UI
+  --c-charcoal-200:  #8A8A8A;   // Grey — secondary/muted text on dark
+  --c-charcoal-100:  #B7B7B8;   // Light grey — body text on dark backgrounds
+  --c-charcoal-50:   #F5F5F5;   // Near-white — light section backgrounds
+  --c-border:        #2D2D2D;   // Dark border
+  // Two body-text colours, and using the wrong one is a contrast failure, not a style choice:
+  --c-text:          #B7B7B8;   // ONLY on dark backgrounds (= charcoal-100)
+  --c-text-dark:     #303030;   // ONLY on white or near-white backgrounds (= charcoal-400)
+  --c-white:         #FFFFFF;
+  --c-error:         #c0392b;   // Form validation error
+
+  // Fonts: system stacks. The starter ships no web font and loads none from a font service.
+  // A site whose design names a font self-hosts it under themes/app-theme/fonts/ (composer.json
+  // already exposes that folder), declares it with @font-face, and puts it first in these two
+  // stacks AND in editor.scss, which cannot read these properties.
+  --font-heading: Georgia, 'Times New Roman', serif;
+  --font-body:    Arial, Helvetica, sans-serif;
+
+  // Type scale (from Figma — desktop sizes, fluid via clamp on headings)
+  --text-h1:         clamp(2.5rem, 5vw, 3.75rem);    // 40–60px  Playfair Regular 400
+  --text-h2:         clamp(2rem, 4vw, 3.125rem);      // 32–50px  Playfair Medium 500
+  --text-h3:         clamp(1.75rem, 3vw, 2.5rem);     // 28–40px  Playfair Regular 400
+  --text-h4:         clamp(1.375rem, 2.5vw, 2.125rem); // 22–34px  Playfair Regular 400
+  --text-h5:         1.5rem;     // 24px   Playfair Medium 500
+  --text-intro:      1.25rem;    // 20px   Inter Regular 400  (hero/intro lead)
+  --text-body-lg:    1.125rem;   // 18px   Inter Light 300
+  --text-body:       1rem;       // 16px   Inter Light 300
+  --text-section-title: 1rem;    // 16px   Inter Regular 400, ls +10px uppercase label
+
+  // Line heights (from Figma)
+  --lh-heading: 1.1;
+  --lh-h1:      1.05;
+  --lh-body:    1.4;
+
+  // Letter spacing. Figma reports letter-spacing as a PERCENTAGE, so the em value is that number
+  // divided by 100 (letterSpacing: 1 on 18px text is 0.01em, not 1px / 18px). Converting it as px
+  // tracks text about five times too tight, which shipped on a fleet build before it was caught.
+  // The values below came from the design this theme was built for; replace them from your own.
+  --ls-h1:           -0.033em;
+  --ls-h2:           -0.04em;
+  --ls-h4:           normal;    // declared so the person-card rules resolve; set it from the design
+  --ls-h5:           -0.042em;
+  --ls-intro:        -0.02em;
+  --ls-section-title: 0.125em;  // spaced uppercase label
+
+  // Layout
+  --wrap-max:    87.5rem;   // 1400px content width
+  --page-pad:    1.25rem;   // overridden at breakpoints below
+  --section-pad: 3rem;      // overridden at breakpoints below
+
+  // Height of the absolutely-positioned .site-header (logo 80px + 1rem padding
+  // block). Hero content clears this so it never collides with the logo.
+  --header-h:    7rem;      // 112px
+
+  // Split gap (two-col layouts)
+  --split-gap: 2.5rem;
+
+}
+
+@media (min-width: #{$bp-md}) {
+  :root {
+    --page-pad:    3rem;
+    --section-pad: 4.5rem;
+    --split-gap:   3.5rem;
+  }
+}
+
+@media (min-width: #{$bp-lg}) {
+  :root {
+    --page-pad:    4.5rem;
+    --section-pad: 6.25rem;  // 100px
+    --split-gap:   6.25rem;  // 100px
+  }
+}
+
+@media (min-width: #{$bp-xl}) {
+  :root {
+    --page-pad: 7.5rem;
+  }
+}

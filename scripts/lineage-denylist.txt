@@ -1,0 +1,88 @@
+# ICONA scaffold-lineage denylist: identifiers of OTHER ICONA clients and their legacy stacks.
+# scripts/lineage-check.sh fails if any of these appears in a shippable file of THIS repo.
+# One token per line, case-insensitive, matched as plain text. Keep this site's own names OUT of it.
+# Fleet source: Betty's Plesk Git list + Bitbucket-Migration/cloned (2026-09-14). Extend when a client is added.
+devgun
+devgunlawoffice
+shoutcms
+crimecode
+dsfamilylaw
+ndbavocats
+rldd.ca
+criminalcodehelp
+ospreylegal
+weirbowen
+hmclawyers
+mmb.international
+kantorllp
+kantor llp
+dunnandassociates
+drnlaw
+castleandassociates
+millsfamilylaw
+calgary-law
+celinedostaler
+leducclassaction
+northwyndclassaction
+jssbarristers
+vipondlaw
+waterous
+susankarpa
+albertalawyersassist
+lawyersassist
+awotaan
+albertarefrigeration
+cambrialaw
+northpointlegal
+wrightbusinesslaw
+pjavocatcriminel
+litcolaw
+litco law
+smithsip
+adamdell
+lavellehealth
+patrick jacques
+rldd
+ross lutz
+lutz dunn
+deshaye
+# Added for the ICONA starter (2026-09-22): clients and properties on the PDSP rollout register that the
+# list above lacked, the rldd lineage's former domain, and the fictional firm of the Step 3 rehearsal
+# (its candidates exist on disk and must never feed a real build). The starter belongs to no client,
+# so every name stays listed here; a site built from it removes only its own names.
+proservice365
+loamandmoss
+loam & moss
+loam and moss
+crossroadslaw
+coachmycase
+cougle
+englandlam
+hi-hog
+mckaycriminaldefence
+ridoutbarron
+kantorinjurylawyers
+ezraonrileypark
+bow dental
+dartnelllutz
+northfork
+# Spaced and punctuated spellings of names already listed above. The gate matches plain text, so
+# "ndbavocats" never matches "NDB Avocats" - three such comments shipped in v0.1.0 and passed the gate.
+# Keep every token free of regex metacharacters: the gate builds one ERE from this file and escapes
+# only the dot, so a stray bracket or parenthesis makes grep error and the gate report PASS on nothing.
+#
+# Two limits to know about. (1) Matching is literal text, so a token only catches the spelling written
+# here: for a multi-word firm, list the spaced form as well as the compressed one, and list the partners'
+# personal names. The separator-insensitive matcher that would end the enumeration has to go in the
+# canonical gate script, which is not edited per repo. (2) ICONA's own names are NOT listed, including
+# "It's Legal": a site may legitimately carry an ICONA credit, and flagging it would train people to
+# ignore the gate.
+ndb avocats
+greg dunn
+dunn and associates
+rl/dd
+mmb-international
+northern-corridor
+lindsayllp
+bowdental
+osprey legal

@@ -1,0 +1,14 @@
+# DDEV on the Mac: `ddev start`, then `ddev composer install` and `ddev exec vendor/bin/sake db:build --flush`.
+# Named explicitly: the folder is site.nosync (kept out of iCloud), which is not a valid DDEV name.
+# PHP and MariaDB match production (Bertha: PHP 8.4, MariaDB 10.11).
+# DDEV does not manage .env here: copy .env.example to .env (its defaults are DDEV's).
+name: truegritclean
+type: silverstripe
+docroot: public
+php_version: "8.4"
+webserver_type: apache-fpm
+database:
+    type: mariadb
+    version: "10.11"
+composer_version: "2"
+disable_settings_management: true

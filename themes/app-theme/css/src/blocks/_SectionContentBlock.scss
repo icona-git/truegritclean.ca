@@ -1,0 +1,752 @@
+// ─── SectionContentBlock ──────────────────────────────────────────────────────
+// Variants: why-choose, centered, split, banner-cta, banner-cta-right
+// Template: SectionContentBlock_{Variant}.ss
+// StyleVariant set in CMS → becomes a class on the outer <section>
+
+.SectionContentBlock {
+  padding-block: var(--section-pad);
+
+  // ── Why Choose Us variant ─────────────────────────────────────────────────
+  // Dark blue-grey bg (#3b4452), single-column content left, photo absolute right.
+  // Photo fades in from the left via a gradient pseudo-element.
+  // Template: SectionContentBlock_WhyChoose.ss
+  &.SectionContentBlock_WhyChoose {
+    padding-block: 0;
+    background-color: var(--c-dark);
+
+    .why-choose__inner {
+      position: relative;
+      overflow: hidden;
+      min-height: 36rem;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      padding-block: clamp(3.75rem, 7vw, 6.875rem);
+
+      @media (max-width: #{$bp-lg}) {
+        padding-bottom: 28rem;  // reserve space for photo below content on mobile
+      }
+    }
+
+    // Content column — constrained to left ~48% on desktop
+    .why-choose__body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.875rem;
+
+      @media (min-width: #{$bp-lg}) {
+        max-width: 48%;
+      }
+
+      .block-heading-line {
+        color: #fff;
+      }
+    }
+
+    // Checklist — HTML <ul> styled with SVG checkmark
+    // No .typography wrapper — styles are fully custom here
+    .why-choose__list {
+      p {
+        font-size: var(--text-body-lg);
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.5;
+        margin-bottom: 1.25rem;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+      }
+
+      li {
+        // Reset any inherited .typography li styles
+        position: static;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-size: var(--text-body-lg);
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.4;
+
+        // Replace all ::before with the SVG checkmark
+        &::before {
+          content: '';
+          display: block;
+          flex-shrink: 0;
+          width: 1.25rem;
+          height: 1.25rem;
+          min-width: 1.25rem;
+          margin-top: 0.15rem;
+          background-image: url('/_resources/themes/app-theme/images/icon-checkmark.svg');
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-color: transparent;
+          position: static;
+        }
+      }
+    }
+
+    // Contact info section
+    .why-choose__contact {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .why-choose__contact-label {
+      font-size: var(--text-h5);   // 24px
+      color: #fff;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .why-choose__email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.875rem;
+      color: #fff;
+      font-size: var(--text-body);
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-skip-ink: none;
+
+      img { flex-shrink: 0; }
+
+      &:hover { color: var(--c-gold); }
+    }
+  }
+
+  // ── Centered variant ──────────────────────────────────────────────────────
+  // Centered title + HTML body + optional CTA. No image. Narrow max-width.
+  // Template: SectionContentBlock_Centered.ss
+  &.SectionContentBlock_Centered {
+    background-color: var(--c-charcoal-50);
+
+    .centered {
+      max-width: 44rem;
+      margin-inline: auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+
+      h2 {
+        color: var(--c-dark);
+        font-size: var(--text-h2);
+        line-height: 1.3;
+      }
+
+      .typography {
+        font-size: var(--text-body-lg);
+        color: var(--c-text-dark);
+        line-height: 1.5;
+      }
+    }
+  }
+
+  // ── Split variant ─────────────────────────────────────────────────────────
+  // Text + CTA left, brand mask image right.
+  // Template: SectionContentBlock_Split.ss
+  &.SectionContentBlock_Split {
+    .split__body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      h2 {
+        color: var(--c-dark);
+        font-size: var(--text-h2);
+        line-height: 1.3;
+      }
+
+      p {
+        font-size: var(--text-body-lg);
+        color: var(--c-text-dark);
+        line-height: 1.5;
+      }
+    }
+
+    .split__body {
+      @media (min-width: #{$bp-lg}) { flex: 3; }
+    }
+
+    .split__img {
+      @media (min-width: #{$bp-lg}) { flex: 2; }
+
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+  }
+
+  // ── Approach variant ──────────────────────────────────────────────────────
+  // White bg. brand mask image left flush to block top edge, text right.
+  // Template: SectionContentBlock_Approach.ss
+  &.SectionContentBlock_Approach {
+    background-color: var(--c-white);
+    padding-block: 0; // image bleeds to block edges; body carries its own padding
+
+    .approach__layout {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+
+      @media (min-width: #{$bp-lg}) {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 5rem;
+      }
+    }
+
+    .approach__img-col {
+      img {
+        max-width: 23.75rem; // 380px — natural logo size
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+
+    .approach__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding-block: var(--section-pad);
+
+      .approach__title {
+        font-family: var(--font-heading);
+        font-size: var(--text-h1);
+        font-weight: 400;
+        color: var(--c-dark);
+        line-height: 1.05;
+        letter-spacing: var(--ls-h1);
+      }
+    }
+
+    .approach__content {
+      p, li {
+        font-size: var(--text-body-lg);
+        color: var(--c-text-dark);
+        line-height: var(--lh-body);
+      }
+
+      p { margin-bottom: 0.75rem; &:last-child { margin-bottom: 0; } }
+
+      ul {
+        padding-left: 1.5rem;
+        margin: 0.5rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      li {
+        list-style: square;
+      }
+    }
+  }
+
+  // ── Dark Split variant ────────────────────────────────────────────────────
+  // Dark text column left, BgImage fills right column. Full-bleed, no wrap.
+  // Template: SectionContentBlock_DarkSplit.ss
+  &.SectionContentBlock_DarkSplit {
+    padding-block: 0;
+    background-color: var(--c-dark);
+
+    .dark-split {
+      display: flex;
+      flex-direction: column;
+
+      @media (min-width: #{$bp-lg}) {
+        flex-direction: row;
+        min-height: 44rem;
+      }
+    }
+
+    .dark-split__text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.875rem;
+      padding-block: clamp(3.75rem, 7vw, 6.25rem);
+      padding-inline: var(--page-pad);
+
+      @media (min-width: #{$bp-lg}) {
+        padding-inline-start: max(var(--page-pad), calc((100vw - var(--wrap-max)) / 2 + var(--page-pad)));
+        padding-inline-end: clamp(2rem, 5vw, 4rem);
+      }
+    }
+
+    .dark-split__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-h3);
+      font-weight: 400;
+      color: var(--c-gold);
+      line-height: 1.1;
+      margin: 0;
+    }
+
+    .dark-split__body {
+      p {
+        font-size: var(--text-body);
+        color: var(--c-charcoal-100);
+        line-height: var(--lh-body);
+        font-weight: 300;
+        margin-bottom: 1.5rem;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+
+    .dark-split__img {
+      overflow: hidden;
+      min-height: 20rem;
+      flex-shrink: 0;
+
+      @media (min-width: #{$bp-lg}) {
+        width: 50%;
+        min-height: auto;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+  }
+
+  // ── Offset Text variant ───────────────────────────────────────────────────
+  // White bg. Heading + left-bordered body text, content offset to the right
+  // (~58% width) matching the hero-intro offset pattern.
+  // Template: SectionContentBlock_OffsetText.ss
+  &.SectionContentBlock_OffsetText {
+    background-color: var(--c-white);
+
+    .offset-text__content {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .offset-text__body {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+
+      // Offset matches hero-intro: past the 380px brand mark + 3rem gap.
+      // Left edge aligns with the hero bleed-intro h2 at all breakpoints.
+      @media (min-width: #{$bp-lg}) {
+        width: calc(100% - 380px - 3rem);
+      }
+    }
+
+    .offset-text__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-h2);
+      font-weight: 500;
+      color: var(--c-dark);
+      line-height: 1.1;
+      letter-spacing: var(--ls-h2);
+      margin: 0;
+    }
+
+    .offset-text__html {
+      border-left: 1px solid var(--c-charcoal-100);
+      padding-left: 1.5rem;
+
+      p {
+        font-size: var(--text-body);
+        color: var(--c-text-dark);
+        line-height: var(--lh-body);
+        font-weight: 300;
+        margin-bottom: 1.875rem;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+  }
+
+  // ── Dark Body variant ─────────────────────────────────────────────────────
+  // Dark bg, heading + body text left, optional BgImage covers right half.
+  // Template: SectionContentBlock_DarkBody.ss
+  &.SectionContentBlock_DarkBody {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--c-dark);
+
+    // BgImage: absolute, covers right portion of section, fades in from left.
+    // Hidden on mobile — content is full-width there.
+    .dark-body__bg-img {
+      display: none;
+
+      @media (min-width: #{$bp-lg}) {
+        display: block;
+        position: absolute;
+        inset: 0;
+        left: 0%;
+        pointer-events: none;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 8rem;
+          background: linear-gradient(to right, var(--c-dark), transparent);
+          z-index: 1;
+          pointer-events: none;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+          opacity: 0.6;
+        }
+      }
+    }
+
+    .dark-body__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .dark-body__content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      @media (min-width: #{$bp-lg}) {
+        max-width: 55%;
+      }
+    }
+
+    .dark-body__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-h2);
+      font-weight: 500;
+      color: var(--c-white);
+      line-height: 1.1;
+      letter-spacing: var(--ls-h2);
+      margin: 0;
+    }
+
+    .dark-body__html {
+      p {
+        font-size: var(--text-body-lg);
+        color: rgba(255, 255, 255, 0.8);
+        line-height: var(--lh-body);
+        font-weight: 300;
+        margin-bottom: 1.25rem;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+  }
+
+  // ── Dark CTA variant ──────────────────────────────────────────────────────
+  // Dark bg: heading, body and button, full width of the band.
+  // Template: SectionContentBlock_DarkCta.ss
+  &.SectionContentBlock_DarkCta {
+    background-color: var(--c-dark);
+
+    .dark-cta__inner {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .dark-cta__content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .dark-cta__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-h2);
+      font-weight: 500;
+      color: var(--c-white);
+      line-height: 1.1;
+      letter-spacing: var(--ls-h2);
+      margin: 0;
+    }
+
+    .dark-cta__body {
+      p {
+        font-size: var(--text-body-lg);
+        color: rgba(255, 255, 255, 0.8);
+        line-height: var(--lh-body);
+        font-weight: 300;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // ── Photo Box variant ─────────────────────────────────────────────────────
+  // White section. Inside .wrap: dark box left (42%) + natural-height image right (58%).
+  // Mobile: image stacks above dark box (column-reverse).
+  // Template: SectionContentBlock_PhotoBox.ss
+  &.SectionContentBlock_PhotoBox {
+    .photo-box {
+      display: flex;
+      flex-direction: column-reverse;
+
+      @media (min-width: #{$bp-lg}) {
+        flex-direction: row;
+        align-items: stretch;
+      }
+    }
+
+    .photo-box__dark {
+      background-color: var(--c-dark);
+      padding: clamp(2.5rem, 5vw, 3.75rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
+
+      @media (min-width: #{$bp-lg}) {
+        flex: 0 0 42%;
+      }
+    }
+
+    .photo-box__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-h2);
+      font-weight: 400;
+      color: var(--c-gold);
+      line-height: 1.1;
+      letter-spacing: var(--ls-h2);
+      margin: 0;
+    }
+
+    .photo-box__body {
+      p {
+        font-family: var(--font-body);
+        font-size: var(--text-body);
+        font-weight: 300;
+        color: var(--c-charcoal-100);
+        line-height: var(--lh-body);
+        margin-bottom: 1rem;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+
+    .photo-box__img {
+      flex: 1;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        display: block;
+      }
+    }
+  }
+
+  // ── Right Text variant ────────────────────────────────────────────────────
+  // White section. Heading + body constrained to right 58% of wrap,
+  // aligning with the image column of a PhotoBox block above.
+  // Template: SectionContentBlock_RightText.ss
+  &.SectionContentBlock_RightText {
+    background-color: var(--c-white);
+
+    .right-text {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .right-text__inner {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      @media (min-width: #{$bp-lg}) {
+        width: 58%;
+      }
+    }
+
+    .right-text__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-h3);
+      font-weight: 400;
+      color: var(--c-dark);
+      line-height: 1.1;
+      letter-spacing: var(--ls-h2);
+      margin: 0;
+    }
+
+    .right-text__body {
+      p {
+        font-family: var(--font-body);
+        font-size: var(--text-body-lg);
+        font-weight: 300;
+        color: var(--c-text-dark);
+        line-height: var(--lh-body);
+        margin-bottom: 1rem;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+  }
+
+  // ── Banner CTA variant ────────────────────────────────────────────────────
+  // Full-width photo left half, contact info + CTA button right half.
+  // Background colour set via section style in CMS (bg-mid recommended).
+  // Template: SectionContentBlock_BannerCta.ss
+  &.SectionContentBlock_BannerCta {
+    padding-block: 0; // photo bleeds full height — no section padding
+
+    .banner-cta__inner {
+      display: flex;
+      flex-direction: column;
+
+      @media (min-width: #{$bp-lg}) {
+        flex-direction: row;
+        min-height: 30rem;
+      }
+    }
+
+    .banner-cta__img {
+      overflow: hidden;
+      min-height: 20rem;
+      flex-shrink: 0;
+
+      @media (min-width: #{$bp-lg}) {
+        width: 50%;
+        min-height: auto;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .banner-cta__body {
+      flex: 1;
+      padding-block: clamp(3rem, 6vw, 6.25rem);
+      padding-inline-start: clamp(1.5rem, 5vw, 6.25rem);
+      padding-inline-end: max(var(--page-pad), calc((100vw - var(--wrap-max)) / 2 + var(--page-pad)));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.875rem;
+
+      h2 {
+        color: var(--c-dark);
+        font-size: var(--text-h2);
+        line-height: 1.26;
+      }
+
+      p {
+        font-size: var(--text-body);
+        color: var(--c-text-dark);
+        line-height: 1.5;
+      }
+    }
+
+    .banner-cta__contact {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+  }
+
+  // ── Banner CTA Right variant ───────────────────────────────────────────────
+  // Same as BannerCta but image on the right — body comes first in markup.
+  // Padding mirrors BannerCta: left edge aligns with wrap, right is closer to image.
+  // Template: SectionContentBlock_BannerCtaRight.ss
+  &.SectionContentBlock_BannerCtaRight {
+    padding-block: 0;
+
+    .banner-cta__inner {
+      display: flex;
+      flex-direction: column;
+
+      @media (min-width: #{$bp-lg}) {
+        flex-direction: row;
+        min-height: 30rem;
+      }
+    }
+
+    .banner-cta__body {
+      flex: 1;
+      padding-block: clamp(3rem, 6vw, 6.25rem);
+      // Left padding aligns with wrap; right padding is the gap toward the image
+      padding-inline-start: max(var(--page-pad), calc((100vw - var(--wrap-max)) / 2 + var(--page-pad)));
+      padding-inline-end: clamp(1.5rem, 5vw, 6.25rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.875rem;
+
+      h2 {
+        color: var(--c-dark);
+        font-size: var(--text-h2);
+        line-height: 1.26;
+      }
+
+      p {
+        font-size: var(--text-body);
+        color: var(--c-text-dark);
+        line-height: 1.5;
+      }
+    }
+
+    .banner-cta__img {
+      overflow: hidden;
+      min-height: 20rem;
+      flex-shrink: 0;
+
+      @media (min-width: #{$bp-lg}) {
+        width: 50%;
+        min-height: auto;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .banner-cta__contact {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+  }
+}

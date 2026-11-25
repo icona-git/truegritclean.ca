@@ -1,0 +1,59 @@
+// ─── Home Page — Hero ─────────────────────────────────────────────────────────
+
+.HomePage {
+
+  #hero {
+    // Mobile: image and content stack in separate grid rows — content flows
+    // below the photo in normal document order, so it never covers faces.
+    display: grid;
+    grid-template-areas:
+      "media"
+      "content";
+    grid-template-rows: auto auto;
+
+    .hero__media {
+      grid-area: media;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      aspect-ratio: 4 / 5; // gives the image intrinsic height on mobile
+    }
+
+    .hero__inner {
+      grid-area: content;
+      background: var(--c-dark); // legible dark backing behind stacked text
+      text-align: center;
+      align-items: center;
+      padding-block: 4rem;
+    }
+
+    // Desktop: collapse both children into one cell so content overlays the
+    // image at the bottom, exactly as before.
+    @media (min-width: #{$bp-lg}) {
+      grid-template-areas: "stack";
+      grid-template-columns: 1fr; // full-width column so media covers entire hero
+      grid-template-rows: auto;
+      min-height: 85vh;
+
+      .hero__media {
+        grid-area: stack;
+        aspect-ratio: auto;
+        width: 100%;
+        height: 100%;
+      }
+
+      .hero__inner {
+        grid-area: stack;
+        justify-self: center; // centre content within the full-width column
+        align-self: end; // push content into lower half of hero
+        z-index: 1;
+        background: transparent;
+        max-width: calc(var(--wrap-max) * 0.75); // 75% of wrap = 1050px
+        padding-top: 0;
+        padding-bottom: 5rem; // breathing room at bottom of hero
+        text-align: center;
+      }
+    }
+  }
+
+}

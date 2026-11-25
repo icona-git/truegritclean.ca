@@ -1,0 +1,2 @@
+# Internal starter notes name the builds each fix came from; a release snapshot leaves them out.
+docs/starter/ export-ignore

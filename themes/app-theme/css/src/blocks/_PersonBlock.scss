@@ -1,0 +1,315 @@
+// ─── PersonBlock ──────────────────────────────────────────────────────────────
+
+// Shared B&W → colour cross-fade on hover (desktop only).
+// .person-photo--color is always loaded; .person-photo--bw src is set by JS
+// only at ≥$bp-lg so mobile never downloads the second image.
+.person-photo-wrap {
+  position: relative;
+  overflow: hidden;
+
+  .person-photo--color {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .person-photo--bw {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: opacity 0.4s ease;
+  }
+
+  @media (min-width: #{$bp-lg}) {
+    &:hover .person-photo--bw { opacity: 0; }
+  }
+}
+
+.PersonBlock {
+  padding-block: var(--section-pad);
+
+  // ── Grid variant ──────────────────────────────────────────────────────────
+  // 4-col auto grid on white bg. Photo, name (Playfair), job title, bio, link.
+  &.PersonBlock_Grid {
+    // Section intro — left-aligned heading + description + optional CTA
+    .person-grid__intro {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+      margin-bottom: 3.75rem;
+    }
+
+    .person-grid__title {
+      font-family: var(--font-heading);
+      font-size: var(--text-h2);
+      font-weight: 500;
+      color: var(--c-dark);
+      line-height: 1.1;
+      letter-spacing: var(--ls-h2);
+      margin: 0;
+    }
+
+    .person-grid__body {
+      p {
+        font-family: var(--font-body);
+        font-size: var(--text-intro);
+        font-weight: 400;
+        color: var(--c-text-dark);
+        line-height: var(--lh-body);
+        margin: 0;
+      }
+    }
+
+    .person-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+
+      @media (min-width: #{$bp-md}) { grid-template-columns: repeat(2, 1fr); }
+      @media (min-width: #{$bp-lg}) { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .person-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+
+      h3 {
+        font-family: var(--font-heading);
+        font-size: var(--text-h4);
+        font-weight: 400;
+        color: var(--c-dark);
+        line-height: 1.1;
+        letter-spacing: var(--ls-h4);
+        margin: 0;
+
+        a {
+          color: inherit;
+          text-decoration: none;
+          &:hover { color: var(--c-gold); }
+        }
+      }
+
+      .person-card__title {
+        font-family: var(--font-body);
+        font-size: var(--text-section-title);
+        font-weight: 400;
+        color: var(--c-charcoal-300);
+        text-transform: uppercase;
+        letter-spacing: var(--ls-section-title);
+      }
+
+      .person-card__bio {
+        font-family: var(--font-body);
+        font-size: var(--text-body);
+        font-weight: 300;
+        color: var(--c-charcoal-400);
+        line-height: var(--lh-body);
+        flex: 1;
+      }
+
+      .text-link { margin-top: auto; }
+    }
+  }
+
+  // ── Our Counsel variant ───────────────────────────────────────────────────
+  // Dark bg. Heading + intro above, full-width 4-col card grid below.
+  &.PersonBlock_OurCounsel {
+    padding-block: 0;
+    background-color: var(--c-dark);
+
+    .wrap {
+      padding-block: var(--section-pad);
+    }
+
+    .oc-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .oc-intro {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+
+      .oc-intro__title {
+        font-family: var(--font-heading);
+        font-size: var(--text-h2);
+        font-weight: 500;
+        color: var(--c-white);
+        line-height: 1.1;
+        letter-spacing: var(--ls-h2);
+        margin: 0;
+      }
+    }
+
+    .oc-intro__body {
+      p {
+        font-family: var(--font-body);
+        font-size: var(--text-body-lg);
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.8);
+        line-height: var(--lh-body);
+        margin-bottom: 1rem;
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+
+    .oc-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+
+      @media (min-width: #{$bp-md}) { grid-template-columns: repeat(2, 1fr); }
+      @media (min-width: #{$bp-lg}) { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .oc-card {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .oc-card__img {
+      overflow: hidden;
+    }
+
+    .oc-card__body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.25rem 0 0;
+      flex: 1;
+    }
+
+    .oc-card__name {
+      font-family: var(--font-heading);
+      font-size: var(--text-h4);
+      font-weight: 400;
+      color: var(--c-white);
+      line-height: 1.1;
+      letter-spacing: var(--ls-h4);
+    }
+
+    .oc-card__jobtitle {
+      font-family: var(--font-body);
+      font-size: var(--text-section-title);
+      font-weight: 600;
+      letter-spacing: var(--ls-section-title);
+      text-transform: uppercase;
+      color: var(--c-gold);
+    }
+
+    .oc-card__bio {
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: var(--lh-body);
+      margin-top: 0.25rem;
+    }
+
+    .oc-card__bio { flex: 1; }
+
+    .text-link {
+      padding-top: 0.5rem;
+      margin-top: auto;
+      color: var(--c-white);
+
+      &::after { background-color: var(--c-gold); }
+    }
+  }
+
+  // ── List variant ──────────────────────────────────────────────────────────
+  // Horizontal rows on white bg. Photo left, name/title/excerpt/link right.
+  &.PersonBlock_List {
+    .person-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .person-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--c-charcoal-50);
+
+      &:last-child { border-bottom: none; padding-bottom: 0; }
+
+      @media (min-width: #{$bp-md}) {
+        flex-direction: row;
+        gap: 2.5rem;
+      }
+    }
+
+    .person-row__img {
+      flex-shrink: 0;
+      width: 100%;
+      overflow: hidden;
+
+      @media (min-width: #{$bp-md}) {
+        width: 12rem;
+      }
+
+      img {
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        object-fit: cover;
+        object-position: center top;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+
+      &:hover img { transform: scale(1.02); }
+    }
+
+    .person-row__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      h3 {
+        font-family: var(--font-heading);
+        font-size: var(--text-h3);
+        font-weight: 400;
+        color: var(--c-dark);
+        line-height: var(--lh-heading);
+        letter-spacing: var(--ls-h2);
+
+        a {
+          color: inherit;
+          text-decoration: none;
+          &:hover { color: var(--c-gold); }
+        }
+      }
+
+      .person-row__jobtitle {
+        font-family: var(--font-body);
+        font-size: var(--text-section-title);
+        font-weight: 600;
+        letter-spacing: var(--ls-section-title);
+        text-transform: uppercase;
+        color: var(--c-gold);
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-family: var(--font-body);
+        font-size: var(--text-body-lg);
+        font-weight: 300;
+        color: var(--c-text-dark);
+        line-height: var(--lh-body);
+      }
+    }
+  }
+}

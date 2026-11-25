@@ -1,0 +1,8 @@
+// ─── Page-Specific Styles ─────────────────────────────────────────────────────
+// Global page-level styles first, then per-template imports.
+
+@import 'pages/homepage';
+@import 'pages/personpage';
+@import 'pages/practiceareapage';
+@import 'pages/blog';
+@import 'pages/contactpage';

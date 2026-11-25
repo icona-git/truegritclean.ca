@@ -1,0 +1,24 @@
+---
+Name: app-seo
+After:
+  - sitetree-seo
+---
+# Site-wide SEO head layer (title pattern, description fallback, canonical, Open Graph,
+# JSON-LD enrichment). Runs after syntro/silverstripe-seo so it can adjust that module's output.
+# See app/src/Extensions/SEOMetaExtension.php.
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - App\Extensions\SEOMetaExtension
+
+App\Extensions\SEOMetaExtension:
+  # Feeds LegalService.areaServed and every practice-area Service node. Set per site, e.g.
+  #   area_served:
+  #     - Calgary
+  #     - Alberta
+  # Empty = the property is left out of the schema.
+  area_served: []
+  # <title> suffix for blog posts (the full firm name pushes most post titles past 60 chars).
+  # Empty = blog posts use the SiteConfig title like every other page.
+  short_brand: ''
+  og_locale: en_CA
+  schema_language: en-CA

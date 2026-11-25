@@ -1,0 +1,63 @@
+// ─── Rail Navigation ──────────────────────────────────────────────────────────
+// Reusable sidebar nav for section pages (PracticeAreaPage and any page type a site adds).
+// Include via: <% include App\Includes\RailNav %>
+
+.rail-nav {
+
+  // ── Header: section label + extending gold line ─────────────────────────────
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
+
+    // Gold line extending to fill remaining width
+    &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--c-gold);
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: block;
+  }
+
+  &__title {
+    font-family: var(--font-heading);
+    font-size: var(--text-h5);
+    font-weight: 600;
+    color: var(--c-gold);
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  // ── Link list ────────────────────────────────────────────────────────────────
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__link {
+    display: block;
+    padding-block: 0.625rem;
+    font-family: var(--font-heading);
+    font-size: var(--text-body-lg);
+    font-weight: 400;
+    color: var(--c-charcoal-400);
+    text-decoration: none;
+    line-height: 1.3;
+    transition: color 0.15s ease;
+
+    &:hover { color: var(--c-gold); }
+
+    &.current { color: var(--c-gold); }
+  }
+}

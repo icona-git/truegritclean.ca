@@ -1,0 +1,7 @@
+# The French text of app/lang/en.yml, for a site whose locale is French (see en.yml for why these three
+# nocaptcha keys are replaced and why they carry the same text).
+fr:
+  UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+    EMPTY: "Votre message n'a pas été envoyé. Notre filtre antipourriel n'a pas pu confirmer qu'il provient d'une personne. Veuillez réessayer ou nous joindre par téléphone ou par courriel."
+    SPAM: "Votre message n'a pas été envoyé. Notre filtre antipourriel n'a pas pu confirmer qu'il provient d'une personne. Veuillez réessayer ou nous joindre par téléphone ou par courriel."
+    VALIDATE_ERROR: "Votre message n'a pas été envoyé. Notre filtre antipourriel n'a pas pu confirmer qu'il provient d'une personne. Veuillez réessayer ou nous joindre par téléphone ou par courriel."

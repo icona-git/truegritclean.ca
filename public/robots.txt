@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /Security/
+Disallow: /dev/
+Allow: /
+
+# At launch, add this site's own sitemap as one absolute URL on its canonical host, e.g.
+# Sitemap: https://www.firm-domain.ca/sitemap.xml
+# The starter ships no Sitemap line on purpose: a wrong host here points search engines at another site.

@@ -1,0 +1,27 @@
+---
+Name: app-sitemap-middleware
+After:
+  - '#coreconfig'
+  - '#requestprocessors'
+  - '#canonicalurls'
+---
+# 1. Strip the module's hardcoded "X-Robots-Tag: noindex" from sitemap responses.
+#    See app/src/Middleware/SitemapRobotsHeaderMiddleware.php for why it cannot be done in nginx.
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Control\Director:
+    properties:
+      Middlewares:
+        SitemapRobotsHeader: '%$App\Middleware\SitemapRobotsHeaderMiddleware'
+
+# 2. Keep the trailing-slash rule off the sitemap routes. mysite.yml sets add_trailing_slash for the
+#    site's own pages, but the sitemap index lists child sitemaps without one
+#    (sitemap.xml/sitemap/<class>/<page>), so every child sitemap answered a 301 and crawlers paid an
+#    extra hop to reach the XML. The framework already skips any URL with a file extension, which covers
+#    /sitemap.xml itself; this adds the child routes. The two framework defaults are repeated because
+#    setting the property replaces the list rather than extending it.
+  SilverStripe\Control\Middleware\CanonicalURLMiddleware:
+    properties:
+      EnforceTrailingSlashConfigIgnorePaths:
+        - 'admin/'
+        - 'dev/'
+        - 'sitemap.xml/'
