@@ -1,0 +1,24 @@
+/.graphql-generated/
+/public/_graphql/
+/silverstripe-cache/
+/.env
+#/vendor/
+/themes/startup-theme/
+/_resources/
+/public/_resources/
+.DS_Store
+debug.log
+*.log
+/__design-assets
+/vendor/
+/themes/app-theme/node_modules/
+/.claude/
+# Source maps are build by-products. `npm run css` writes none; the watch scripts still do,
+# for local debugging, and they must never be committed.
+*.map
+# DDEV: config.yaml is shared, everything DDEV generates stays local
+/.ddev/.*
+/.ddev/db_snapshots/
+/.ddev/mutagen/
+# iCloud conflict copies ("about 2.md") must never be committed
+* 2.*

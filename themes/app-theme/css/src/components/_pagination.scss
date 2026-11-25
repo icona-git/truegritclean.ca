@@ -1,0 +1,51 @@
+// ─── Pagination ───────────────────────────────────────────────────────────────
+// Used by SilverStripe PaginatedList — blog, any future listing pages.
+// Markup: <ul class="pagination"> with <li class="page-item (active)">
+//         and <a class="page-link">
+
+.pagination-wrap {
+  margin-top: 3rem;
+}
+
+.pagination {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+
+  .page-item {
+    .page-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2.25rem;
+      height: 2.25rem;
+      padding-inline: 0.75rem;
+      border: 1px solid var(--c-charcoal-50);
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: var(--text-body);
+      font-weight: 400;
+      color: var(--c-charcoal-300);
+      text-decoration: none;
+      background-color: var(--c-white);
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+      &:hover {
+        background-color: var(--c-charcoal-50);
+        border-color: var(--c-charcoal-200);
+        color: var(--c-dark);
+      }
+    }
+
+    &.active .page-link {
+      background-color: var(--c-gold);
+      border-color: var(--c-gold);
+      color: var(--c-white);
+      pointer-events: none;
+    }
+  }
+}

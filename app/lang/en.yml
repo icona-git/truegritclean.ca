@@ -1,0 +1,11 @@
+# What a visitor reads when the contact form's spam check refuses a submission. nocaptcha's own wording
+# was written for the old checkbox captcha ("Please answer the captcha...") and calls a real person with a
+# low score a spammer ("Your submission has been marked as spam"); reCAPTCHA v3 is invisible, so there is
+# nothing to answer. All three keys carry the same text: nocaptcha and SpamProtectionFieldValidator can both
+# report one refusal, and the visitor needs the same next step whichever it was. UserFormRefusalExtension
+# shows it at the top of the form. A site may reword it; keep "not sent" and a way to reach the firm.
+en:
+  UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+    EMPTY: "Your message has not been sent. Our spam check could not confirm it came from a person. Please try again, or phone or email us instead."
+    SPAM: "Your message has not been sent. Our spam check could not confirm it came from a person. Please try again, or phone or email us instead."
+    VALIDATE_ERROR: "Your message has not been sent. Our spam check could not confirm it came from a person. Please try again, or phone or email us instead."

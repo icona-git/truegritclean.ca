@@ -1,0 +1,167 @@
+// ─── Forms ────────────────────────────────────────────────────────────────────
+// Styles for SilverStripe UserForms module output.
+// UserForms HTML structure:
+//   form.userform
+//     .field.requiredField
+//       label.left
+//       .middleColumn
+//         input.text / textarea.textarea / select.dropdown
+//     .CompositeField.userformsgroup   ← field group (side-by-side on desktop)
+//       .middleColumn
+//         .field (×N)
+//     .Actions
+//       input.action.btn               ← submit button
+
+form.userform {
+
+  // ── Field wrapper ────────────────────────────────────────────────────────
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  // ── Labels ───────────────────────────────────────────────────────────────
+
+  label.left,
+  legend.left {
+    font-weight: 600;
+    font-size: var(--text-body);
+    color: var(--c-dark);
+    line-height: 1.2;
+    padding: 0;
+  }
+
+  // Required asterisk
+  .requiredField > label.left::after {
+    content: ' *';
+    color: var(--c-gold);
+  }
+
+  // ── Inputs ───────────────────────────────────────────────────────────────
+
+  .middleColumn {
+    input.text,
+    textarea.textarea,
+    select.dropdown {
+      width: 100%;
+      font-size: var(--text-body);
+      color: var(--c-text-dark);
+      background-color: var(--c-white);
+      border: 1px solid var(--c-charcoal-50);
+      border-radius: 4px;
+      padding: 0 1rem;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      appearance: none;
+
+      &::placeholder { color: var(--c-charcoal-200); }
+
+      &:focus {
+        outline: none;
+        border-color: var(--c-gold);
+        box-shadow: 0 0 0 3px rgba(61, 129, 53, 0.15);
+      }
+    }
+
+    input.text,
+    select.dropdown {
+      height: 3.5rem; // 56px
+    }
+
+    textarea.textarea {
+      padding-top: 0.875rem;
+      padding-bottom: 0.875rem;
+      min-height: 9rem;
+      resize: vertical;
+    }
+  }
+
+  // ── Field group — side-by-side on desktop ─────────────────────────────────
+
+  .CompositeField.userformsgroup {
+    border: none;
+    padding: 0;
+    margin-bottom: 0;
+
+    > .middleColumn {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+
+      @media (min-width: #{$bp-md}) {
+        flex-direction: row;
+        gap: 1.5rem;
+      }
+
+      > .field {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+    }
+  }
+
+  // ── Validation ───────────────────────────────────────────────────────────
+
+  .message.bad,
+  .message.validation,
+  .message.required,
+  .error.message,
+  label.error {
+    font-size: var(--text-body);
+    color: var(--c-error);
+    margin-top: 0.25rem;
+  }
+
+  input.error,
+  input.requiredField.error,
+  textarea.requiredField.error {
+    border-color: var(--c-error) !important;
+  }
+
+  // Form-wide message, printed by UserForm.ss above the fields. A refused submission's message lands here
+  // (UserFormRefusalExtension), and so does the redirect's #anchor, so it is the first thing the visitor sees.
+  > .message.error,
+  > .message.bad {
+    margin: 0 0 1.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--c-error);
+    background-color: color-mix(in srgb, var(--c-error) 8%, var(--c-white)); // text on it: 4.8:1
+  }
+
+  // ── Spam check (reCAPTCHA v3) ─────────────────────────────────────────────
+  // Invisible, so its label ("Spam protection", the field's Title in the CMS) names nothing a visitor can
+  // see or use, and its for= points at no element. Hidden from everyone; the empty holder takes no space.
+  // The no-JavaScript notice inside the field still shows.
+
+  .field.nocaptcha {
+    margin-bottom: 0;
+
+    > label { display: none; }
+  }
+
+  // ── Submit button ─────────────────────────────────────────────────────────
+
+  .Actions {
+    margin-top: 2rem;
+
+    input.action {
+      display: block;
+      width: 100%;
+      height: 3.875rem; // 62px
+      font-weight: 700;
+      font-size: var(--text-body);
+      color: var(--c-white);
+      background-color: var(--c-gold);
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      letter-spacing: 0.02em;
+
+      &:hover { background-color: var(--c-dark); }
+    }
+  }
+
+}

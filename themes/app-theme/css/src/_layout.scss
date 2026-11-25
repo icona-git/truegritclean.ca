@@ -1,0 +1,143 @@
+// ─── Layout ──────────────────────────────────────────────────────────────────
+// .wrap    — content width container
+// .section — vertical padding for page sections
+// .split   — two-column flex layout
+// display  — responsive show/hide utilities
+
+// ─── Content Width ────────────────────────────────────────────────────────────
+.wrap {
+  max-width: var(--wrap-max);
+  margin-inline: auto;
+  padding-inline: var(--page-pad);
+}
+
+.site-max {
+  margin: 0 auto;
+  max-width: 1980px;
+  background-color: #fff;
+  position: relative;
+}
+
+// ─── Sections ────────────────────────────────────────────────────────────────
+// Sections own their background + vertical padding.
+// Background modifiers can be applied directly to <section> elements.
+// Only on block wrappers: SilverStripe also writes "section" as a menu link's state class ($LinkingMode
+// on a page whose child is open), and the padding then made the header 200px taller on child pages.
+
+section.section,
+div.section {
+  padding-block: var(--section-pad);
+}
+
+.bg-white  { background: var(--c-white); }
+
+// ─── Two-Column Split ─────────────────────────────────────────────────────────
+// Stacks on mobile, side-by-side on desktop.
+// Use .split--reverse to flip image to the right.
+
+.split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--split-gap);
+
+  @media (min-width: #{$bp-lg}) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.split--reverse {
+  @media (min-width: #{$bp-lg}) {
+    flex-direction: row-reverse;
+  }
+}
+
+.split__body {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.split__img {
+  flex: 0 0 auto;
+  // Width set per block as needed
+}
+
+// ─── Responsive Display ───────────────────────────────────────────────────────
+
+.hide-mobile {
+  display: none !important;
+}
+
+@media (min-width: #{$bp-lg}) {
+  .hide-mobile  { display: revert !important; }
+  .hide-desktop { display: none !important; }
+}
+
+// ─── Default Page Layout (rail nav left, content right) ──────────────────────
+// Content is first in the DOM for mobile (stacks content → nav).
+// On desktop the rail moves left via order: -1.
+
+.page-layout {
+  padding-block: var(--section-pad);
+}
+
+.page-layout__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: flex-start;
+
+  @media (min-width: #{$bp-lg}) {
+    flex-direction: row;
+    gap: var(--split-gap);
+  }
+}
+
+.page-layout__content {
+  flex: 1 1 0;
+  min-width: 0;
+
+  &--full {
+    max-width: 61.5rem;
+    margin-inline: auto;
+  }
+}
+
+.page-layout__rail {
+  width: 100%;
+
+  @media (min-width: #{$bp-lg}) {
+    flex: 0 0 15rem;
+    width: auto;
+    order: -1;
+  }
+}
+
+// ─── Visually Hidden (accessibility) ─────────────────────────────────────────
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// A skip link is hidden until it is focused, then it must be visible and readable.
+.sr-only--focusable:focus {
+  position: fixed;
+  top: 0.5rem;
+  inset-inline-start: 0.5rem;
+  z-index: 1000;
+  width: auto; height: auto;
+  margin: 0;
+  padding: 0.75rem 1.25rem;
+  clip: auto;
+  background-color: var(--c-white);
+  color: var(--c-text-dark);
+  font-family: var(--font-body);
+  text-decoration: underline;
+  outline: 2px solid var(--c-dark);
+}

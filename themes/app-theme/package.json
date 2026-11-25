@@ -1,0 +1,16 @@
+{
+  "name": "app-theme",
+  "private": true,
+  "scripts": {
+    "css":       "sass --style=compressed --no-source-map --load-path=node_modules --quiet-deps css/src/site.scss:css/dist/site.css css/src/editor.scss:css/dist/editor.css",
+    "css:watch": "sass --style=compressed --load-path=node_modules --quiet-deps --watch css/src/site.scss:css/dist/site.css css/src/editor.scss:css/dist/editor.css",
+    "js":        "esbuild js/src/site.js --bundle --minify --outfile=js/dist/site-min.js",
+    "js:watch":  "esbuild js/src/site.js --bundle --minify --watch --outfile=js/dist/site-min.js",
+    "build":     "npm run css && npm run js",
+    "start":     "npm run css:watch & npm run js:watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "sass":    "^1.86.0"
+  }
+}

@@ -1,0 +1,68 @@
+// ─── Buttons ──────────────────────────────────────────────────────────────────
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.125rem 1.5rem;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--c-dark);
+  font-size: var(--text-body);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  border: 1px solid var(--c-dark);
+  cursor: pointer;
+  // Long CMS-entered labels must wrap rather than force the button — and its
+  // flex parent — wider than the viewport. Shrinks to content when it fits.
+  max-width: 100%;
+  text-align: center;
+  text-wrap: balance;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--c-dark);
+    color: var(--c-white);
+    text-decoration: none;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  // On dark backgrounds — white keyline, white text
+  &.btn--outline-white {
+    border-color: var(--c-white);
+    color: var(--c-white);
+    &:hover, &:focus-visible { background-color: rgba(255, 255, 255, 0.12); color: var(--c-white); }
+  }
+}
+
+// Text link — uppercase label + implied arrow, no underline
+// Used for inline CTAs like "Read More", "Explore more articles"
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-body);
+  font-weight: 600;
+  color: var(--c-gold);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  &::after {
+    content: '';
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    background-color: currentColor;
+  }
+
+  &:hover { color: var(--c-dark); }
+}

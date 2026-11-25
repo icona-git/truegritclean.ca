@@ -1,0 +1,136 @@
+// Editor Styles — CMS WYSIWYG (TinyMCE)
+// Literal hex values only — CSS custom properties are unavailable in the editor iframe.
+// Mirrors _typography.scss as closely as possible given the white editor background.
+// Font stacks must match --font-heading / --font-body in _tokens.scss.
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #303030;
+  line-height: 1.5;
+  max-width: 52rem;
+  margin: 1.5rem auto;
+  padding-inline: 1rem;
+}
+
+h1, h2, h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  color: #020203;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+
+h4, h5, h6 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  color: #C3964B;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  &:last-child { margin-bottom: 0; }
+}
+
+a {
+  color: #020203;
+  text-decoration: underline;
+  &:hover { color: #C3964B; }
+}
+
+strong, b { font-weight: 700; }
+em, i      { font-style: italic; }
+
+ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  li {
+    list-style: square;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+}
+
+ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  li {
+    list-style: decimal;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+}
+
+blockquote {
+  border-left: 3px solid #B7B7B8;
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.5rem;
+  font-style: italic;
+  color: #8A8A8A;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #F5F5F5;
+  margin: 2rem 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  &.left   { float: left;  max-width: 50%; margin: 0.25rem 1.25rem 0.75rem 0; }
+  &.right  { float: right; max-width: 50%; margin: 0.25rem 0 0.75rem 1.25rem; }
+  &.center { margin-inline: auto; clear: both; }
+}
+
+// Default button — dark outline (matches site .btn)
+a.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.125rem 1.5rem;
+  background-color: transparent;
+  color: #020203;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  border: 2px solid #020203;
+  border-radius: 0;
+  cursor: pointer;
+  white-space: nowrap;
+
+  // btn--outline-white renders as gold in the editor so it's visible on white bg.
+  // On the live site this class is used on dark backgrounds where it shows white.
+  &.btn--outline-white {
+    border-color: #C3964B;
+    color: #C3964B;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  td, th {
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
+    text-align: left;
+    border-bottom: 1px solid #F5F5F5;
+  }
+  th { font-weight: 700; border-bottom: 2px solid #B7B7B8; }
+}

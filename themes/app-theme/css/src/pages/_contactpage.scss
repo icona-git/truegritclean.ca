@@ -1,0 +1,126 @@
+// ─── Contact Page ─────────────────────────────────────────────────────────────
+
+// ── Intro: left = heading + body + CTA, right = contact details ───────────────
+
+.contact-intro {
+  padding-block: var(--section-pad);
+}
+
+.contact-intro__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: flex-start;
+
+  @media (min-width: #{$bp-lg}) {
+    flex-direction: row;
+    gap: var(--split-gap);
+    align-items: center;
+  }
+}
+
+.contact-intro__text {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.875rem;
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    color: var(--c-dark);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  p {
+    font-size: var(--text-body-lg);
+    color: var(--c-text-dark);
+    line-height: 1.4;
+  }
+}
+
+// ── Contact details sidebar ────────────────────────────────────────────────────
+
+.contact-coords {
+  width: 100%;
+
+  @media (min-width: #{$bp-lg}) {
+    flex: 0 0 34rem;
+    width: auto;
+  }
+}
+
+.contact-coords__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.875rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  p, a {
+    font-size: var(--text-body-lg);
+    color: var(--c-text-dark);
+    line-height: 1.4;
+    text-decoration: none;
+    margin: 0;
+  }
+
+  a {
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    &:hover { color: var(--c-dark); }
+  }
+}
+
+.contact-coords__label {
+  font-size: var(--text-h5);   // 24px
+  color: var(--c-dark);
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+// Icon badge — SVG is self-contained (red rect + white icon)
+.contact-coords__icon {
+  flex-shrink: 0;
+
+  img {
+    width: 3.125rem;  // 50px
+    height: 3.125rem;
+    display: block;
+  }
+}
+
+// ── Full-width map ─────────────────────────────────────────────────────────────
+
+.contact-map {
+  width: 100%;
+  height: 28rem;
+
+  @media (min-width: #{$bp-lg}) {
+    height: 34rem;
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}

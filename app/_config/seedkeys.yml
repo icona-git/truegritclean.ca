@@ -1,0 +1,11 @@
+---
+Name: app-seedkeys
+---
+# Stable seed identity (App\Extensions\SeedKeyExtension) on every block and every bucket.
+# Seeds find these records by SeedKey, never by Title. See app/src/Models/SeedKey.php.
+DNADesign\Elemental\Models\BaseElement:
+  extensions:
+    - App\Extensions\SeedKeyExtension
+App\Models\Bucket:
+  extensions:
+    - App\Extensions\SeedKeyExtension

@@ -1,0 +1,64 @@
+---
+Name: myproject
+---
+SilverStripe\Core\Manifest\ModuleManifest:
+  project: app
+
+# Canonical URLs carry a trailing slash; a request without one redirects.
+SilverStripe\Control\Controller:
+  add_trailing_slash: true
+
+# Canadian English site: drives <html lang>, og:locale and schema inLanguage.
+SilverStripe\i18n\i18n:
+  default_locale: en_CA
+
+SilverStripe\CMS\Model\SiteTree:
+  # The seed task builds the page tree; the framework must not invent Home/About/Contact pages.
+  create_default_pages: false
+  hide_pagetypes:
+    - 'SilverStripe\Blog\Model\Blog'
+    - 'SilverStripe\Blog\Model\BlogPost'
+
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - App\Extensions\MySiteConfig
+
+# Blog Category gets additional fields
+SilverStripe\Blog\Model\BlogCategory:
+  extensions:
+    - App\Extensions\BlogCategoryExtension
+
+# SVG upload is deliberately NOT re-enabled. SilverStripe blocks it by default because an SVG is a
+# script-capable document served inline from the site's own origin; the theme's SVGs are committed by
+# ICONA, not uploaded by editors. A site that truly needs editor-uploaded SVG re-enables it knowingly.
+
+SilverStripe\SpamProtection\Extension\FormSpamProtectionExtension:
+    default_spam_protector: UndefinedOffset\NoCaptcha\Forms\NocaptchaProtector
+
+# reCAPTCHA keys come from .env through Injector properties, the only place `ENV` backticks
+# are expanded. site_key/secret_key under the class config below would ship the literal
+# backtick string to the browser as the site key (grecaptcha throws, every submission posts an
+# empty token and is refused; an ICONA client staging site, 2026-09-18). Check after any key change:
+# the contact page must show data-sitekey="<the .env value>" and never "SS_NOCAPTCHA".
+SilverStripe\Core\Injector\Injector:
+  UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+    properties:
+      SiteKey: '`SS_NOCAPTCHA_SITE_KEY`'
+      SecretKey: '`SS_NOCAPTCHA_SECRET_KEY`'
+
+UndefinedOffset\NoCaptcha\Forms\NocaptchaField:
+    recaptcha_version: 3 # 2 or 3
+    # This is the highest score that is REFUSED: the module compares with <=. 0.4 therefore refuses 0.4
+    # and below and accepts Google's own starting point of 0.5. Higher values turn real enquiries away
+    # with nothing in any log to show it, and the captcha fix is fail-closed. Raise it only on evidence:
+    # SpamProtectionFieldValidator logs Google's score for every submission.
+    minimum_score: 0.4
+    verify_ssl: true #Allows you to disable php-curl's SSL peer verification by setting this to false (optional, defaults to true)
+    default_theme: "light" #Default theme color (optional, light or dark, defaults to light)
+    default_type: "image" #Default captcha type (optional, image or audio, defaults to image)
+    default_size: "normal" #Default size (optional, normal, compact or invisible, defaults to normal)
+    default_badge: "bottomright" #Default badge position (bottomright, bottomleft or inline, defaults to bottomright)
+    default_handle_submit: true #Default setting for whether nocaptcha should handle form submission. See "Handling form submission" below.
+    proxy_server: "" #Your proxy server address (optional)
+    proxy_port: "" #Your proxy server address port (optional)
+    proxy_auth: "" #Your proxy server authentication information (optional)
