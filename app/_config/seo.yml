@@ -11,7 +11,12 @@ SilverStripe\CMS\Model\SiteTree:
     - App\Extensions\SEOMetaExtension
 
 App\Extensions\SEOMetaExtension:
-  # Feeds LegalService.areaServed and every practice-area Service node. Set per site, e.g.
+  # schema.org type of the site-wide business node (the starter's default, LegalService, is for law firms).
+  business_type: ProfessionalService
+  # A service-area business: the schema never carries a street address or postal code, even if one is
+  # typed into Settings > Contact Info.
+  service_area_business: true
+  # Feeds the business node's areaServed and every Service node. Set per site, e.g.
   #   area_served:
   #     - Calgary
   #     - Alberta

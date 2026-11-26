@@ -28,7 +28,8 @@ use SilverStripe\View\Parsers\ShortcodeParser;
  *  - rel=canonical             self-referencing, query string stripped (?start=N kept for pagination)
  *  - Open Graph + Twitter Card tags with a guarded share image
  *  - noindex on thin blog listings (tag and date-archive views)
- *  - JSON-LD enrichment        updateSchemaGraph(): LegalService organisation, Person, Service,
+ *  - JSON-LD enrichment        updateSchemaGraph(): the business node (type from business_type, with
+ *                              slogan, logo and the catalogue of service pages), Person, Service,
  *                              BlogPosting, FAQPage, breadcrumb names fixed to plain page titles
  *  - manual SchemaJson field   still replaces the generated graph entirely (legacy behaviour)
  *
@@ -36,8 +37,17 @@ use SilverStripe\View\Parsers\ShortcodeParser;
  */
 class SEOMetaExtension extends Extension
 {
-    /** Populated from app/_config/seo.yml. Feeds LegalService.areaServed and every Service node. */
+    /** Populated from app/_config/seo.yml. Feeds the business node's areaServed and every Service node. */
     private static $area_served = [];
+
+    /** schema.org type of the site-wide business node. The starter's default, LegalService, is for law firms. */
+    private static $business_type = 'LegalService';
+
+    /**
+     * A service-area business: the schema never carries a street address or postal code, even when
+     * Settings > Contact Info holds one. City and province still appear when filled in.
+     */
+    private static $service_area_business = false;
 
     /** Short brand used as the <title> suffix on blog posts, where the full firm name would overrun 60 chars. */
     private static $short_brand = '';
@@ -335,7 +345,7 @@ class SEOMetaExtension extends Extension
             switch ($type) {
                 case 'Organization':
                     $orgId = $node['@id'] ?? $orgId;
-                    $node = $this->legalServiceNode($node, $siteConfig, $base);
+                    $node = $this->businessNode($node, $siteConfig, $base);
                     break;
                 case 'WebSite':
                     $node['inLanguage'] = $language;
@@ -378,23 +388,37 @@ class SEOMetaExtension extends Extension
         $graph['@graph'] = array_values($nodes);
     }
 
-    private function legalServiceNode(array $node, SiteConfig $siteConfig, string $base): array
+    private function businessNode(array $node, SiteConfig $siteConfig, string $base): array
     {
-        $node['@type'] = 'LegalService';
+        $type = trim((string) Config::inst()->get(self::class, 'business_type'));
+        $node['@type'] = $type !== '' ? $type : 'LegalService';
         $node['name'] = (string) $siteConfig->Title;
         $node['url'] = $base;
-        $this->addIfNotEmpty($node, 'telephone', $siteConfig->Phone);
+        $phone = $this->schemaPhone($siteConfig);
+        $this->addIfNotEmpty($node, 'telephone', $phone);
         $this->addIfNotEmpty($node, 'faxNumber', $siteConfig->Fax);
         $this->addIfNotEmpty($node, 'email', $siteConfig->Email);
+        $tagline = trim((string) $siteConfig->Tagline);
+        if ($tagline !== '' && strtolower($tagline) !== 'your tagline here') {
+            $node['slogan'] = $tagline;
+        }
 
+        // A service-area business never publishes a street address or postal code, whatever Settings holds.
+        $serviceAreaOnly = (bool) Config::inst()->get(self::class, 'service_area_business');
         $address = ['@type' => 'PostalAddress'];
-        $this->addIfNotEmpty($address, 'streetAddress', $siteConfig->StreetAddress);
+        if (!$serviceAreaOnly) {
+            $this->addIfNotEmpty($address, 'streetAddress', $siteConfig->StreetAddress);
+        }
         $this->addIfNotEmpty($address, 'addressLocality', $siteConfig->City);
         $this->addIfNotEmpty($address, 'addressRegion', $siteConfig->Province);
-        $this->addIfNotEmpty($address, 'postalCode', $siteConfig->PostalCode);
+        if (!$serviceAreaOnly) {
+            $this->addIfNotEmpty($address, 'postalCode', $siteConfig->PostalCode);
+        }
         if (count($address) > 1) {
             $address['addressCountry'] = 'CA';
             $node['address'] = $address;
+        } else {
+            unset($node['address']);
         }
 
         $areaServed = $this->areaServed();
@@ -402,7 +426,19 @@ class SEOMetaExtension extends Extension
             $node['areaServed'] = $areaServed;
         }
 
-        $phone = trim((string) $siteConfig->Phone);
+        // The module points logo at a relative URL; search engines want an absolute one.
+        unset($node['logo'], $node['image']);
+        $logo = $this->logoNode($siteConfig, $base);
+        if ($logo) {
+            $node['logo'] = $logo;
+            $node['image'] = ['@id' => $logo['@id']];
+        }
+
+        $catalog = $this->offerCatalog();
+        if ($catalog) {
+            $node['hasOfferCatalog'] = $catalog;
+        }
+
         if ($phone !== '') {
             $node['contactPoint'] = [
                 '@type' => 'ContactPoint',
@@ -432,6 +468,98 @@ class SEOMetaExtension extends Extension
         }
         // Deliberately omitted until the CMS holds real data: geo, openingHoursSpecification, priceRange.
         return $node;
+    }
+
+    /**
+     * The phone number in the international form search engines prefer: "825-882-3881" gives
+     * "+1-825-882-3881". Anything that is not a 10-digit North American number is passed through.
+     */
+    private function schemaPhone(SiteConfig $siteConfig): string
+    {
+        $phone = trim((string) $siteConfig->Phone);
+        $digits = (string) preg_replace('/\D+/', '', $phone);
+        if (strlen($digits) === 11 && str_starts_with($digits, '1')) {
+            $digits = substr($digits, 1);
+        }
+        if (strlen($digits) === 10) {
+            return sprintf('+1-%s-%s-%s', substr($digits, 0, 3), substr($digits, 3, 3), substr($digits, 6));
+        }
+        return $phone;
+    }
+
+    /** Settings > Main > Logo (syntro/silverstripe-seo's CompanyLogo) as an ImageObject, or null. */
+    private function logoNode(SiteConfig $siteConfig, string $base): ?array
+    {
+        try {
+            if (!$siteConfig->hasMethod('CompanyLogo') || !$siteConfig->CompanyLogoID) {
+                return null;
+            }
+            $logo = $siteConfig->CompanyLogo();
+            if (!$logo || !$logo->exists()) {
+                return null;
+            }
+            $url = (string) $logo->getAbsoluteURL();
+            if ($url === '') {
+                return null;
+            }
+            $node = [
+                '@type' => 'ImageObject',
+                '@id' => $base . '#/schema/logo/image/',
+                'url' => $url,
+                'contentUrl' => $url,
+                'caption' => (string) $siteConfig->Title,
+            ];
+            $width = (int) $logo->getWidth();
+            $height = (int) $logo->getHeight();
+            if ($width > 0 && $height > 0) {
+                $node['width'] = $width;
+                $node['height'] = $height;
+            }
+            return $node;
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Every published service page as an Offer, so the business node names what it sells. Each Service
+     * carries the same @id as the Service node on its own page.
+     */
+    private function offerCatalog(): ?array
+    {
+        try {
+            $items = [];
+            $name = '';
+            foreach (PracticeAreaPage::get()->filter('ShowInSearch', true)->sort(['ParentID' => 'ASC', 'Sort' => 'ASC']) as $page) {
+                if (!$page->canView()) {
+                    continue;
+                }
+                $url = $page->AbsoluteLink();
+                $items[] = [
+                    '@type' => 'Offer',
+                    'itemOffered' => [
+                        '@type' => 'Service',
+                        '@id' => $url . '#service',
+                        'name' => (string) $page->Title,
+                        'url' => $url,
+                    ],
+                ];
+                if ($name === '' && $page->ParentID) {
+                    $parent = $page->Parent();
+                    $name = $parent && $parent->exists() ? trim((string) $parent->Title) : '';
+                }
+            }
+            if (!$items) {
+                return null;
+            }
+            return [
+                '@type' => 'OfferCatalog',
+                'name' => $name !== '' ? $name : 'Services',
+                'itemListElement' => $items,
+            ];
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     private function webPageNode(array $node, string $language): array
