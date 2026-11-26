@@ -64,8 +64,9 @@ critical advisories, so read `ddev composer audit --locked` by hand as well.
 
 ## First deploy on a server
 
-The repo is the code; three things exist only on the server, and a deploy that skips them looks fine and
-serves a broken site.
+What is particular to this site (environment types, `.env` per server, PHP 8.4, upload limits, the seed order and
+the error pages) is in [LAUNCH.md](LAUNCH.md). The repo is the code; three things exist only on the server, and a
+deploy that skips them looks fine and serves a broken site.
 
 ```bash
 cd "<project root on the server: settled when hosting is set up>"
@@ -90,7 +91,9 @@ site: a page, the sitemap (see below), and a real submission through the contact
   Submissions are also stored in the CMS by default (Submissions tab). Email is the delivery: those rows
   are never migrated or reconciled when a site moves.
 - **Settings > Contact Info:** email, phone and service area (footer, CTA band, schema). Leave the street
-  address empty: this is a service-area business. Empty lines are hidden.
+  address and postal code empty: this is a service-area business. Empty lines are hidden. City and Province
+  hold "Vancouver" and "BC" for the schema's address only (Google wants one on a local business); no template
+  prints them.
 - **Settings > Main > Tagline:** shown in the footer under the logo, and the `slogan` in the schema.
 - **Settings > Main > Logo:** the logo search engines show for the business (the schema's `logo`); visitors see
   the theme's logo, not this field. Upload a PNG of the monogram, at least 112 x 112 px, once the client's logo
@@ -211,7 +214,9 @@ module's three message keys; a site may reword it, but keep "not sent" and a way
 - **Every page:** a `ProfessionalService` node (name, URL, phone in `+1-` form, email, slogan, logo, `areaServed`,
   and an `OfferCatalog` naming every published service page), `WebSite`, `WebPage` and `BreadcrumbList`.
 - **No street address, ever.** `service_area_business: true` keeps the street address and postal code out of the
-  schema even if someone types them into Settings > Contact Info; no template prints them either.
+  schema even if someone types them into Settings > Contact Info; no template prints them either. The address
+  carries only Settings > City and Province (Vancouver, BC) and the country: Google requires an `address` on every
+  LocalBusiness type, `ProfessionalService` included.
 - **Service pages:** a `Service` node with the same `@id` as its entry in the catalogue.
 - **Any page with an FAQ block:** `FAQPage`, from the FAQ items actually shown. An FAQ held back by
   Settings > Claims, or a `[claim]` sentence inside an answer, stays out of the schema too.
