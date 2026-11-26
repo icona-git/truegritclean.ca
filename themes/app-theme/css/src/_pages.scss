@@ -1,8 +1,13 @@
 // ─── Page-Specific Styles ─────────────────────────────────────────────────────
-// Global page-level styles first, then per-template imports.
+// The starter's per-template styles, then the Figma page sections (named after the export's pages).
 
 @import 'pages/homepage';
 @import 'pages/personpage';
 @import 'pages/practiceareapage';
 @import 'pages/blog';
 @import 'pages/contactpage';
+
+@import 'pages/home';      // (Figma) index.html
+@import 'pages/service';   // (Figma) service.html
+@import 'pages/quote';     // (Figma) quote.html
+@import 'pages/about';     // (Figma) about.html

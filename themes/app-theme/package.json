@@ -1,5 +1,5 @@
 {
-  "name": "app-theme",
+  "name": "truegritclean-theme",
   "private": true,
   "scripts": {
     "css":       "sass --style=compressed --no-source-map --load-path=node_modules --quiet-deps css/src/site.scss:css/dist/site.css css/src/editor.scss:css/dist/editor.css",

@@ -20,7 +20,7 @@ version). It carries the fleet pattern. Extend it; do not invent parallel struct
   a face). Every layout except the home page renders `$Breadcrumbs` exactly once; the ICONA build-job
   template's render check expects `id="breadcrumbs"` there.
 - **Menus:** `$MainMenu` and `$FooterMenu` (PageController) are the top-level pages ticked
-  `ShowInTopMenu` / `ShowInFooterMenu`, independent of each other; the footer's Firm column loops
+  `ShowInTopMenu` / `ShowInFooterMenu`, independent of each other; the footer's Company column loops
   `$FooterMenu`, never `$MainMenu`.
 - **reCAPTCHA:** keys reach `NocaptchaField` through Injector properties (app/_config/mysite.yml), and
   `SpamProtectionFieldValidator` enforces them server-side. Do not move the keys to plain config and do not

@@ -1,0 +1,116 @@
+// ─── Sections (Figma) ────────────────────────────────────────────────────────
+// Content width, section backgrounds, section headings, the eyebrow label and the yellow slash divider.
+// Section padding: the starter's `section.section, div.section` rule in _layout.scss, through
+// --section-pad, which _tokens.scss points at Figma's --section-space. (A bare `.section` would also
+// match the "section" state class SilverStripe writes into menu links.)
+
+.section-shell {
+  width: min(calc(100% - 2rem), var(--shell));
+  margin-inline: auto;
+}
+
+.section-shell--narrow {
+  max-width: 56rem;
+}
+
+.section--light {
+  background: var(--white);
+}
+
+.section--grey {
+  background: var(--grey-100);
+}
+
+.section--dark {
+  color: var(--white);
+  background: var(--charcoal);
+}
+
+.section--split-surface {
+  background: linear-gradient(to bottom, var(--white) 0 48%, var(--grey-100) 48% 100%);
+}
+
+.section-heading {
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.section-heading__intro {
+  max-width: 43rem;
+  margin-bottom: 0;
+  color: var(--grey-600);
+  font-size: var(--step-0);
+}
+
+.section--dark .section-heading__intro {
+  color: var(--grey-300);
+}
+
+.eyebrow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--display);
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  width: 0.28rem;
+  height: 1.4rem;
+  background: currentColor;
+  content: "";
+  flex: 0 0 auto;
+  transform: skew(-18deg);
+}
+
+.eyebrow--light {
+  color: var(--yellow);
+}
+
+.eyebrow--dark {
+  color: var(--black);
+}
+
+.slash-divider {
+  position: relative;
+  z-index: 1;
+  height: 0.5rem;
+  margin-top: -0.25rem;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.slash-divider::after {
+  position: absolute;
+  top: 0;
+  left: 8%;
+  width: 24%;
+  height: 100%;
+  background: var(--yellow);
+  content: "";
+  transform: skewX(-36deg);
+}
+
+@media (min-width: $tg-md) {
+  .section-shell {
+    width: min(calc(100% - 3rem), var(--shell));
+  }
+}
+
+@media (min-width: $tg-lg) {
+  .section-heading--split {
+    display: grid;
+    align-items: end;
+    gap: 4rem;
+    grid-template-columns: 1.25fr 0.75fr;
+  }
+
+  .section-heading--split .section-heading__intro {
+    padding-bottom: 0.5rem;
+  }
+}

@@ -7,12 +7,16 @@ namespace {
     use SilverStripe\Model\List\ArrayList;
     use SilverStripe\SiteConfig\SiteConfig;
     use SilverStripe\View\Requirements;
+    use App\Pages\ContactPage;
     use App\Pages\PracticeAreaPage;
     use App\Pages\TopLevelPage;
 
     class PageController extends ContentController
     {
         private static $allowed_actions = [];
+
+        /** QuotePage() memo: false = not looked up yet. */
+        private $quotePage = false;
 
         #[Override]
         protected function init()
@@ -51,6 +55,18 @@ namespace {
         public function FooterPracticeAreas()
         {
             return PracticeAreaPage::get()->sort('Sort ASC');
+        }
+
+        /**
+         * The quote page: the site's ContactPage (userforms), wherever it sits and whatever its URL. The header
+         * pill, the mobile bar and the CTA band link here, and each hides its link when this is null.
+         */
+        public function QuotePage()
+        {
+            if ($this->quotePage === false) {
+                $this->quotePage = ContactPage::get()->first();
+            }
+            return $this->quotePage;
         }
 
         /**

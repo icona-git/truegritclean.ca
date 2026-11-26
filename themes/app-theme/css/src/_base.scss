@@ -1,0 +1,126 @@
+// ─── Base (Figma) ────────────────────────────────────────────────────────────
+// The export's global rules, after _reset.scss so they win. Where the reset zeroes something the design
+// relies on the browser default for (paragraph and heading bottom margins, link underlines), the default
+// is put back here, so the ported components look as they did in the export.
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  margin: 0;
+  color: var(--charcoal);
+  background: var(--white);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--body);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;   // the browser default the export relied on
+}
+
+button,
+input,
+select,
+textarea,
+summary,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px var(--black);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1em;           // the browser default the export relied on
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+h1 {
+  margin-bottom: 0.67em;        // the browser default the export relied on
+}
+
+h2 {
+  max-width: 17ch;
+  margin-bottom: 1.5rem;
+  font-size: var(--step-3);
+  text-transform: uppercase;
+}
+
+h3 {
+  margin-bottom: 1em;           // the browser default the export relied on
+  font-size: var(--step-1);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--black);
+  background: var(--yellow);
+  font-weight: 800;
+  text-decoration: none;
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,13 +1,22 @@
 // ─── Components ───────────────────────────────────────────────────────────────
+// (Figma) = ported from the TrueGrit Figma export; the rest are the starter's, still used by its templates.
+// Order follows the export where a later rule relies on overriding an earlier one. Buttons come before the
+// header: .site-header__quote is a .button, and its display:none below 992px must win over .button's display.
 
-@import 'components/header';
+@import 'components/sections';        // (Figma) shell, section backgrounds, eyebrow, slash divider
+@import 'components/buttons';         // starter .btn + (Figma) .button, .text-link
+@import 'components/header';          // (Figma) header, placeholder logo, mobile menu
 @import 'components/hero';
-@import 'components/breadcrumbs';
+@import 'components/breadcrumbs';     // starter trail + (Figma) breadcrumb strip
 @import 'components/railnav';
 @import 'components/collapse';
-@import 'components/offcanvas';
-@import 'components/footer';
-@import 'components/buttons';
+@import 'components/offcanvas';       // no longer used by the header; kept for now
 @import 'components/forms';
-@import 'components/booking-banner';
+@import 'components/trust';           // (Figma)
+@import 'components/cards';           // (Figma)
+@import 'components/fields';          // (Figma)
+@import 'components/faq';             // (Figma)
+@import 'components/booking-banner';  // (Figma) CTA band
+@import 'components/footer';          // (Figma)
+@import 'components/mobile-bar';      // (Figma)
 @import 'components/pagination';

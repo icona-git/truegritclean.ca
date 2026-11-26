@@ -1,0 +1,23 @@
+// ─── Fonts ───────────────────────────────────────────────────────────────────
+// Self-hosted, latin subset, variable weight. Nothing loads from a font service, so no visitor data
+// leaves the site for a font. The export's Google Fonts @import is deliberately not ported.
+//   Montserrat 700-900: display (headings, labels, buttons)
+//   Inter 400-600:      body
+// Both are SIL Open Font License. Paths are relative to css/dist/site.css. Page.ss preloads both
+// files; keep the names in step. editor.scss declares the same faces for the CMS editor.
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+  src: url("../../fonts/montserrat-latin-700-900.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("../../fonts/inter-latin-400-600.woff2") format("woff2");
+}

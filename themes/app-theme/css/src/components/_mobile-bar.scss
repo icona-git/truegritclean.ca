@@ -1,0 +1,45 @@
+// ─── Sticky mobile bar (Figma) ───────────────────────────────────────────────
+// Call + Get a quote, fixed to the bottom below $tg-lg. Markup: templates/App/Includes/MobileBar.ss.
+
+.mobile-bar {
+  position: fixed;
+  z-index: 99;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  min-height: 4rem;
+  padding: 0.45rem;
+  background: var(--black);
+  border-top: 1px solid var(--grey-600);
+  gap: 0.45rem;
+  grid-template-columns: 0.8fr 1.2fr;
+}
+
+.mobile-bar__button {
+  display: grid;
+  min-height: 3.1rem;
+  place-items: center;
+  font-family: var(--display);
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.mobile-bar__button--call {
+  color: var(--white);
+  border: 1px solid var(--white);
+}
+
+.mobile-bar__button--quote {
+  color: var(--black);
+  background: var(--yellow);
+}
+
+@media (min-width: $tg-lg) {
+  .mobile-bar {
+    display: none;
+  }
+}

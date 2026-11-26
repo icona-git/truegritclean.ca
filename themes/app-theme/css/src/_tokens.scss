@@ -1,10 +1,21 @@
 // ─── Design Tokens ───────────────────────────────────────────────────────────
-// All design decisions live here. No Bootstrap.
+// TrueGrit Clean Co. Source: the Figma Make export (design/figma-export/styles.css in the docs repo).
 //
-// SCSS variables are used for breakpoints (CSS custom props can't be used in
-// media queries). Everything else is a CSS custom property for runtime access.
+// Two sets of names live here:
+//   1. The Figma names (--black, --yellow, --display, --step-1 ...). The ported Figma partials use these,
+//      so their rules read exactly as in the export.
+//   2. The starter's names (--c-dark, --font-heading, --text-h2 ...), pointed at the Figma values, so
+//      the starter partials still in use (blocks, forms, typography) pick up the brand.
+//
+// SCSS variables hold the breakpoints (custom properties cannot be used in media queries).
+// The export's letter-spacing values are already em (Make wrote CSS), so they are ported as-is.
 
 // ─── SCSS Breakpoints ────────────────────────────────────────────────────────
+// Figma's two breakpoints. The ported partials use these.
+$tg-md: 42rem;   // 672px
+$tg-lg: 62rem;   // 992px
+
+// The starter's breakpoints, still used by the starter partials.
 $bp-md: 768px;
 $bp-lg: 1024px;
 $bp-xl: 1280px;
@@ -12,87 +23,96 @@ $bp-xl: 1280px;
 // ─── CSS Custom Properties ───────────────────────────────────────────────────
 :root {
 
-  // Colors (values per the design spec)
-  --c-gold:          #C3964B;   // Brand Gold — accent text, active states, subheadings
-  --c-dark:          #020203;   // Charcoal Brand — near-black, primary background
-  --c-charcoal-400:  #303030;   // Dark grey — secondary backgrounds
-  --c-charcoal-300:  #5D5D5E;   // Mid grey — dividers, muted UI
-  --c-charcoal-200:  #8A8A8A;   // Grey — secondary/muted text on dark
-  --c-charcoal-100:  #B7B7B8;   // Light grey — body text on dark backgrounds
-  --c-charcoal-50:   #F5F5F5;   // Near-white — light section backgrounds
-  --c-border:        #2D2D2D;   // Dark border
+  // ── Figma tokens ──
+  --black:      #000000;
+  --charcoal:   #141414;
+  --charcoal-2: #1f1f1f;
+  --grey-600:   #4a4a4a;
+  --grey-300:   #bdbdbd;
+  --grey-100:   #f2f2f2;
+  --white:      #ffffff;
+  --yellow:     #fdc82f;   // Brand rule: on black or charcoal only, never small yellow text on white.
+  --error:      #c62828;
+
+  // Self-hosted in themes/app-theme/fonts (see _fonts.scss). editor.scss repeats these as literals.
+  --display: "Montserrat", "Arial Black", system-ui, sans-serif;
+  --body:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --step--2: clamp(0.8rem, 0.78rem + 0.12vw, 0.875rem);
+  --step--1: clamp(0.875rem, 0.82rem + 0.24vw, 1rem);
+  --step-0:  clamp(1.0625rem, 1rem + 0.22vw, 1.1875rem);
+  --step-1:  clamp(1.25rem, 1.08rem + 0.75vw, 1.625rem);
+  --step-2:  clamp(1.6rem, 1.28rem + 1.42vw, 2.35rem);
+  --step-3:  clamp(2rem, 1.42rem + 2.65vw, 3.5rem);
+  --step-4:  clamp(2.65rem, 1.56rem + 4.7vw, 5.4rem);
+
+  --shell:         75rem;
+  --section-space: 3.5rem;   // clamp(5rem, 8vw, 8rem) from $tg-lg, below
+  --radius:        0.2rem;
+
+  color-scheme: light;
+
+  // ── Starter tokens, pointed at the Figma values ──
+  --c-gold:          var(--yellow);    // the starter's accent; dark backgrounds only
+  --c-dark:          var(--black);
+  --c-charcoal-400:  var(--charcoal-2);
+  --c-charcoal-300:  var(--grey-600);
+  --c-charcoal-200:  #767676;          // Figma's form-field border grey
+  --c-charcoal-100:  var(--grey-300);
+  --c-charcoal-50:   var(--grey-100);
+  --c-border:        #2b2b2b;          // Figma's header rule
   // Two body-text colours, and using the wrong one is a contrast failure, not a style choice:
-  --c-text:          #B7B7B8;   // ONLY on dark backgrounds (= charcoal-100)
-  --c-text-dark:     #303030;   // ONLY on white or near-white backgrounds (= charcoal-400)
-  --c-white:         #FFFFFF;
-  --c-error:         #c0392b;   // Form validation error
+  --c-text:          var(--grey-300);  // ONLY on dark backgrounds
+  --c-text-dark:     var(--charcoal);  // ONLY on white or near-white backgrounds
+  --c-white:         var(--white);
+  --c-error:         var(--error);
 
-  // Fonts: system stacks. The starter ships no web font and loads none from a font service.
-  // A site whose design names a font self-hosts it under themes/app-theme/fonts/ (composer.json
-  // already exposes that folder), declares it with @font-face, and puts it first in these two
-  // stacks AND in editor.scss, which cannot read these properties.
-  --font-heading: Georgia, 'Times New Roman', serif;
-  --font-body:    Arial, Helvetica, sans-serif;
+  --font-heading: var(--display);
+  --font-body:    var(--body);
 
-  // Type scale (from Figma — desktop sizes, fluid via clamp on headings)
-  --text-h1:         clamp(2.5rem, 5vw, 3.75rem);    // 40–60px  Playfair Regular 400
-  --text-h2:         clamp(2rem, 4vw, 3.125rem);      // 32–50px  Playfair Medium 500
-  --text-h3:         clamp(1.75rem, 3vw, 2.5rem);     // 28–40px  Playfair Regular 400
-  --text-h4:         clamp(1.375rem, 2.5vw, 2.125rem); // 22–34px  Playfair Regular 400
-  --text-h5:         1.5rem;     // 24px   Playfair Medium 500
-  --text-intro:      1.25rem;    // 20px   Inter Regular 400  (hero/intro lead)
-  --text-body-lg:    1.125rem;   // 18px   Inter Light 300
-  --text-body:       1rem;       // 16px   Inter Light 300
-  --text-section-title: 1rem;    // 16px   Inter Regular 400, ls +10px uppercase label
+  --text-h1:            var(--step-4);
+  --text-h2:            var(--step-3);
+  --text-h3:            var(--step-2);
+  --text-h4:            var(--step-1);
+  --text-h5:            var(--step-0);
+  --text-intro:         var(--step-0);
+  --text-body-lg:       var(--step-0);
+  --text-body:          1rem;
+  --text-section-title: var(--step--2);
 
-  // Line heights (from Figma)
-  --lh-heading: 1.1;
-  --lh-h1:      1.05;
-  --lh-body:    1.4;
+  --lh-heading: 0.98;
+  --lh-h1:      0.98;
+  --lh-body:    1.6;
 
-  // Letter spacing. Figma reports letter-spacing as a PERCENTAGE, so the em value is that number
-  // divided by 100 (letterSpacing: 1 on 18px text is 0.01em, not 1px / 18px). Converting it as px
-  // tracks text about five times too tight, which shipped on a fleet build before it was caught.
-  // The values below came from the design this theme was built for; replace them from your own.
-  --ls-h1:           -0.033em;
-  --ls-h2:           -0.04em;
-  --ls-h4:           normal;    // declared so the person-card rules resolve; set it from the design
-  --ls-h5:           -0.042em;
-  --ls-intro:        -0.02em;
-  --ls-section-title: 0.125em;  // spaced uppercase label
+  --ls-h1:            -0.04em;
+  --ls-h2:            -0.04em;
+  --ls-h4:            -0.04em;
+  --ls-h5:            -0.02em;
+  --ls-intro:         normal;
+  --ls-section-title: 0.22em;   // Figma's eyebrow
 
-  // Layout
-  --wrap-max:    87.5rem;   // 1400px content width
-  --page-pad:    1.25rem;   // overridden at breakpoints below
-  --section-pad: 3rem;      // overridden at breakpoints below
+  // The starter's .wrap matches Figma's .section-shell: 75rem of content plus the side gutters.
+  --page-pad:    1rem;
+  --wrap-max:    calc(var(--shell) + 2 * var(--page-pad));
+  --section-pad: var(--section-space);
 
-  // Height of the absolutely-positioned .site-header (logo 80px + 1rem padding
-  // block). Hero content clears this so it never collides with the logo.
-  --header-h:    7rem;      // 112px
+  // The Figma header is sticky and in the page flow, not laid over the hero, so the starter's hero
+  // offset for an absolutely positioned header is zero.
+  --header-h:    0rem;
 
-  // Split gap (two-col layouts)
   --split-gap: 2.5rem;
-
 }
 
-@media (min-width: #{$bp-md}) {
+@media (min-width: $tg-md) {
   :root {
-    --page-pad:    3rem;
-    --section-pad: 4.5rem;
-    --split-gap:   3.5rem;
+    --page-pad:  1.5rem;
+    --split-gap: 3.5rem;
   }
 }
 
-@media (min-width: #{$bp-lg}) {
+@media (min-width: $tg-lg) {
   :root {
-    --page-pad:    4.5rem;
-    --section-pad: 6.25rem;  // 100px
-    --split-gap:   6.25rem;  // 100px
-  }
-}
-
-@media (min-width: #{$bp-xl}) {
-  :root {
-    --page-pad: 7.5rem;
+    --section-space: clamp(5rem, 8vw, 8rem);
+    --split-gap:     6.25rem;
   }
 }

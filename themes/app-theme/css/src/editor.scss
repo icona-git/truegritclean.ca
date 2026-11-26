@@ -1,34 +1,54 @@
 // Editor Styles — CMS WYSIWYG (TinyMCE)
 // Literal hex values only — CSS custom properties are unavailable in the editor iframe.
 // Mirrors _typography.scss as closely as possible given the white editor background.
-// Font stacks must match --font-heading / --font-body in _tokens.scss.
+// Font stacks must match --display / --body in _tokens.scss; colours are the Figma palette
+// (black #000000, charcoal #141414, grey-600 #4a4a4a, grey-300 #bdbdbd, grey-100 #f2f2f2).
+// No yellow anywhere here: the editor is white, and the brand never puts yellow text on white.
+
+// The same self-hosted faces as _fonts.scss; paths are relative to css/dist/editor.css.
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+  src: url("../../fonts/montserrat-latin-700-900.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("../../fonts/inter-latin-400-600.woff2") format("woff2");
+}
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  color: #303030;
-  line-height: 1.5;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17px;
+  color: #141414;
+  line-height: 1.6;
   max-width: 52rem;
   margin: 1.5rem auto;
   padding-inline: 1rem;
 }
 
 h1, h2, h3 {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-weight: 400;
-  color: #020203;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-family: "Montserrat", "Arial Black", system-ui, sans-serif;
+  font-weight: 900;
+  color: #000000;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
   margin-bottom: 1.25rem;
 }
+h2 { text-transform: uppercase; }
 h1 { font-size: 2.25rem; }
 h2 { font-size: 1.875rem; }
 h3 { font-size: 1.5rem; }
 
 h4, h5, h6 {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-weight: 700;
-  color: #C3964B;
+  font-family: "Montserrat", "Arial Black", system-ui, sans-serif;
+  font-weight: 800;
+  color: #141414;
   margin-bottom: 1rem;
   line-height: 1.3;
 }
@@ -43,9 +63,9 @@ p {
 }
 
 a {
-  color: #020203;
+  color: #141414;
   text-decoration: underline;
-  &:hover { color: #C3964B; }
+  &:hover { color: #4a4a4a; }
 }
 
 strong, b { font-weight: 700; }
@@ -72,16 +92,16 @@ ol {
 }
 
 blockquote {
-  border-left: 3px solid #B7B7B8;
+  border-left: 3px solid #bdbdbd;
   margin: 1.5rem 0;
   padding: 0.75rem 1.5rem;
   font-style: italic;
-  color: #8A8A8A;
+  color: #4a4a4a;
 }
 
 hr {
   border: none;
-  border-top: 1px solid #F5F5F5;
+  border-top: 1px solid #f2f2f2;
   margin: 2rem 0;
 }
 
@@ -94,31 +114,31 @@ img {
   &.center { margin-inline: auto; clear: both; }
 }
 
-// Default button — dark outline (matches site .btn)
+// Default button — black outline, Figma button type (matches site .btn)
 a.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1.125rem 1.5rem;
+  padding: 0.78rem 1.25rem;
   background-color: transparent;
-  color: #020203;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
+  color: #000000;
+  font-family: "Montserrat", "Arial Black", system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 800;
   line-height: 1.2;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none !important;
-  border: 2px solid #020203;
-  border-radius: 0;
+  border: 2px solid #000000;
+  border-radius: 0.2rem;
   cursor: pointer;
   white-space: nowrap;
 
-  // btn--outline-white renders as gold in the editor so it's visible on white bg.
-  // On the live site this class is used on dark backgrounds where it shows white.
+  // btn--outline-white is used on dark backgrounds on the live site, where it shows white.
+  // The editor is white, so it shows as a charcoal outline here.
   &.btn--outline-white {
-    border-color: #C3964B;
-    color: #C3964B;
+    border-color: #141414;
+    color: #141414;
   }
 }
 
@@ -130,7 +150,7 @@ table {
     padding: 0.5rem 0.75rem;
     vertical-align: top;
     text-align: left;
-    border-bottom: 1px solid #F5F5F5;
+    border-bottom: 1px solid #f2f2f2;
   }
-  th { font-weight: 700; border-bottom: 2px solid #B7B7B8; }
+  th { font-weight: 700; border-bottom: 2px solid #bdbdbd; }
 }
