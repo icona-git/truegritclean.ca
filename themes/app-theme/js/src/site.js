@@ -1,5 +1,6 @@
 import './minicollapse.js';
 import './minioffcanvas.js';
+import './photos.js';
 
 // B&W portraits: only load on desktop so mobile never fetches the second image.
 if (matchMedia('(min-width: 1024px)').matches) {

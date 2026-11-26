@@ -1,0 +1,1 @@
+<textarea $AttributesHTML('class') class="field__control field__control--textarea $extraClass"<% if $RightTitle || $Message %> aria-describedby="<% if $RightTitle %>{$Name}_right_title<% end_if %><% if $Message %> {$Name}_message<% end_if %>"<% end_if %><% if $Message %> aria-invalid="true"<% end_if %>>$Value.HTMLATT</textarea>

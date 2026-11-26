@@ -316,6 +316,130 @@ img.hero-focus--right { object-position: right center !important; }
   margin-bottom: 0.2rem;
 }
 
+// ─── Quote form (Build Phase 5) ──────────────────────────────────────────────
+// The form is userforms output in the Figma markup (templates/SilverStripe/UserForms), styled by pages/_quote.scss.
+// What the export has no rule for: section numbers, messages from the server, the spam check, the note under the
+// button, the thank-you panel and the FAQ block inside the layout's grid.
+
+// Section numbers 01, 02 ... count the sections, so reordering them in the CMS renumbers them.
+.project-form {
+  counter-reset: quote-section;
+}
+
+.project-form__section-heading span::before {
+  counter-increment: quote-section;
+  content: counter(quote-section, decimal-leading-zero);
+}
+
+// A message for the whole form (a refused spam check) above the first section.
+.project-form__message {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  color: #9b1c1c;
+  background: color-mix(in srgb, var(--error) 8%, var(--white)); // #9b1c1c on it: 6.9:1
+  border-left: 4px solid var(--error);
+  font-weight: 600;
+
+  @media (min-width: $tg-md) {
+    margin: 2.5rem 2.5rem 0;
+  }
+}
+
+// A field the server refused keeps its message visible (the export's error line shows only for :user-invalid).
+.field--error .field__control,
+.field--error .choice-pill span {
+  border: 2px solid var(--error);
+}
+
+// reCAPTCHA v3 is invisible: its label names nothing a visitor can see, so it is hidden, and its holder takes no
+// space. The no-JavaScript notice inside the field still shows.
+.project-form .field.nocaptcha {
+  padding-inline: 1rem;
+
+  > label {
+    display: none;
+  }
+
+  @media (min-width: $tg-md) {
+    padding-inline: 2.5rem;
+  }
+}
+
+// Photo field: the problem line under the drop zone (js/src/photos.js or the server) and the previews of the chosen
+// photos. Both start hidden; the export's grid and block rules would otherwise override the hidden attribute.
+.quote-upload__status[hidden],
+.upload-previews[hidden] {
+  display: none;
+}
+
+.field--error .quote-upload {
+  border-color: var(--error);
+}
+
+// A photo the browser cannot draw (HEIC outside Safari) shows its file type in the picture's place.
+.upload-preview__file {
+  display: grid;
+  aspect-ratio: 4 / 3;
+  color: var(--grey-600);
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  place-items: center;
+}
+
+// The text under the button is two paragraphs from the CMS: the same-day line (the export's <p>) and the privacy
+// line (the export's <small>).
+.project-form__note p:last-child {
+  margin-bottom: 0;
+}
+
+.project-form__note p + p {
+  margin-top: 0;
+  color: var(--grey-600);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+// Thank-you panel: the On complete message opens with its first line in bold, shown as the export's heading. The
+// panel replaces the form (they never show together), so it takes the form's place: first on a phone, first row
+// beside the panel on a wide screen. (This file compiles before pages/_quote.scss, hence the extra class.)
+.quote-layout .quote-success {
+  order: 1;
+}
+
+.quote-success > p:first-of-type > strong:first-child {
+  display: block;
+  margin-bottom: 1rem;
+  font-family: var(--display);
+  font-size: var(--step-3);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.quote-success:focus {
+  outline: none;
+}
+
+// The FAQ block's own section and shell would add padding and a centred width inside the grid cell.
+.quote-faq .section {
+  padding-block: 0;
+  background: none;
+}
+
+.quote-faq .section-shell {
+  width: auto;
+  max-width: none;
+}
+
+@media (min-width: $tg-lg) {
+  .quote-layout .quote-success {
+    grid-row: 1;
+  }
+}
+
 // ─── Plain sections (SectionContentBlock.ss, privacy page) ───────────────────
 
 .section-text {

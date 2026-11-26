@@ -128,6 +128,7 @@ cd "/Users/dave/Documents/Projects/ICONA/Clients/True Grit Cleaning (Rebekah)/si
 ddev exec vendor/bin/sake tasks:my-task
 ddev exec vendor/bin/sake tasks:seed --publish
 ddev exec vendor/bin/sake tasks:seed-images --publish
+ddev exec vendor/bin/sake tasks:seed-form --publish
 ```
 
 It checks the whole file before writing anything, skips every page that already exists and every Settings field
@@ -141,6 +142,12 @@ replaces both. A photo already in Files is reused, so a re-run uploads nothing t
 `--force` overwrites existing pages and Settings text: never on a site whose content the client has started
 editing. Without `--publish` it writes drafts.
 
+`App\Tasks\SeedFormTask` (`tasks:seed-form`) builds the quote form on `/quote/` from `app/seed/form.yml`: its four
+numbered sections and their fields (userforms Field Groups), the photo field, the spam check, the email recipient, the
+button text and the text under the button. It adds fields only to a form that has none, a recipient only when there is
+none, and a page setting only while it is empty; once the form exists it belongs to the editor. It has no `--force`
+and deletes nothing.
+
 A site's `SeedTask` builds its pages and blocks. Three rules, each learned the hard way:
 
 - **Run in the Draft stage.** Call `Versioned::set_stage(Versioned::DRAFT)` first: elemental creates a
@@ -151,6 +158,33 @@ A site's `SeedTask` builds its pages and blocks. Three rules, each learned the h
   editor moves to another page, drops its key.
 - **userforms owns Sort 1.** A form's first field is an `EditableFormStep`. Add fields from Sort 2, then call
   `$contactPage->createInitialFormStep(true)` (a CMS save does this; a write with no changes does not).
+
+## Quote form
+
+`/quote/` is the starter's `ContactPage` (userforms), in the markup of the Figma export's `quote.html`: field holders,
+numbered sections, pill radios and the submit area are theme templates under
+`themes/app-theme/templates/SilverStripe/UserForms/`, with `App\Extensions\UserFormThemeExtension` for what a
+template cannot set (input types, the submit button). userforms' own jQuery and stylesheet are switched off on the
+page (`app/_config/userforms.yml`): the browser's own checks run first, as in the export, and the server checks
+everything again. A block in the Reassurance panel style sits beside the form; every other block goes under it.
+
+**Photos.** userforms' file field takes one file, so the form uses the site's own field type, "Photo Upload Field
+(several photos)" (`App\Models\EditablePhotosField`, front end `App\Forms\PhotosUploadField`, script
+`js/src/photos.js`). Up to 10 photos of 10 MB each (both set on the field), JPG, PNG or HEIC, checked in the browser
+and on the server (count, size, extension, content matches extension). Each photo is a draft file in
+`Files > Form-submissions/page-<form>/photos-field-<field>`, which only administrators can open; the Submissions tab and
+the email link each one (the email says a login is needed). Photos are never attached to the email. Deleting a
+submission deletes its photos.
+
+**Server limits.** PHP must accept the photos: `upload_max_filesize` at least 10M, `post_max_size` above the 10
+photos together (110M), `max_file_uploads` 20 (PHP's default), and a web server request limit to match. Plesk's
+defaults (2M / 8M) refuse almost any phone photo. The CMS field shows the server's limits, and the browser refuses a
+selection larger than `post_max_size` before sending it (a post over that limit arrives empty).
+
+**Mail.** The recipient's From is `website@mg.truegritclean.ca` (userforms requires one; ICONA's Mailgun pattern), and
+the server's `SS_SEND_ALL_EMAILS_FROM` replaces it. Reply-To is the visitor's email. If an email cannot be built or
+sent, userforms still stores the submission and shows the thank-you, and logs the error to `silverstripe.log`
+(`error-log.ERROR`): read it when a quote request seems missing.
 
 ## reCAPTCHA
 

@@ -1,0 +1,53 @@
+---
+Name: app-userforms
+After:
+  - '#userformsconfig'
+---
+# The quote form (/quote/, App\Pages\ContactPage) in the markup of the Figma export's quote.html. The field
+# holders, sections, pill radios and submit area are theme templates (themes/app-theme/templates/SilverStripe/
+# UserForms); this file and App\Extensions\UserFormThemeExtension supply what a template cannot.
+
+# Required fields carry a * after the label, as in the Figma export ("Name *").
+SilverStripe\UserForms\Model\UserDefinedForm:
+  required_identifier: '*'
+
+# userforms' own jQuery, validation plugin and stylesheet stay off the quote page. The browser's own checks
+# (required, type="email", type="number") run as in the Figma export, which styles them with :user-invalid, and
+# the server checks every field again on submit. nocaptcha's reCAPTCHA v3 script works without jQuery (its
+# plain-JavaScript path), so the spam check is unaffected.
+App\Pages\ContactPage:
+  block_default_userforms_js: true
+  block_default_userforms_css: true
+
+# After a submission userforms redirects to /quote/finished; the anchor lands the visitor on the thank-you
+# panel (#quote-success in the ContactPage layout) instead of the top of the hero, where a phone would hide it.
+SilverStripe\UserForms\Control\UserDefinedFormController:
+  finished_anchor: '#quote-success'
+
+SilverStripe\UserForms\Model\EditableFormField:
+  extensions:
+    - App\Extensions\UserFormThemeExtension
+
+SilverStripe\UserForms\Form\UserForm:
+  extensions:
+    - App\Extensions\UserFormThemeExtension
+
+---
+Name: app-userforms-photos
+After:
+  - '#mimeuploadvalidator'
+  - '#app-mimeuploadvalidator'
+---
+# The quote form's photo field (App\Models\EditablePhotosField) accepts HEIC, the iPhone's own photo format: Files must
+# allow the extension, and the MIME check (MimeUploadValidator) must know which content types a .heic file may carry.
+# Phones usually convert to JPEG when a browser asks; this covers the ones that send the original. Stored as plain
+# files (no thumbnails: the image libraries here cannot read HEIC), protected like every form upload.
+SilverStripe\Assets\File:
+  allowed_extensions:
+    - heic
+
+SilverStripe\MimeValidator\MimeUploadValidator:
+  MimeTypes:
+    heic:
+      - image/heic
+      - image/heif
