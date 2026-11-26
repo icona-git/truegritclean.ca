@@ -1,0 +1,244 @@
+// ─── Cards, phase cards, checklists, steps (Figma style guide components) ───
+// Shown in styleguide.html. The page sections use their own variants (pages/_home.scss etc.); these
+// stay available for block templates.
+
+.card-grid,
+.phase-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background: var(--charcoal-2);
+  border-bottom: 3px solid transparent;
+  flex-direction: column;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.card:hover {
+  border-color: var(--yellow);
+  transform: translateY(-4px);
+}
+
+.card__icon {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 1.5rem;
+  background: #2a2a2a;
+  border-radius: 0.4rem;
+  place-items: center;
+}
+
+.card__icon svg {
+  width: 2rem;
+  fill: none;
+  stroke: var(--white);
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-width: 1.7;
+}
+
+.card__title {
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.card__text {
+  color: var(--grey-300);
+}
+
+.card__link {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.phase-card {
+  overflow: hidden;
+  background: var(--grey-100);
+}
+
+.phase-card__media {
+  position: relative;
+  min-height: 14rem;
+  background-color: var(--charcoal);
+  background-image:
+    linear-gradient(115deg, transparent 0 48%, rgb(255 255 255 / 8%) 48% 49%, transparent 49% 100%),
+    repeating-linear-gradient(0deg, transparent 0 2.4rem, rgb(255 255 255 / 5%) 2.4rem 2.48rem);
+}
+
+.phase-card__media::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(0 0 0 / 70%), transparent 60%);
+  content: "";
+}
+
+.phase-card__media--one {
+  background-position: 0 0;
+}
+
+.phase-card__media--two {
+  background-position: 3rem 0;
+}
+
+.phase-card__media--three {
+  background-position: 6rem 0;
+}
+
+.phase-card__number {
+  position: absolute;
+  z-index: 1;
+  bottom: 0.7rem;
+  left: 1rem;
+  color: var(--white);
+  font-family: var(--display);
+  font-size: var(--step-3);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.phase-card__body {
+  padding: 1.5rem;
+}
+
+.phase-card__body h3 {
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+}
+
+.phase-card__body p {
+  margin-bottom: 0;
+  color: var(--grey-600);
+}
+
+.list-showcase {
+  display: grid;
+  box-shadow: 0 1.25rem 3rem rgb(0 0 0 / 10%);
+}
+
+.checklist-panel {
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
+.checklist-panel h3 {
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.checklist-panel--dark {
+  color: var(--white);
+  background: var(--charcoal);
+}
+
+.checklist-panel--light {
+  background: var(--white);
+}
+
+.checklist {
+  display: grid;
+  padding: 0;
+  margin: 0;
+  gap: 1rem;
+  list-style: none;
+}
+
+.checklist__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  font-weight: 600;
+}
+
+.checklist__icon {
+  display: grid;
+  width: 1.7rem;
+  height: 1.7rem;
+  color: var(--black);
+  background: var(--yellow);
+  border-radius: 50%;
+  flex: 0 0 auto;
+  font-size: 0.85rem;
+  font-weight: 800;
+  place-items: center;
+}
+
+.checklist--dark .checklist__icon {
+  color: var(--white);
+  background: var(--black);
+}
+
+.steps {
+  display: grid;
+  padding: 0;
+  margin: clamp(3rem, 7vw, 6rem) 0 0;
+  gap: 2rem;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  align-items: start;
+  gap: 1rem;
+  grid-template-columns: 3rem 1fr;
+}
+
+.step__number {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  color: var(--black);
+  background: var(--yellow);
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 900;
+  place-items: center;
+  transform: skew(-7deg);
+}
+
+.step__title {
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+}
+
+.step p {
+  margin-bottom: 0;
+  color: var(--grey-600);
+}
+
+@media (min-width: $tg-md) {
+  .list-showcase {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card-grid,
+  .phase-grid,
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .steps {
+    gap: 1.5rem;
+  }
+
+  .step {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: $tg-lg) {
+  .card-grid,
+  .phase-grid {
+    gap: 1.5rem;
+  }
+
+  .card {
+    min-height: 23rem;
+  }
+
+  .card__icon {
+    margin-bottom: 3rem;
+  }
+}

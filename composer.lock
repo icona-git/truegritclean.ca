@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb35c8aaf70b659b9dcd0c8855cef953",
+    "content-hash": "b19d2a6555ee54f7451187d0e346de5e",
     "packages": [
         {
             "name": "bummzack/sortablefile",

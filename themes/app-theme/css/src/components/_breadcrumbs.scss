@@ -62,3 +62,46 @@
     padding-block: 0.875rem;
   }
 }
+
+// ─── Breadcrumb strip (Figma service.html) ───────────────────────────────────
+// Dark strip under the header. BreadcrumbsTemplate.ss moves to this markup with the layouts (Phase 4).
+
+.breadcrumb {
+  color: var(--grey-300);
+  background: var(--charcoal);
+  border-top: 1px solid #292929;
+}
+
+.breadcrumb__list {
+  display: flex;
+  min-height: 3.25rem;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.breadcrumb__list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.breadcrumb__list li:not(:last-child)::after {
+  color: var(--yellow);
+  content: "›";
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.breadcrumb__list a {
+  color: var(--white);
+  text-underline-offset: 0.25rem;
+}

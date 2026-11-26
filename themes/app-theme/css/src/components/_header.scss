@@ -1,148 +1,243 @@
-// ─── Header ───────────────────────────────────────────────────────────────────
-// Fixed dark bar — overlays the hero, stays visible on scroll.
+// ─── Header (Figma) ──────────────────────────────────────────────────────────
+// Sticky black bar: placeholder logo, primary nav and the GET A QUOTE pill from $tg-lg; phone icon and a
+// <details> menu below it (no JavaScript). Markup: templates/App/Includes/Header.ss and Logo.ss.
+// Replaces the starter's absolutely positioned header; the starter's off-canvas menu is no longer used.
 
 .site-header {
-  position: absolute;
+  position: sticky;
+  z-index: 100;
   top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 200;
-  background-color: transparent;
+  color: var(--white);
+  background: var(--black);
+  border-bottom: 1px solid #2b2b2b;
+}
 
+.site-header__inner {
+  display: flex;
+  width: min(calc(100% - 1.5rem), 84rem);
+  min-height: 4.75rem;
+  margin-inline: auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+// ─── Placeholder logo (CSS-drawn TG monogram + wordmark) ─────────────────────
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.logo__mark {
+  position: relative;
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  overflow: hidden;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  place-items: center;
+}
+
+.logo__letter {
+  position: absolute;
+  z-index: 1;
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.logo__letter--t {
+  top: 0.45rem;
+  left: 0.55rem;
+  color: var(--yellow);
+}
+
+.logo__letter--g {
+  right: 0.47rem;
+  bottom: 0.43rem;
+  color: var(--white);
+}
+
+.logo__slash {
+  position: absolute;
+  width: 2px;
+  height: 2.7rem;
+  background: currentColor;
+  transform: rotate(40deg);
+}
+
+.logo__wordmark {
+  display: flex;
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  flex-direction: column;
+}
+
+.logo__wordmark small {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+}
+
+.logo--white .logo__letter--t,
+.logo--white .logo__letter--g {
+  color: var(--white);
+}
+
+// ─── Nav, pill, mobile actions ───────────────────────────────────────────────
+.site-header__nav,
+.site-header__quote {
+  display: none;
+}
+
+.site-header__mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.icon-button {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  color: var(--white);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  place-items: center;
+}
+
+.icon-button svg {
+  width: 1.4rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+// ─── Mobile menu (<details>) ─────────────────────────────────────────────────
+.mobile-menu {
+  position: relative;
+}
+
+.mobile-menu > summary {
+  list-style: none;
+}
+
+.mobile-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-menu__lines,
+.mobile-menu__lines::before,
+.mobile-menu__lines::after {
+  display: block;
+  width: 1.45rem;
+  height: 2px;
+  background: currentColor;
+  content: "";
+}
+
+.mobile-menu__lines::before {
+  transform: translateY(-0.45rem);
+}
+
+.mobile-menu__lines::after {
+  transform: translateY(0.32rem);
+}
+
+.mobile-menu[open] .mobile-menu__lines {
+  background: transparent;
+}
+
+.mobile-menu[open] .mobile-menu__lines::before {
+  transform: translateY(0) rotate(45deg);
+}
+
+.mobile-menu[open] .mobile-menu__lines::after {
+  transform: translateY(-2px) rotate(-45deg);
+}
+
+.mobile-menu__panel {
+  position: fixed;
+  top: 4.75rem;
+  right: 0;
+  left: 0;
+  display: grid;
+  padding: 1rem;
+  background: var(--charcoal);
+  border-top: 1px solid var(--grey-600);
+  box-shadow: 0 1.5rem 2rem rgb(0 0 0 / 35%);
+}
+
+.mobile-menu__panel a {
+  min-height: 3.5rem;
+  padding: 0.9rem;
+  border-bottom: 1px solid var(--grey-600);
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+@media (min-width: $tg-lg) {
   .site-header__inner {
+    min-height: 5.25rem;
+  }
+
+  .site-header__nav {
     display: flex;
+    align-self: stretch;
     align-items: center;
-    padding-block: 1rem;
     gap: 2rem;
   }
 
-  .site-header__logo {
-    flex-shrink: 0;
-    display: block;
-    img { display: block; }
-  }
-
-  // ── Primary nav — desktop only ────────────────────────────────────────────
-  .site-header__nav {
-    display: none;
-
-    @media (min-width: #{$bp-lg}) {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.25rem;
-    }
-  }
-
-  .nav-item {
+  .site-header__nav-link {
     position: relative;
-    &:hover .submenu { opacity: 1; pointer-events: auto; transform: translateY(0); }
-  }
-
-  .submenu {
-    position: absolute;
-    top: calc(100% - 2px);
-    left: 0;
-    min-width: 14rem;
-    background: var(--c-dark);
-    border-top: 2px solid var(--c-gold);
-    box-shadow: 0 6px 24px 4px rgba(0, 0, 0, 0.5);
-    padding-block: 1rem;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-6px);
-    transition: opacity 0.2s, transform 0.2s;
-    z-index: 10;
-
-    a {
-      display: block;
-      padding: 0.5rem 0.75rem;
-      font-size: var(--text-body);
-      font-weight: 500;
-      color: var(--c-charcoal-100);
-      text-decoration: none;
-      text-transform: none;
-      letter-spacing: 0;
-
-      &:hover { background: var(--c-charcoal-400); color: var(--c-gold); }
-    }
-
-    .submenu__parent {
-      font-weight: 700;
-      color: var(--c-gold);
-      display: block;
-      padding: 0.5rem 0.75rem 0.25rem;
-    }
-
-    .submenu__children {
-      padding-inline-start: 0.75rem;
-      margin-bottom: 0.5rem;
-    }
-  }
-
-  .nav-link {
-    display: block;
-    position: relative;
-    padding: 0.625rem 1rem;
-    font-family: var(--font-body);
-    font-size: var(--text-body);
-    font-weight: 600;
-    color: var(--c-white);
+    display: grid;
+    height: 100%;
+    align-items: center;
+    font-family: var(--display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
     text-decoration: none;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-    transition: color 0.15s;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 1rem;
-      right: 1rem;
-      height: 2px;
-      background-color: var(--c-gold);
-      opacity: 0;
-      transition: opacity 0.15s;
-    }
-
-    &:hover { color: var(--c-gold); }
-
-    &.current,
-    &.section {
-      color: var(--c-white);
-      &::after { opacity: 1; }
-    }
   }
 
-  // ── Hamburger button (mobile only) ───────────────────────────────────────
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0.375rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    margin-inline-start: auto;
+  .site-header__nav-link::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--yellow);
+    content: "";
+    transform: scaleX(0);
+    transition: transform 160ms ease;
+  }
 
-    span {
-      display: block;
-      width: 100%;
-      height: 2px;
-      background-color: var(--c-white);
-      border-radius: 2px;
-      transition: transform 0.25s, opacity 0.25s;
-    }
+  .site-header__nav-link:hover::after,
+  .site-header__nav-link--active::after {
+    transform: scaleX(1);
+  }
 
-    &[aria-expanded="true"] {
-      span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-      span:nth-child(2) { opacity: 0; }
-      span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    }
+  .site-header__quote {
+    display: inline-flex;
+  }
+
+  .site-header__mobile-actions {
+    display: none;
   }
 }

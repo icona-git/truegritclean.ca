@@ -3,9 +3,11 @@
 // Build: sass css/src/site.scss:css/dist/site.css
 
 @import 'tokens';           // CSS custom properties + SCSS breakpoint variables
+@import 'fonts';            // Self-hosted @font-face (Montserrat, Inter)
 @import 'reset';            // Minimal modern reset
+@import 'base';             // Figma global rules (body, headings, focus, skip link)
 @import 'typography';       // .typography content scope
 @import 'layout';           // .wrap, .section, .split, display utilities
 @import 'components';       // Header, footer, hero, nav, mobile menu, forms, etc.
 @import 'blocks';           // Elemental block styles
-@import 'pages';            // Blog, person, contact page-specific styles
+@import 'pages';            // Page-specific styles

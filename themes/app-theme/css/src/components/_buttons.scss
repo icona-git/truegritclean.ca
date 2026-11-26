@@ -40,29 +40,100 @@
   }
 }
 
-// Text link — uppercase label + implied arrow, no underline
-// Used for inline CTAs like "Read More", "Explore more articles"
-.text-link {
+// ─── Figma buttons ───────────────────────────────────────────────────────────
+// .button + variants: the design's buttons. .btn above stays for the starter's blocks and the CMS editor.
+
+.button {
   display: inline-flex;
+  min-height: 3rem;
+  padding: 0.78rem 1.25rem;
   align-items: center;
-  gap: 0.5rem;
-  font-size: var(--text-body);
-  font-weight: 600;
-  color: var(--c-gold);
+  justify-content: center;
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--display);
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-align: center;
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
-  line-height: 1.2;
-  white-space: nowrap;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
 
-  &::after {
-    content: '';
-    display: inline-block;
-    flex-shrink: 0;
-    width: 0.625rem;
-    height: 0.625rem;
-    background-color: currentColor;
-  }
+.button:hover {
+  transform: translateY(-2px);
+}
 
-  &:hover { color: var(--c-dark); }
+.button--primary {
+  color: var(--black);
+  background: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.button--primary:hover {
+  background: var(--white);
+  border-color: var(--white);
+}
+
+.section--grey .button--primary,
+.section--light .button--primary {
+  border-color: var(--black);
+}
+
+.section--grey .button--primary:hover,
+.section--light .button--primary:hover {
+  color: var(--white);
+  background: var(--black);
+}
+
+.button--secondary {
+  color: var(--white);
+  background: transparent;
+  border-color: var(--white);
+}
+
+.button--secondary:hover {
+  color: var(--black);
+  background: var(--white);
+}
+
+.button--black {
+  color: var(--white);
+  background: var(--black);
+  border-color: var(--black);
+}
+
+.button--black:hover {
+  color: var(--black);
+  background: var(--white);
+  border-color: var(--white);
+}
+
+// Text link: uppercase label with an arrow <span> that slides on hover (Figma). Replaces the starter's.
+.text-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--display);
+  font-size: 0.81rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-underline-offset: 0.35rem;
+  text-transform: uppercase;
+}
+
+.text-link span {
+  font-size: 1.25rem;
+  transition: transform 160ms ease;
+}
+
+.text-link:hover span {
+  transform: translateX(0.3rem);
+}
+
+.text-link--light {
+  color: var(--white);
 }

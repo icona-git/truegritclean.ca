@@ -1,0 +1,41 @@
+// ─── Trust row (Figma) ───────────────────────────────────────────────────────
+// The home hero's badges. Each claim badge renders only once its SiteConfig box is ticked (Phase 3).
+
+.trust-row {
+  display: grid;
+  padding: 1.1rem 0 0;
+  margin: 3rem 0 0;
+  border-top: 1px solid rgb(255 255 255 / 32%);
+  gap: 0.9rem;
+  grid-template-columns: repeat(2, 1fr);
+  list-style: none;
+}
+
+.trust-badge {
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.trust-badge__icon {
+  width: 1.6rem;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: var(--yellow);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+@media (min-width: $tg-md) {
+  .trust-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

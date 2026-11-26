@@ -1,8 +1,10 @@
 {
-  "name": "Site name",
-  "short_name": "Site",
-  "icons": [],
-  "theme_color": "#020203",
-  "background_color": "#020203",
+  "name": "TrueGrit Clean Co.",
+  "short_name": "TrueGrit",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "standalone"
 }

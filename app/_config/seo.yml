@@ -16,7 +16,9 @@ App\Extensions\SEOMetaExtension:
   #     - Calgary
   #     - Alberta
   # Empty = the property is left out of the schema.
-  area_served: []
+  area_served:
+    - Vancouver
+    - Lower Mainland
   # <title> suffix for blog posts (the full firm name pushes most post titles past 60 chars).
   # Empty = blog posts use the SiteConfig title like every other page.
   short_brand: ''

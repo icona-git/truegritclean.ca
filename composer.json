@@ -1,7 +1,7 @@
 {
-    "name": "icona/ss6-starter",
+    "name": "icona/truegritclean",
     "type": "silverstripe-recipe",
-    "description": "ICONA SilverStripe 6 site starter: the fleet pattern with no client identity",
+    "description": "truegritclean.ca: the TrueGrit Clean Co. website, built from ICONA's SilverStripe 6 starter",
     "license": "BSD-3-Clause",
     "require": {
         "php": "^8.4",
