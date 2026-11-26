@@ -1063,8 +1063,9 @@ pages:
             claims: [insured, worksafebc]
 
   # ── 8. Quote ───────────────────────────────────────────────────────────────
-  # Form fields, recipients and the photo upload are Build Phase 5. Content stays empty: the layout renders the form
-  # itself, and userforms puts the thank-you message (On Complete Message) there after a submission.
+  # The form itself (fields, photo upload, recipient, button text, and Content: the text under the button) is
+  # app/seed/form.yml, built by tasks:seed-form. Content stays empty here so that task fills it. After a submission
+  # userforms shows the thank-you message (On Complete Message) in its place.
   - key: quote
     class: App\Pages\ContactPage
     URLSegment: quote

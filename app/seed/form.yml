@@ -1,0 +1,106 @@
+# The quote form on /quote/ (App\Pages\ContactPage), built by `vendor/bin/sake tasks:seed-form` (App\Tasks\SeedFormTask).
+#
+# Labels, options and helper text are content/TrueGrit-Website-Content.md §8 (the project docs folder above this repo),
+# verbatim. From the Figma export (design/figma-export/quote.html), as that section has no such words: the four section
+# headings, the "Select a ..." prompts, "Project notes" as the label in the "Anything else" section, and Clean needed as
+# pill buttons (the content doc lists it as a select). The submit button is stored in sentence case like the other
+# buttons; CSS shows it in capitals.
+#
+# Once the form exists in the CMS it belongs to the editor: the task adds fields only to a form that has none, adds a
+# recipient only when there is none, and fills a page setting only while it is empty. It never deletes anything.
+#
+# Keys: a field's "class" is a userforms field type (short name); "options" lists a dropdown's or radio group's
+# choices; every other key is a database field of that type (Title, Name, Required, RightTitle = helper text,
+# ExtraClass, Autocomplete, Rows, EmptyString ...). Name is the field's fixed name in submissions, emails and the
+# recipient's subject line ($Name). ExtraClass field--full makes a field span both columns.
+
+page: /quote/
+
+# Page fields, each set only while empty. {page:/privacy/} becomes a link to that page that survives a rename.
+settings:
+  SubmitButtonText: Request quote
+  Content: |-
+    <p>We'll send a written quote the same business day.</p>
+    <p>We only use these details to prepare your quote. See our <a href="{page:/privacy/}">Privacy Policy</a>.</p>
+
+# Every submission is stored (Submissions tab) and emailed here. Locally DDEV's Mailpit catches all mail; on staging
+# SS_SEND_ALL_EMAILS_TO redirects it. EmailFrom follows ICONA's sending pattern (a Mailgun subdomain aligned for
+# SPF/DKIM, not the business's own address, or the mail lands in junk); userforms requires one. On the server
+# SS_SEND_ALL_EMAILS_FROM replaces it, and Mailgun must have mg.truegritclean.ca verified before launch.
+# reply_to: the field whose value becomes Reply-To, so answering the email answers the visitor. The subject carries no
+# merge field: userforms HTML-escapes merged values, so "O'Brien" would arrive as "O&#039;Brien".
+recipients:
+  - EmailAddress: hello@truegritclean.ca
+    EmailFrom: website@mg.truegritclean.ca
+    EmailSubject: New quote request
+    reply_to: Email
+
+sections:
+  - title: Your details
+    fields:
+      - { class: EditableTextField, Name: Name, Title: Name, Required: true, Autocomplete: name }
+      - { class: EditableTextField, Name: Company, Title: Company, Autocomplete: organization }
+      - { class: EditableTextField, Name: Phone, Title: Phone, Required: true, Autocomplete: tel }
+      - { class: EditableEmailField, Name: Email, Title: Email, Required: true }
+
+  - title: The project
+    fields:
+      - class: EditableTextField
+        Name: ProjectAddress
+        Title: Project address
+        RightTitle: Street and city, so we can confirm we cover your area.
+        Autocomplete: street-address
+        ExtraClass: field--full
+      - class: EditableDropdown
+        Name: Service
+        Title: Service
+        UseEmptyString: true
+        EmptyString: Select a service
+        options: [Post-construction, Renovation, Restaurant, Hoarding, Other]
+      - class: EditableDropdown
+        Name: PropertyType
+        Title: Property type
+        UseEmptyString: true
+        EmptyString: Select a property type
+        options: [House, Condo, Multi-unit, Commercial, Restaurant, Office, Retail, Other]
+      - class: EditableRadioField
+        Name: CleanNeeded
+        Title: Clean needed
+        ExtraClass: field--full
+        options: [Rough, Final, Touch-up, Not sure]
+      - { class: EditableNumericField, Name: SquareFootage, Title: Approx. square footage }
+      - { class: EditableNumericField, Name: Units, Title: Number of units }
+      - { class: EditableDateField, Name: PreferredDate, Title: Preferred date }
+      - class: EditableRadioField
+        Name: ConstructionFinished
+        Title: Is construction finished?
+        ExtraClass: field--full
+        options: ['Yes', 'No', Almost]
+      - class: EditableRadioField
+        Name: PowerWater
+        Title: Power and water on site?
+        ExtraClass: field--full
+        options: ['Yes', 'No', Not sure]
+      - { class: EditableTextField, Name: AccessNotes, Title: Access and parking notes, Rows: 4, ExtraClass: field--full }
+
+  # Several photos in one field (App\Models\EditablePhotosField, approved by Dave 2026-11-26): JPG, PNG or HEIC, stored
+  # in a folder only administrators can open, linked from the email. The drop zone's own words are Figma's, in its
+  # template; the helper text is the content doc's.
+  - title: Photos
+    fields:
+      - class: App\Models\EditablePhotosField
+        Name: Photos
+        Title: Photos
+        RightTitle: Photos help us quote accurately and tell us whether we need a walkthrough first.
+        ExtraClass: field--full
+        MaxFiles: 10
+        MaxFileSizeMB: 10
+
+  - title: Anything else
+    fields:
+      - { class: EditableTextField, Name: Notes, Title: Project notes, Rows: 6, ExtraClass: field--full }
+
+# The reCAPTCHA v3 check (nocaptcha), last on the form. Invisible; its title is hidden by the theme.
+spam:
+  Name: SpamProtection
+  Title: Spam protection

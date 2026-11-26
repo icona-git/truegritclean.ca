@@ -1,19 +1,16 @@
-<$Tag class="CompositeField $extraClass <% if ColumnCount %>multicolumn<% end_if %>"<% if $Tag == 'fieldset' && $RightTitle %>aria-describedby="{$Name}_right_title"<% end_if %>>
-	<% if $Tag == 'fieldset' && $Legend %>
-		<legend>$Legend</legend>
-	<% end_if %>
-
-	<div class="middleColumn">
-	<% loop $FieldList %>
-		<% if $ColumnCount %>
-			<div class="column-{$ColumnCount} $FirstLast">
-				$FieldHolder
-			</div>
-		<% else %>
-			$FieldHolder
-		<% end_if %>
-	<% end_loop %>
-	</div>
-
-	<% if $RightTitle %><span id="{$Name}_right_title" class="right-title">$RightTitle</span><% end_if %>
-</$Tag>
+<%-- A numbered form section (Figma .project-form__section): a userforms Field Group in the CMS, its title as the
+     heading. The number in the yellow box (01, 02 ...) is a CSS counter, so reordering sections in the CMS renumbers
+     them. Fields sit in the two-column .quote-fields grid; a field whose Extra CSS class is field--full spans both. --%>
+<div id="$Name" class="project-form__section" role="group"<% if $Title %> aria-labelledby="{$Name}_heading"<% end_if %>>
+    <% if $Title %>
+    <div class="project-form__section-heading">
+        <span aria-hidden="true"></span>
+        <h2 id="{$Name}_heading">$Title</h2>
+    </div>
+    <% end_if %>
+    <div class="quote-fields">
+    <% loop $FieldList %>
+        $FieldHolder
+    <% end_loop %>
+    </div>
+</div>
