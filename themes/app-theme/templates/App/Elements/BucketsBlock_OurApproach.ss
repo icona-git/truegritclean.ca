@@ -11,7 +11,7 @@
   <div class="oa-emphasizes">
     <p class="oa-subheading">Our approach emphasizes:</p>
     <div class="oa-cards">
-      <% loop $Buckets %>
+      <% loop $ShownBuckets %>
       <div class="oa-card">
         <% if $SecondaryFile %>
         <img src="$SecondaryFile.URL" alt="" aria-hidden="true" width="60" height="60" loading="lazy">

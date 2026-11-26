@@ -14,3 +14,5 @@ TinyMCEConfig::get('cms')
 
 
 ShortcodeParser::get('default')->register('youtube', ['Page', 'YouTubeShortCode']);
+// [claim key=minimum]...[/claim]: the wrapped text renders only while that claim is ticked in Settings > Claims.
+ShortcodeParser::get('default')->register('claim', [\App\Models\Claims::class, 'shortcode']);

@@ -1,0 +1,1151 @@
+# Launch content for truegritclean.ca, read by App\Tasks\SeedTask (vendor/bin/sake tasks:seed).
+#
+# Copy source: content/TrueGrit-Website-Content.md, Draft v1 (Nov 23, 2026), in the project docs folder above this repo.
+# The copy is verbatim, minus the [bracketed] notes for Rebekah. Eyebrows, the quote panel heading and FAQ section
+# headings come from the Figma export (design/figma-export), or follow its pattern where the export has no such page.
+# Claims (Settings > Claims) are never seeded: items that state one carry "claims:", and the $475 sentence is wrapped
+# in [claim key=minimum]...[/claim], so they stay hidden until the box is ticked.
+#
+# Page keys: a page's "key" is this file's own name for it (parents and links use it). Every other key on a page,
+# block or bucket is a database field. Block and bucket keys become their SeedKey (unique within the page / block).
+# Images are added in Build Phase 4: the comments name each slot's Unsplash photo and alt text from the content doc.
+
+siteconfig:
+  Title: TrueGrit Clean Co.
+  Tagline: True Grit. Real Work. Spotless Results.
+  Phone: 825-882-3881
+  Email: hello@truegritclean.ca
+  # The line break matches the Figma footer; the field keeps it.
+  ServiceArea: |-
+    Vancouver and nearby
+    Lower Mainland communities
+  FooterExclusions: |-
+    We don't handle asbestos, lead, mould remediation, sharps, biohazards, bodily fluids or trauma scenes, or work above ladder height. We're happy to refer you to a certified specialist.
+  # Photographer names are added in Phase 4, once the photos actually used are settled.
+  PhotoCredits: |-
+    Some photos on this site are from Unsplash and show general construction scenes, not TrueGrit jobs.
+  BookingBannerTitle: |-
+    Let's tackle the grime.
+  BookingBannerBody: |-
+    Send the address and a few photos, and you'll have a written quote the same business day.
+  BookingBannerButtonText: Get a free quote
+  BookingBannerPhoneText: or call or text
+
+pages:
+
+  # ── 1. Home ────────────────────────────────────────────────────────────────
+  - key: home
+    class: App\Pages\HomePage
+    URLSegment: home
+    Title: Home
+    ShowInMenus: true
+    ShowInTopMenu: true
+    ShowInFooterMenu: false
+    MetaTitle: Post-Construction Cleaning Vancouver | TrueGrit Clean Co.
+    MetaDescription: |-
+      Post-construction and renovation cleaning in Vancouver for contractors, developers and homeowners. HEPA dust removal. Written quotes the same day.
+    # Hero image (Phase 4): gISfS1zLq7c or jq0HpVncJX8. Alt: "Black and white interior of a building under construction, light coming through the windows."
+    # The tagline under the H1 is Settings > Tagline; the hero buttons use Settings text and the phone number.
+    HeroLabel: Cleaning services · Vancouver, BC
+    HeroTitle: Post-Construction Cleaning in Vancouver
+    HeroContent: |-
+      <p>From construction site to move-in ready. Professional post-construction and renovation cleaning for contractors, developers, property managers and homeowners across Vancouver.</p>
+    blocks:
+      - key: home-services
+        class: App\Elements\BucketsBlock
+        style: ServiceCards
+        Eyebrow: Specialist cleaning
+        Title: What We Do
+        ShowTitle: true
+        buckets:
+          - key: post-construction
+            Title: Post-Construction Cleaning
+            ShowTitle: true
+            HTML: |-
+              <p>Rough, final and touch-up cleans that take a new build from construction site to handover ready.</p>
+            link: { page: post-construction, text: Learn more }
+          - key: renovation
+            Title: Renovation Cleaning
+            ShowTitle: true
+            HTML: |-
+              <p>Dust and debris cleanup after kitchen, bathroom, basement, condo and commercial renovations.</p>
+            link: { page: renovation, text: Learn more }
+          - key: restaurant
+            Title: Restaurant Cleaning
+            ShowTitle: true
+            HTML: |-
+              <p>Construction and pre-opening cleans for restaurant fit-outs and renovations, plus deep cleans.</p>
+            link: { page: restaurant, text: Learn more }
+          - key: hoarding
+            Title: Hoarding Cleaning
+            ShowTitle: true
+            HTML: |-
+              <p>Respectful, judgement-free cleanup of cluttered homes, with the scope agreed before we start.</p>
+            link: { page: hoarding, text: Learn more }
+
+      # Image (Phase 4): rjnLNuJFins. Alt: "Tower crane over a new building under construction in Burnaby."
+      - key: home-industry
+        class: App\Elements\SectionContentBlock
+        style: IndustryBand
+        Eyebrow: Who we work with
+        Title: Built for Vancouver's construction industry.
+        ShowTitle: true
+        HTML: |-
+          <ul>
+          <li>Contractors</li>
+          <li>Developers</li>
+          <li>Renovators</li>
+          <li>Property Managers</li>
+          <li>Designers</li>
+          <li>Homeowners</li>
+          </ul>
+          <p>A construction cleaning company, not a cleaning company that also does construction.</p>
+
+      - key: home-phases
+        class: App\Elements\BucketsBlock
+        style: Phases
+        Eyebrow: The process
+        Title: The three phases of a construction clean
+        ShowTitle: true
+        HTML: |-
+          <p>Most builds need more than one clean. Book a single phase, or all three as one package.</p>
+        cta: { page: post-construction, text: How post-construction cleaning works }
+        buckets:
+          # Image (Phase 4): 2ZMe-E2NBZ0. Alt: "Unfinished room with bare drywall and construction dust on the floor."
+          - key: rough
+            Title: Rough clean
+            ShowTitle: true
+            HTML: |-
+              <p>While trades are still on site. Debris, packaging and heavy dust removed so finishing trades can get to work.</p>
+          # Image (Phase 4): ITA4ysSN8xA. Alt: "Empty finished room with hardwood floors and white walls."
+          - key: final
+            Title: Final clean
+            ShowTitle: true
+            HTML: |-
+              <p>After construction wraps up. Every surface, window, cabinet, bathroom and floor, top to bottom, until it's move-in ready.</p>
+          # Image (Phase 4): 5d-aYsO2g7U. Alt: "Close-up of a clean window and frame."
+          - key: touch-up
+            Title: Touch-up clean
+            ShowTitle: true
+            HTML: |-
+              <p>Right before inspection, staging, photos or handover. We remove the dust, fingerprints and footprints left by deficiency work.</p>
+
+      - key: home-why
+        class: App\Elements\BucketsBlock
+        style: Checklist
+        Eyebrow: Built to deliver
+        Title: Why contractors call us
+        ShowTitle: true
+        buckets:
+          - key: construction-focused
+            Title: Construction-focused, not a residential maid service
+            ShowTitle: true
+          - key: hepa
+            Title: HEPA equipment for fine drywall and construction dust
+            ShowTitle: true
+            claims: [hepa]
+          - key: insured
+            Title: Insured, certificate available on request
+            ShowTitle: true
+            claims: [insured]
+          - key: worksafebc
+            Title: WorkSafeBC registered, clearance letter on request
+            ShowTitle: true
+            claims: [worksafebc]
+          - key: checklist
+            Title: Quality checklist signed off at handover
+            ShowTitle: true
+            claims: [checklist]
+          - key: photos
+            Title: Before-and-after photos on every job
+            ShowTitle: true
+            claims: [photos]
+          - key: same-day-quote
+            Title: Written quote the same business day
+            ShowTitle: true
+          - key: on-schedule
+            Title: We show up when scheduled and work around your deadlines
+            ShowTitle: true
+
+      - key: home-steps
+        class: App\Elements\BucketsBlock
+        style: Steps
+        Eyebrow: Simple from the start
+        Title: How it works
+        ShowTitle: true
+        buckets:
+          - key: details
+            Title: Send us the details.
+            ShowTitle: true
+            HTML: |-
+              <p>Address, square footage and a few photos. Two minutes.</p>
+          - key: quote
+            Title: Get a written quote today.
+            ShowTitle: true
+            HTML: |-
+              <p>Fixed price, clear scope, nothing hidden.</p>
+          # The sentence states the signed-checklist and photos claims, so it waits for both boxes.
+          - key: clean
+            Title: We clean. You inspect. You hand over.
+            ShowTitle: true
+            HTML: |-
+              <p>[claim key=checklist+photos]Signed checklist and photos on completion.[/claim]</p>
+
+      - key: home-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: FAQ
+        Title: Common questions
+        ShowTitle: true
+        buckets:
+          - key: areas
+            Title: What areas do you serve?
+            ShowTitle: true
+            HTML: |-
+              <p>We serve Vancouver and nearby Lower Mainland communities. If your project is outside that area, send the details anyway and we'll tell you straight away whether we can take it.</p>
+          - key: multi-unit
+            Title: Do you take on multi-unit and developer projects?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We quote multi-unit buildings and developments as one project, with rough, final and touch-up cleans packaged together.</p>
+          - key: exclusions
+            Title: What don't you clean?
+            ShowTitle: true
+            HTML: |-
+              <p>We don't handle asbestos, lead, mould remediation, sharps, biohazards, bodily fluids or trauma scenes, or anything above ladder height. We'll refer you to a certified specialist for that work.</p>
+
+  # ── 2. Services overview ───────────────────────────────────────────────────
+  - key: services
+    class: App\Pages\TopLevelPage
+    URLSegment: services
+    Title: Services
+    ShowInMenus: true
+    ShowInTopMenu: true
+    ShowInFooterMenu: true
+    MetaTitle: Construction Cleaning Vancouver | TrueGrit Clean Co.
+    MetaDescription: |-
+      Post-construction, renovation, restaurant and hoarding cleaning in Vancouver. Rough, final and touch-up cleans for contractors. Free written quotes.
+    HeroTitle: Construction Cleaning Services in Vancouver
+    HeroContent: |-
+      <p>TrueGrit Clean Co. cleans up after construction and renovation work in Vancouver, from the first rough clean to the last touch-up before handover. We work mainly for general contractors, builders, developers and property managers, and for homeowners finishing a project.</p>
+    blocks:
+      # Lists the service pages: each card's text is that page's Teaser Text.
+      - key: services-list
+        class: App\Elements\SpecialListBlock
+        style: Services
+        Eyebrow: Specialist cleaning
+        Title: Our services
+        ShowTitle: true
+
+      - key: services-phases
+        class: App\Elements\SectionContentBlock
+        Eyebrow: The process
+        Title: |-
+          How a construction clean is staged: Rough → Final → Touch-up
+        ShowTitle: true
+        HTML: |-
+          <table>
+          <thead>
+          <tr><th scope="col">Phase</th><th scope="col">When</th><th scope="col">What gets done</th></tr>
+          </thead>
+          <tbody>
+          <tr><th scope="row">Rough clean</th><td>While trades are still working</td><td>Debris, cardboard and packaging out. Heavy dust vacuumed. Sills, frames and vents cleared. The site is ready for finishing trades.</td></tr>
+          <tr><th scope="row">Final clean</th><td>After construction ends</td><td>Detailed top-to-bottom clean: walls, trim, cabinets inside and out, glass, kitchens, bathrooms, floors. Move-in ready.</td></tr>
+          <tr><th scope="row">Touch-up clean</th><td>Right before inspection, staging, photos or handover</td><td>Newly settled dust, fingerprints and footprints from deficiency work removed. A final walkthrough with you.</td></tr>
+          </tbody>
+          </table>
+
+      - key: services-packages
+        class: App\Elements\SectionContentBlock
+        Title: Packages for builders and developers
+        ShowTitle: true
+        HTML: |-
+          <p>Book all three phases as one project and we'll schedule each clean around your construction timeline. We quote multi-unit buildings by the project, not one unit at a time.</p>
+
+      - key: services-exclusions
+        class: App\Elements\SectionContentBlock
+        style: Callout
+        Title: What we don't do
+        ShowTitle: true
+        HTML: |-
+          <p>Asbestos, lead, mould remediation, sharps, biohazards, bodily fluids, trauma scenes, large or heavy construction waste, and work above ladder height. We'll point you to a certified specialist.</p>
+
+      - key: services-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: FAQ
+        Title: Common questions
+        ShowTitle: true
+        buckets:
+          - key: one-phase
+            Title: Can I book just one phase?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. Many contractors book only a final clean, or only a touch-up before handover. Tell us where the project is at and we'll quote the phase you need.</p>
+          - key: commercial
+            Title: Do you clean commercial spaces?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We clean offices, retail units, restaurants and other commercial spaces after construction and renovation work.</p>
+          - key: equipment
+            Title: Do you bring your own equipment and supplies?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We bring our own HEPA vacuums, cleaning products and tools. We do need power and running water on site.</p>
+          - key: power-water
+            Title: Do you need power and water on site?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes, in most cases. HEPA vacuums need power and a proper clean needs running water. If either isn't connected yet, mention it in your quote request and we'll plan around it.</p>
+
+  # ── 3. Post-Construction Cleaning ──────────────────────────────────────────
+  - key: post-construction
+    class: App\Pages\PracticeAreaPage
+    parent: services
+    URLSegment: post-construction-cleaning
+    Title: Post-Construction Cleaning
+    MenuTitle: Post-Construction
+    ShowInMenus: true
+    ShowInTopMenu: false
+    ShowInFooterMenu: false
+    MetaTitle: Post-Construction Cleaning Vancouver | Free Quote
+    MetaDescription: |-
+      Construction site to move-in ready. Detailed post-construction cleaning for contractors, developers and homeowners in Vancouver.
+    # Hero image (Phase 4): the content doc names none for this page; the Figma service hero used a concrete-grinding photo.
+    HeroLabel: Services · Vancouver, BC
+    HeroTitle: Post-Construction Cleaning Vancouver
+    HeroContent: |-
+      <p>Post-construction cleaning removes the dust, debris, stickers and residue trades leave behind, taking a new build or major renovation from construction site to handover ready. We do it for general contractors, builders, developers, property managers and homeowners across Vancouver.</p>
+    TeaserContent: |-
+      <p>Our core service. Rough, final and touch-up cleans that take a new build or major renovation from construction site to handover ready, with HEPA dust removal throughout.</p>
+    blocks:
+      - key: pc-intro
+        class: App\Elements\SectionContentBlock
+        style: ServiceIntro
+        Title: Introduction
+        ShowTitle: false
+        HTML: |-
+          <p>When the trades finish, the dust doesn't. Fine drywall and construction dust settles into every surface, track and vent in the building, and it keeps settling for days after the last tool leaves. We remove it properly, with sealed HEPA equipment built for construction sites, so the property is ready for inspection, photography and handover.</p>
+
+      - key: pc-phases
+        class: App\Elements\BucketsBlock
+        style: ServicePhases
+        Eyebrow: A complete construction clean
+        Title: The three phases
+        ShowTitle: true
+        buckets:
+          - key: rough
+            Title: Rough clean
+            ShowTitle: true
+            HTML: |-
+              <p>This happens while construction is wrapping up, before the detailed final clean:</p>
+              <ul>
+              <li>Remove loose construction debris</li>
+              <li>Remove cardboard and packaging</li>
+              <li>Remove protective materials where authorized</li>
+              <li>Sweep and HEPA-vacuum floors</li>
+              <li>Vacuum construction and drywall dust</li>
+              <li>Dust walls and major surfaces</li>
+              <li>Clean window sills and frames</li>
+              <li>Vacuum accessible vents and registers</li>
+              <li>Dispose of waste in the site's designated construction bins</li>
+              </ul>
+          - key: final
+            Title: Final clean
+            ShowTitle: true
+            HTML: |-
+              <p>This takes the property from construction site to move-in or handover ready. The full checklist is below.</p>
+          - key: touch-up
+            Title: Touch-up clean
+            ShowTitle: true
+            HTML: |-
+              <p>This happens right before inspection, staging, photography, handover or move-in:</p>
+              <ul>
+              <li>Remove newly settled dust</li>
+              <li>Spot-clean windows and glass</li>
+              <li>Remove fingerprints</li>
+              <li>Polish fixtures</li>
+              <li>Touch up floors, countertops, kitchens and bathrooms</li>
+              <li>Check corners and baseboards</li>
+              <li>Final walkthrough</li>
+              <li>Completion photos</li>
+              </ul>
+
+      - key: pc-included
+        class: App\Elements\BucketsBlock
+        style: ScopeGroups
+        Eyebrow: Detailed scope
+        Title: What's included in a final clean
+        ShowTitle: true
+        buckets:
+          - key: dust
+            Title: Dust removal
+            ShowTitle: true
+            HTML: |-
+              <ul>
+              <li>HEPA vacuum all surfaces</li>
+              <li>Dust walls and ceilings where safely accessible</li>
+              <li>Baseboards, trim and mouldings</li>
+              <li>Doors and door frames</li>
+              <li>Railings, shelving and closets</li>
+              <li>Switch plates and outlet covers</li>
+              <li>Light fixtures</li>
+              <li>Vents and registers</li>
+              </ul>
+          - key: windows
+            Title: Windows and glass
+            ShowTitle: true
+            HTML: |-
+              <ul>
+              <li>Interior glass</li>
+              <li>Window frames, tracks and sills</li>
+              <li>Mirrors, glass doors and partitions</li>
+              <li>Sticker and protective film removal</li>
+              <li>Light adhesive residue removal</li>
+              <li>Paint and plaster spot removal where it can be done safely without damaging the surface</li>
+              </ul>
+          - key: kitchen
+            Title: Kitchen
+            ShowTitle: true
+            HTML: |-
+              <ul>
+              <li>Countertops and backsplash</li>
+              <li>Sink and faucet</li>
+              <li>Cabinets inside and out</li>
+              <li>Drawers and pantry</li>
+              <li>Appliance exteriors (interiors on request)</li>
+              <li>Appliance sticker and film removal</li>
+              <li>Stainless steel polishing</li>
+              </ul>
+          - key: bathrooms
+            Title: Bathrooms
+            ShowTitle: true
+            HTML: |-
+              <ul>
+              <li>Toilets, sinks and faucets</li>
+              <li>Bathtubs, showers and shower glass</li>
+              <li>Mirrors, vanities and cabinets</li>
+              <li>Tile and grout residue</li>
+              <li>Fixture polishing</li>
+              </ul>
+          - key: floors
+            Title: Floors
+            ShowTitle: true
+            HTML: |-
+              <ul>
+              <li>HEPA vacuum throughout</li>
+              <li>Mop all hard flooring</li>
+              <li>Vacuum carpets</li>
+              <li>Edges, corners and baseboard detail</li>
+              <li>Light construction residue removal</li>
+              </ul>
+
+      - key: pc-audiences
+        class: App\Elements\BucketsBlock
+        style: AudienceCards
+        Eyebrow: Project partners
+        Title: Who this is for
+        ShowTitle: true
+        buckets:
+          - key: contractors
+            Title: General contractors and builders
+            ShowTitle: true
+            HTML: |-
+              <p>Hand over a clean, finished property without pulling your crew off the next job.</p>
+          - key: developers
+            Title: Developers and property managers
+            ShowTitle: true
+            HTML: |-
+              <p>Units cleaned to the same standard, scheduled around your occupancy dates.</p>
+          - key: homeowners
+            Title: Homeowners
+            ShowTitle: true
+            HTML: |-
+              <p>Finishing a build or major renovation? Move into a home that's actually clean, not just swept.</p>
+
+      # Image (Phase 4): t9eQm2y1tn8. Alt: "Worker grinding concrete on a construction site, with dust in the air."
+      - key: pc-image
+        class: App\Elements\SectionContentBlock
+        style: FeatureImage
+        Title: Feature photo
+        ShowTitle: false
+
+      - key: pc-not-included
+        class: App\Elements\SectionContentBlock
+        style: Callout
+        Title: Not included
+        ShowTitle: true
+        HTML: |-
+          <p>Asbestos, lead, mould remediation and other hazardous materials. Large or heavy construction waste and bin hauling. Work above ladder height. We'll refer you to a qualified contractor.</p>
+
+      - key: pc-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: Common questions
+        Title: Post-construction cleaning FAQs
+        ShowTitle: true
+        buckets:
+          - key: cost
+            Title: How much does post-construction cleaning cost in Vancouver?
+            ShowTitle: true
+            HTML: |-
+              <p>It depends on square footage, how much dust the site has, and which of the three phases you need. [claim key=minimum]Jobs start at a $475 minimum.[/claim] Send us the address and a few photos and you'll have a firm written quote the same business day.</p>
+          - key: rough-vs-final
+            Title: What's the difference between a rough clean and a final clean?
+            ShowTitle: true
+            HTML: |-
+              <p>A rough clean happens while trades are still working: debris, packaging and heavy dust are removed so finishing work can go ahead. A final clean happens after construction ends and takes the property to move-in ready, with every window, cabinet, bathroom and floor done in detail.</p>
+          - key: hazardous
+            Title: Do you handle asbestos or hazardous materials?
+            ShowTitle: true
+            HTML: |-
+              <p>No. Asbestos, lead and mould abatement require specialised certification. We'll refer you to a qualified contractor.</p>
+          - key: notice
+            Title: How far in advance should I book?
+            ShowTitle: true
+            HTML: |-
+              <p>A week's notice is ideal, especially near month-end when handovers cluster. We take rush work when the schedule allows.</p>
+
+  # ── 4. Renovation Cleaning ─────────────────────────────────────────────────
+  - key: renovation
+    class: App\Pages\PracticeAreaPage
+    parent: services
+    URLSegment: renovation-cleaning
+    Title: Renovation Cleaning
+    MenuTitle: Renovation
+    ShowInMenus: true
+    ShowInTopMenu: false
+    ShowInFooterMenu: false
+    MetaTitle: Post-Renovation Cleaning Vancouver | TrueGrit Clean Co.
+    MetaDescription: |-
+      Cleanup after kitchen, bathroom, basement, condo and commercial renovations in Vancouver. HEPA dust removal and a written quote the same business day.
+    HeroLabel: Services · Vancouver, BC
+    HeroTitle: Post-Renovation Cleaning in Vancouver
+    HeroContent: |-
+      <p>Post-renovation cleaning removes the drywall dust, debris and residue a renovation leaves behind, so you can use the space again. We work for homeowners and for the renovation contractors who want to hand back a clean job.</p>
+    TeaserContent: |-
+      <p>Cleanup after kitchen, bathroom, basement, condo, full-home and commercial renovations. For homeowners and the contractors doing the work.</p>
+    blocks:
+      - key: reno-intro
+        class: App\Elements\SectionContentBlock
+        style: ServiceIntro
+        Title: Introduction
+        ShowTitle: false
+        HTML: |-
+          <p>Renovation dust doesn't stay in the room that was renovated. It travels through doorways, vents and stairwells and settles on everything. We clean the work area in detail and deal with the dust that's spread beyond it.</p>
+
+      - key: reno-types
+        class: App\Elements\SectionContentBlock
+        style: Tags
+        Title: Renovations we clean after
+        ShowTitle: true
+        HTML: |-
+          <ul>
+          <li>Kitchen renovations</li>
+          <li>Bathroom renovations</li>
+          <li>Basement renovations</li>
+          <li>Condo renovations</li>
+          <li>Full-home remodels</li>
+          <li>Commercial renovations</li>
+          </ul>
+
+      - key: reno-included
+        class: App\Elements\BucketsBlock
+        style: ScopeGroups
+        Eyebrow: Detailed scope
+        Title: What's included
+        ShowTitle: true
+        buckets:
+          - key: included
+            Title: Included
+            ShowTitle: false
+            HTML: |-
+              <ul>
+              <li>HEPA vacuum fine drywall and construction dust</li>
+              <li>Dust walls, ceilings where safely accessible, trim and baseboards</li>
+              <li>Doors, frames, switch plates and outlet covers</li>
+              <li>Vents and registers</li>
+              <li>Cabinets and drawers, inside and out</li>
+              <li>Countertops, backsplash, sinks and faucets</li>
+              <li>Bathroom fixtures, tile, shower glass and mirrors</li>
+              <li>Interior windows, frames, tracks and sills</li>
+              <li>Sticker, protective film and light adhesive removal</li>
+              <li>Paint and plaster spots removed where it can be done safely</li>
+              <li>Floors HEPA-vacuumed and mopped, carpets vacuumed</li>
+              <li>Light debris and packaging bagged for the site's bins</li>
+              <li>Dust cleaned from rooms beyond the work area, as agreed in the quote</li>
+              </ul>
+
+      # Image (Phase 4): Fxv9QVauyD0. Alt: "Room in the middle of a renovation, with paint and drop sheets on the floor."
+      - key: reno-image
+        class: App\Elements\SectionContentBlock
+        style: FeatureImage
+        Title: Feature photo
+        ShowTitle: false
+
+      - key: reno-audiences
+        class: App\Elements\BucketsBlock
+        style: AudienceCards
+        Eyebrow: Project partners
+        Title: Who this is for
+        ShowTitle: true
+        buckets:
+          - key: homeowners
+            Title: Homeowners
+            ShowTitle: true
+            HTML: |-
+              <p>Get your home back after a renovation, without spending your weekend scrubbing drywall dust.</p>
+          - key: contractors
+            Title: Renovation contractors
+            ShowTitle: true
+            HTML: |-
+              <p>Hand the client a clean job. We fit around your schedule, so your crew can move on.</p>
+          - key: property
+            Title: Condo owners, landlords and property managers
+            ShowTitle: true
+            HTML: |-
+              <p>Get a unit ready for move-in, rental or listing after an upgrade.</p>
+
+      - key: reno-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: Common questions
+        Title: Renovation cleaning FAQs
+        ShowTitle: true
+        buckets:
+          - key: living-in
+            Title: Can you clean while I'm still living in the home?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We clean the renovated area in detail and deal with the dust that has spread into the rest of the home. Tell us which rooms you're living in and we'll plan around you.</p>
+          - key: when
+            Title: When should I book a renovation clean?
+            ShowTitle: true
+            HTML: |-
+              <p>Book it for after the last trade has finished. If trades are coming back for deficiencies, book a touch-up clean for after they're done.</p>
+          - key: single-room
+            Title: Do you clean after a single-room renovation?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. A kitchen or bathroom renovation is a common job. Send a few photos and we'll quote it.</p>
+          - key: debris
+            Title: Do you remove renovation debris?
+            ShowTitle: true
+            HTML: |-
+              <p>We bag light debris and packaging and put it in the bins on site. We don't haul large or heavy construction waste. Your contractor or a junk removal company handles that.</p>
+
+  # ── 5. Restaurant Cleaning (whole page: scope to confirm with Rebekah) ─────
+  - key: restaurant
+    class: App\Pages\PracticeAreaPage
+    parent: services
+    URLSegment: restaurant-cleaning
+    Title: Restaurant Cleaning
+    MenuTitle: Restaurant
+    ShowInMenus: true
+    ShowInTopMenu: false
+    ShowInFooterMenu: false
+    MetaTitle: Restaurant Cleaning Vancouver | TrueGrit Clean Co.
+    MetaDescription: |-
+      Construction, pre-opening and deep cleaning for Vancouver restaurants. Fit-outs, renovations, kitchens and dining rooms cleaned before you open the doors.
+    HeroLabel: Services · Vancouver, BC
+    HeroTitle: Restaurant Cleaning in Vancouver
+    HeroContent: |-
+      <p>We clean restaurants after a fit-out or renovation, before opening day, and when the space needs a top-to-bottom reset. We work for restaurant owners and operators, and for the contractors building their spaces.</p>
+    TeaserContent: |-
+      <p>Construction and pre-opening cleans for restaurant fit-outs and renovations, plus deep cleans of dining rooms, kitchens and washrooms.</p>
+    blocks:
+      - key: rest-intro
+        class: App\Elements\SectionContentBlock
+        style: ServiceIntro
+        Title: Introduction
+        ShowTitle: false
+        HTML: |-
+          <p>A new or renovated restaurant has construction dust on every stainless surface, in every shelf and behind every piece of equipment. We get the kitchen, dining room, bar and washrooms clean enough to open, so your team can start setting up instead of scrubbing.</p>
+
+      - key: rest-when
+        class: App\Elements\BucketsBlock
+        style: AudienceCards
+        Title: When restaurants call us
+        ShowTitle: true
+        buckets:
+          - key: fit-out
+            Title: After a fit-out or tenant improvement
+            ShowTitle: true
+            HTML: |-
+              <p>The build is done and the space needs to be cleaned before equipment and staff move in.</p>
+          - key: renovation
+            Title: After a renovation
+            ShowTitle: true
+            HTML: |-
+              <p>Dust and debris cleaned out of a kitchen or dining room refresh.</p>
+          - key: opening
+            Title: Before opening or reopening
+            ShowTitle: true
+            HTML: |-
+              <p>A final clean scheduled ahead of your opening date or inspection.</p>
+          - key: deep-clean
+            Title: Deep clean
+            ShowTitle: true
+            HTML: |-
+              <p>A top-to-bottom reset of a space that needs it.</p>
+
+      - key: rest-included
+        class: App\Elements\BucketsBlock
+        style: ScopeGroups
+        Eyebrow: Detailed scope
+        Title: What's included
+        ShowTitle: true
+        buckets:
+          - key: included
+            Title: Included
+            ShowTitle: false
+            HTML: |-
+              <ul>
+              <li>Construction dust removed front and back of house</li>
+              <li>Stainless steel surfaces, prep tables and shelving cleaned and polished</li>
+              <li>Kitchen walls and backsplashes washed</li>
+              <li>Exteriors of kitchen equipment cleaned, stickers and film removed</li>
+              <li>Kitchen floors degreased and mopped</li>
+              <li>Dining room, bar and seating areas cleaned</li>
+              <li>Washrooms cleaned top to bottom</li>
+              <li>Interior windows, glass doors and partitions</li>
+              <li>Light fixtures, vents and registers dusted</li>
+              </ul>
+
+      # Image (Phase 4): TSvGSPO_Kqk (alternative hG85jQJq-tw). Alt: "Empty commercial kitchen with stainless steel counters and equipment."
+      - key: rest-image
+        class: App\Elements\SectionContentBlock
+        style: FeatureImage
+        Title: Feature photo
+        ShowTitle: false
+
+      - key: rest-exclusions
+        class: App\Elements\SectionContentBlock
+        style: Callout
+        Title: What we don't do
+        ShowTitle: true
+        HTML: |-
+          <ul>
+          <li>Hood, exhaust duct and fan cleaning. This needs a certified hood-cleaning company.</li>
+          <li>Grease trap pumping</li>
+          <li>Pest control</li>
+          <li>Servicing or repairing refrigeration or kitchen equipment</li>
+          <li>Work above ladder height</li>
+          </ul>
+
+      - key: rest-audiences
+        class: App\Elements\BucketsBlock
+        style: AudienceCards
+        Eyebrow: Project partners
+        Title: Who this is for
+        ShowTitle: true
+        buckets:
+          - key: owners
+            Title: Restaurant owners and operators
+            ShowTitle: true
+            HTML: |-
+              <p>Open on time in a space that's clean.</p>
+          - key: contractors
+            Title: General contractors
+            ShowTitle: true
+            HTML: |-
+              <p>Hand over a restaurant fit-out ready for the owner's team.</p>
+          - key: landlords
+            Title: Commercial landlords and property managers
+            ShowTitle: true
+            HTML: |-
+              <p>Get a restaurant unit ready for a new tenant.</p>
+
+      - key: rest-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: Common questions
+        Title: Restaurant cleaning FAQs
+        ShowTitle: true
+        buckets:
+          - key: hoods
+            Title: Do you clean commercial kitchen hoods and exhaust ducts?
+            ShowTitle: true
+            HTML: |-
+              <p>No. Hood and exhaust systems need a certified hood-cleaning company. We clean the rest of the kitchen and can work around their visit.</p>
+          - key: inspection
+            Title: Can you clean before a health inspection or opening day?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We'll schedule the final clean ahead of your inspection or opening date. Book as early as you can, because opening dates tend to move.</p>
+          - key: after-hours
+            Title: Do you work after hours or on weekends?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes, when it helps you avoid disrupting your staff or trades.</p>
+
+  # ── 6. Hoarding Cleaning (scope to confirm with Rebekah; no photos on this page) ──
+  # No eyebrows except the FAQ: the Figma labels ("Project partners") don't suit this page's tone.
+  - key: hoarding
+    class: App\Pages\PracticeAreaPage
+    parent: services
+    URLSegment: hoarding-cleaning
+    Title: Hoarding Cleaning
+    MenuTitle: Hoarding
+    ShowInMenus: true
+    ShowInTopMenu: false
+    ShowInFooterMenu: false
+    MetaTitle: Hoarding Cleanup Vancouver | TrueGrit Clean Co.
+    MetaDescription: |-
+      Respectful, judgement-free hoarding cleanup in Vancouver. We work at your pace, agree the scope up front and keep everything confidential. Free quote.
+    HeroLabel: Services · Vancouver, BC
+    HeroTitle: Hoarding Cleanup in Vancouver
+    HeroContent: |-
+      <p>Hoarding cleanup clears, sorts and cleans a home that has become hard to live in, at a pace and with the discretion that suit the person who lives there. We work with individuals, families, landlords and property managers across Vancouver.</p>
+    TeaserContent: |-
+      <p>Respectful, judgement-free cleanup of homes that have become hard to live in, with a clear "what we do and don't do" agreed up front.</p>
+    blocks:
+      - key: hoard-intro
+        class: App\Elements\SectionContentBlock
+        style: ServiceIntro
+        Title: Introduction
+        ShowTitle: false
+        HTML: |-
+          <p>Asking for help with this is hard. We don't judge, we don't lecture, and we don't make decisions about your belongings without you. We agree the plan with you before we start, and we stick to it.</p>
+
+      - key: hoard-how
+        class: App\Elements\BucketsBlock
+        style: Standards
+        Title: How we work
+        ShowTitle: true
+        buckets:
+          - key: no-judgement
+            Title: No judgement.
+            ShowTitle: true
+            HTML: |-
+              <p>We've seen it before and we're here to help, not to comment.</p>
+          - key: control
+            Title: You stay in control.
+            ShowTitle: true
+            HTML: |-
+              <p>Nothing is thrown away without your say-so.</p>
+          - key: scope
+            Title: Clear scope up front.
+            ShowTitle: true
+            HTML: |-
+              <p>Before we start, we agree in plain language what we'll do and what we won't.</p>
+          - key: confidential
+            Title: Confidential.
+            ShowTitle: true
+            HTML: |-
+              <p>We don't share details of your home with anyone. We only take photos with your permission, and they're never shared without your consent.</p>
+          - key: pace
+            Title: At your pace.
+            ShowTitle: true
+            HTML: |-
+              <p>A large cleanup can be done in stages over several visits.</p>
+
+      - key: hoard-do
+        class: App\Elements\BucketsBlock
+        style: ScopeGroups
+        Title: What we do
+        ShowTitle: true
+        buckets:
+          - key: do
+            Title: What we do
+            ShowTitle: false
+            HTML: |-
+              <ul>
+              <li>Sort through items with you: keep, donate, discard</li>
+              <li>Bag and remove garbage and unwanted items</li>
+              <li>Clear pathways, rooms and surfaces</li>
+              <li>Deep clean kitchens, bathrooms, floors and surfaces once the space is clear</li>
+              <li>Get a home ready for a move, an inspection or a sale</li>
+              </ul>
+
+      - key: hoard-dont
+        class: App\Elements\SectionContentBlock
+        style: Callout
+        Title: What we don't do
+        ShowTitle: true
+        HTML: |-
+          <p>For everyone's safety, we don't handle:</p>
+          <ul>
+          <li>Needles or other sharps</li>
+          <li>Biohazards, including bodily fluids and significant human or animal waste</li>
+          <li>Pest infestations (we'll pause until a pest control company has treated the home)</li>
+          <li>Mould remediation</li>
+          <li>Trauma or death scenes</li>
+          <li>Asbestos or other hazardous materials</li>
+          </ul>
+          <p>If we find any of these during a job, we stop work in that area and help you find a certified specialist.</p>
+
+      - key: hoard-audiences
+        class: App\Elements\BucketsBlock
+        style: AudienceCards
+        Title: Who this is for
+        ShowTitle: true
+        buckets:
+          - key: residents
+            Title: People living with hoarding, and their families
+            ShowTitle: true
+            HTML: |-
+              <p>Practical help to make a home safe and livable again.</p>
+          - key: landlords
+            Title: Landlords and property managers
+            ShowTitle: true
+            HTML: |-
+              <p>A unit cleared and cleaned for the tenant, or for a turnover.</p>
+          - key: support
+            Title: Support workers and housing providers
+            ShowTitle: true
+            HTML: |-
+              <p>A cleaning partner who treats residents with respect.</p>
+
+      - key: hoard-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: Common questions
+        Title: Hoarding cleanup FAQs
+        ShowTitle: true
+        buckets:
+          - key: belongings
+            Title: Will you throw my things away without asking?
+            ShowTitle: true
+            HTML: |-
+              <p>No. We sort through items with you and nothing is discarded without your agreement.</p>
+          - key: biohazards
+            Title: Do you handle needles, biohazards or animal waste?
+            ShowTitle: true
+            HTML: |-
+              <p>No. Sharps, bodily fluids, significant human or animal waste, mould and pest infestations need certified specialists. If we find them, we stop and help you find the right company.</p>
+          - key: duration
+            Title: How long does a hoarding cleanup take?
+            ShowTitle: true
+            HTML: |-
+              <p>It depends on the size of the home and how much needs to be sorted. Some jobs take a day, others take several visits. We'll give you an estimate after seeing photos or doing a walkthrough.</p>
+          - key: on-behalf
+            Title: Can a family member or landlord book on someone's behalf?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We do need the resident's agreement before we start, and we work with them directly on what's kept.</p>
+          - key: confidential
+            Title: Is it confidential?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We don't discuss your home or your situation with anyone, and we don't post photos of your home.</p>
+
+  # ── 7. About ───────────────────────────────────────────────────────────────
+  - key: about
+    class: App\Pages\TopLevelPage
+    URLSegment: about
+    Title: About
+    ShowInMenus: true
+    ShowInTopMenu: true
+    ShowInFooterMenu: true
+    MetaTitle: About TrueGrit Clean Co. | Construction Cleaning Vancouver
+    MetaDescription: |-
+      TrueGrit Clean Co. is a Vancouver construction cleaning company. We show up when scheduled, communicate clearly and work around your project deadlines.
+    HeroLabel: About us
+    HeroTitle: About TrueGrit Clean Co.
+    HeroContent: |-
+      <p>TrueGrit Clean Co. is a Vancouver construction cleaning company run by partners Rebekah Bergeron-Taillefer and Miguel Paniagua Faz. We clean up after contractors, renovators and developers so their projects are ready for the next stage.</p>
+    blocks:
+      # Placeholders until Rebekah sends her story: replace before launch.
+      - key: about-story
+        class: App\Elements\BucketsBlock
+        style: Story
+        Title: Our story
+        ShowTitle: false
+        buckets:
+          - key: who
+            Title: Who we are
+            ShowTitle: true
+            HTML: |-
+              <p>[Placeholder: 2–3 sentences from Rebekah. Who you are, how long you've been cleaning, what kind of work you've done.]</p>
+          - key: why
+            Title: Why we started TrueGrit
+            ShowTitle: true
+            HTML: |-
+              <p>[Placeholder: Rebekah's story. Why construction cleaning, and what she saw that could be done better.]</p>
+
+      - key: about-standards
+        class: App\Elements\BucketsBlock
+        style: Standards
+        Eyebrow: How we work
+        Title: The standard we hold
+        ShowTitle: true
+        buckets:
+          - key: scheduled
+            Title: We show up when scheduled.
+            ShowTitle: true
+            HTML: |-
+              <p>Your timeline is tight. We don't add to it.</p>
+          - key: communicate
+            Title: We communicate clearly.
+            ShowTitle: true
+            HTML: |-
+              <p>You'll know when we're coming, what we're doing and when we're done.</p>
+          - key: deadlines
+            Title: We work around your deadlines.
+            ShowTitle: true
+            HTML: |-
+              <p>Inspections, staging, possession: we plan our cleans around your dates.</p>
+          - key: next-stage
+            Title: We leave it ready for the next stage.
+            ShowTitle: true
+            HTML: |-
+              <p>Whether that's the finishing trades, the inspector or the owner.</p>
+
+      - key: about-rely
+        class: App\Elements\BucketsBlock
+        style: Checklist
+        Eyebrow: Jobsite ready
+        Title: Why contractors can rely on us
+        ShowTitle: true
+        buckets:
+          - key: focus
+            Title: Construction cleaning is our focus, not a side line.
+            ShowTitle: true
+          - key: written-scope
+            Title: Written scope and quote before we start.
+            ShowTitle: true
+          - key: checklist-photos
+            Title: Signed checklist and completion photos on every job.
+            ShowTitle: true
+            claims: [checklist, photos]
+          - key: insured-worksafebc
+            Title: Insured and WorkSafeBC registered.
+            ShowTitle: true
+            claims: [insured, worksafebc]
+
+      # Bios and photos to come from Rebekah: replace the placeholders before launch.
+      - key: about-team
+        class: App\Elements\BucketsBlock
+        style: Team
+        Eyebrow: The people behind the work
+        Title: The team
+        ShowTitle: true
+        buckets:
+          - key: rebekah
+            Title: Rebekah Bergeron-Taillefer
+            ShowTitle: true
+            SubTitle: Partner
+            HTML: |-
+              <p>[Placeholder bio, 2 sentences + photo]</p>
+          - key: miguel
+            Title: Miguel Paniagua Faz
+            ShowTitle: true
+            SubTitle: Partner
+            HTML: |-
+              <p>[Placeholder bio, 2 sentences + photo]</p>
+
+      - key: about-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: Common questions
+        Title: About TrueGrit
+        ShowTitle: true
+        buckets:
+          - key: owners
+            Title: Who owns TrueGrit Clean Co.?
+            ShowTitle: true
+            HTML: |-
+              <p>TrueGrit Clean Co. is a partnership between Rebekah Bergeron-Taillefer and Miguel Paniagua Faz.</p>
+          - key: based
+            Title: Where are you based?
+            ShowTitle: true
+            HTML: |-
+              <p>We're based in Vancouver and serve nearby Lower Mainland communities. We come to you. We don't have a storefront.</p>
+          # "Answer only once true" in the content doc: hidden until both boxes are ticked.
+          - key: insured
+            Title: Are you insured?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. We carry liability insurance and are registered with WorkSafeBC. We can send a certificate and a clearance letter on request.</p>
+            claims: [insured, worksafebc]
+
+  # ── 8. Quote ───────────────────────────────────────────────────────────────
+  # Form fields, recipients and the photo upload are Build Phase 5. Content stays empty: the layout renders the form
+  # itself, and userforms puts the thank-you message (On Complete Message) there after a submission.
+  - key: quote
+    class: App\Pages\ContactPage
+    URLSegment: quote
+    Title: Get a Quote
+    ShowInMenus: true
+    ShowInTopMenu: false
+    ShowInFooterMenu: true
+    MetaTitle: Get a Free Post-Construction Cleaning Quote | Vancouver
+    MetaDescription: |-
+      Send your project details and photos. Written quote the same business day, no obligation. Vancouver.
+    HeroLabel: Free quote · Vancouver, BC
+    HeroTitle: Get a Free Project Quote
+    HeroContent: |-
+      <p>Send us the details and a few photos of the site. You'll have a written quote the same business day, with no obligation.</p>
+    Content: ''
+    OnCompleteMessage: |-
+      <p><strong>Thanks, we've got your request.</strong> We'll reply with a written quote the same business day, or the next business day if it came in after hours. If it's urgent, call or text <a href="tel:+18258823881">825-882-3881</a>.</p>
+    blocks:
+      # The reassurance panel beside the form (Figma quote.html). The phone number and email under the text come from
+      # Settings > Contact Info.
+      - key: quote-assurance
+        class: App\Elements\BucketsBlock
+        style: Assurance
+        Title: A straight quote. No runaround.
+        ShowTitle: true
+        HTML: |-
+          <p>Prefer to talk?</p>
+        buckets:
+          - key: same-day
+            Title: Written quote the same business day
+            ShowTitle: true
+          - key: no-obligation
+            Title: No obligation
+            ShowTitle: true
+          - key: area
+            Title: Serving Vancouver and nearby Lower Mainland communities
+            ShowTitle: true
+
+      - key: quote-faq
+        class: App\Elements\BucketsBlock
+        style: Faq
+        Eyebrow: FAQ
+        Title: Common questions
+        ShowTitle: true
+        buckets:
+          - key: needs
+            Title: What do you need to give me a quote?
+            ShowTitle: true
+            HTML: |-
+              <p>The address, approximate square footage, which clean you need and a few photos. With that we can usually quote without a site visit.</p>
+          - key: site-visit
+            Title: Do you need to see the site first?
+            ShowTitle: true
+            HTML: |-
+              <p>Not usually. For large, multi-unit or unusual projects, we may ask for a quick walkthrough before we price it.</p>
+          - key: free
+            Title: Is the quote free?
+            ShowTitle: true
+            HTML: |-
+              <p>Yes. Quotes are free and there's no obligation.</p>
+
+  # ── 9. Privacy Policy ──────────────────────────────────────────────────────
+  # A plain-language template, not legal advice. "[date of launch]" stays visible until launch.
+  - key: privacy
+    class: Page
+    URLSegment: privacy
+    Title: Privacy Policy
+    ShowInMenus: true
+    ShowInTopMenu: false
+    ShowInFooterMenu: true
+    HideRailNav: true
+    MetaTitle: Privacy Policy | TrueGrit Clean Co.
+    MetaDescription: |-
+      How TrueGrit Clean Co. collects, uses and protects the information you send through our quote form, and how to contact us.
+    Content: |-
+      <p><em>Effective date: [date of launch]</em></p>
+      <p><strong>Who we are.</strong> TrueGrit Clean Co. is a cleaning company in Vancouver, British Columbia. This policy explains how we handle personal information collected through truegritclean.ca. We follow British Columbia's <em>Personal Information Protection Act</em> (PIPA).</p>
+      <p><strong>What we collect.</strong> When you request a quote, we collect what you enter in the form: your name, company, phone number, email, project address, project details, and any photos you upload. If you call, text or email us, we keep those messages.</p>
+      <p><strong>Why we collect it.</strong> We use your information only to prepare and send your quote, to contact you about your project, to schedule and carry out the work, and for our business records. We don't sell or rent your information, and we don't use it for marketing unless you ask us to.</p>
+      <p><strong>Photos.</strong> Photos you upload are used only to quote and plan your job. We won't publish them or share them without your permission.</p>
+      <p><strong>Where it's stored and who sees it.</strong> Quote requests are emailed to us and stored in our business email account and on our website's hosting server in Canada. Only the TrueGrit team and our website provider (for maintenance and security) can access it. We use reasonable safeguards to protect it.</p>
+      <p><strong>How long we keep it.</strong> We keep quote requests for up to 2 years, and records of completed jobs for as long as tax and business record rules require. After that, we delete them.</p>
+      <p><strong>Cookies and analytics.</strong> Our website may use basic cookies and analytics to understand how visitors use the site. These don't identify you personally.</p>
+      <p><strong>Your rights.</strong> You can ask to see the personal information we hold about you, ask us to correct it, or ask us to delete it where we're not required to keep it. Email us and we'll respond within 30 days.</p>
+      <p><strong>Contact.</strong> Questions about privacy: <a href="mailto:hello@truegritclean.ca">hello@truegritclean.ca</a> · <a href="tel:+18258823881">825-882-3881</a>.</p>
+      <p><strong>Changes.</strong> We may update this policy. The current version will always be on this page with its effective date.</p>

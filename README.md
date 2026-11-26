@@ -93,6 +93,11 @@ site: a page, the sitemap (see below), and a real submission through the contact
   address empty: this is a service-area business. Empty lines are hidden.
 - **Settings > Main > Tagline:** shown in the footer under the logo.
 - **Settings > Footer:** the exclusions line and the photo credits (keep them in step with the photos used).
+- **Settings > Claims:** six boxes, all unticked until the business confirms each one is true: insured,
+  WorkSafeBC, HEPA equipment, signed checklist, job photos, minimum price. An unticked box keeps everything that
+  depends on it off the site and out of the schema: checklist and FAQ items that tick it under "Show only when
+  confirmed", sentences wrapped in `[claim key=minimum]...[/claim]` (`key=checklist+photos` waits for both),
+  and the trust badges.
 - **Settings > Contact Banner:** the yellow CTA band above the footer: heading and button label on every page;
   the text line and the words before the phone number on the home page only. The button links to the quote
   page (the site's ContactPage).
@@ -109,6 +114,20 @@ site: a page, the sitemap (see below), and a real submission through the contact
   its old address to the page visitors should land on. See Redirects below.
 
 ## Seeding content
+
+`App\Tasks\SeedTask` builds the 9 launch pages, their blocks and the Settings text from
+`app/seed/content.yml` (the copy of `content/TrueGrit-Website-Content.md`, verbatim minus the notes for the client):
+
+```bash
+cd "/Users/dave/Documents/Projects/ICONA/Clients/True Grit Cleaning (Rebekah)/site.nosync"
+ddev exec vendor/bin/sake tasks:my-task
+ddev exec vendor/bin/sake tasks:seed --publish
+```
+
+It checks the whole file before writing anything, skips every page that already exists and every Settings field
+that already holds text, and never touches Settings > Claims, so a re-run cannot overwrite the client's edits.
+`--force` overwrites existing pages and Settings text: never on a site whose content the client has started
+editing. Without `--publish` it writes drafts.
 
 A site's `SeedTask` builds its pages and blocks. Three rules, each learned the hard way:
 

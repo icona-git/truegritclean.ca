@@ -17,6 +17,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Extension;
 use SilverStripe\ErrorPage\ErrorPage;
 use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\View\Parsers\ShortcodeParser;
 
 /**
  * Site-wide SEO head layer for SiteTree pages. Runs AFTER syntro/silverstripe-seo
@@ -613,7 +614,8 @@ class SEOMetaExtension extends Extension
                 if (!$style || $style->TemplateName !== 'Faq') {
                     continue;
                 }
-                foreach ($block->Buckets()->sort('Sort ASC') as $bucket) {
+                // ShownBuckets(): an FAQ still waiting for a claim (Settings > Claims) stays out of the schema too.
+                foreach ($block->ShownBuckets() as $bucket) {
                     $q = trim((string) $bucket->Title);
                     $a = $this->plainText($bucket->HTML, 1000);
                     if ($q === '' || $a === '') {
@@ -677,7 +679,9 @@ class SEOMetaExtension extends Extension
      */
     private function plainText($html, int $max): string
     {
-        $html = (string) $html;
+        // Run shortcodes first, as the page does: an unconfirmed [claim]...[/claim] sentence renders as nothing,
+        // so it must not reach a meta description or the JSON-LD as raw text.
+        $html = ShortcodeParser::get_active()->parse((string) $html);
         // Headings are labels, not prose (a person's name above their bio) - drop them; then keep block
         // boundaries as spaces so adjacent paragraphs never run together.
         $html = (string) preg_replace('#<h[1-6][^>]*>.*?</h[1-6]>#is', ' ', $html);
