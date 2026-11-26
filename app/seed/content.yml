@@ -16,6 +16,11 @@ siteconfig:
   Tagline: True Grit. Real Work. Spotless Results.
   Phone: 825-882-3881
   Email: hello@truegritclean.ca
+  # City and province only: Google requires an address on a LocalBusiness type (ProfessionalService is one), and
+  # service_area_business (app/_config/seo.yml) keeps any street address and postal code out of the schema.
+  # No template prints these two fields.
+  City: Vancouver
+  Province: BC
   # The line break matches the Figma footer; the field keeps it.
   ServiceArea: |-
     Vancouver and nearby
