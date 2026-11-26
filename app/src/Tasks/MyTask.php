@@ -90,8 +90,9 @@ class MyTask extends BuildTask
             ['Team Grid',                          'App\\Elements\\PersonBlock', 'Grid'],
             ['Person List',                        'App\\Elements\\PersonBlock', 'List'],
             ['Our Counsel',                        'App\\Elements\\PersonBlock', 'OurCounsel'],
-            // truegritclean.ca: one variant per Figma section (design/figma-export). Templates and SCSS
-            // (<BlockClass>_<TemplateName>.ss) arrive in Build Phase 4; until then the block's default template renders.
+            // truegritclean.ca: one variant per Figma section (design/figma-export). Templates are
+            // themes/app-theme/templates/App/Elements/<BlockClass>_<TemplateName>.ss; css/src/blocks/_truegrit.scss
+            // bridges them to the ported Figma styles.
             ['Section Content - Industry Band',    'App\\Elements\\SectionContentBlock', 'IndustryBand'],
             ['Section Content - Service Intro',    'App\\Elements\\SectionContentBlock', 'ServiceIntro'],
             ['Section Content - Tags',             'App\\Elements\\SectionContentBlock', 'Tags'],

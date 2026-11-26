@@ -92,7 +92,8 @@ site: a page, the sitemap (see below), and a real submission through the contact
 - **Settings > Contact Info:** email, phone and service area (footer, CTA band, schema). Leave the street
   address empty: this is a service-area business. Empty lines are hidden.
 - **Settings > Main > Tagline:** shown in the footer under the logo.
-- **Settings > Footer:** the exclusions line and the photo credits (keep them in step with the photos used).
+- **Settings > Footer:** the exclusions line and the photo credits (keep them in step with the photos used: when a
+  stock photo is replaced or removed, take its photographer off the line).
 - **Settings > Claims:** six boxes, all unticked until the business confirms each one is true: insured,
   WorkSafeBC, HEPA equipment, signed checklist, job photos, minimum price. An unticked box keeps everything that
   depends on it off the site and out of the schema: checklist and FAQ items that tick it under "Show only when
@@ -109,6 +110,10 @@ site: a page, the sitemap (see below), and a real submission through the contact
   pages below the top level appear in neither.
 - **Any page > Hero > Hero image focus:** which side of the hero photo stays in view on a phone. Text must
   never cover a face: after changing a hero photo or this setting, look at the page on a phone.
+- **Hero photos:** the home and About heroes show the page's own Hero image. A service page shows a photo only when
+  one is set on that page itself (never its parent's): the hoarding page carries no photo by design, and a page
+  without one gets the plain charcoal hero. Feature photos and the "Who we work with" band use the block's
+  Background Image; the three phase cards use each item's Image. The image's Title in Files is its alt text.
 - **Breadcrumbs** use each page's navigation label (Main tab). Change the label and the trail follows.
 - **Redirects (left menu):** when a page is removed, for example a service that is dropped, add a redirect from
   its old address to the page visitors should land on. See Redirects below.
@@ -122,10 +127,17 @@ site: a page, the sitemap (see below), and a real submission through the contact
 cd "/Users/dave/Documents/Projects/ICONA/Clients/True Grit Cleaning (Rebekah)/site.nosync"
 ddev exec vendor/bin/sake tasks:my-task
 ddev exec vendor/bin/sake tasks:seed --publish
+ddev exec vendor/bin/sake tasks:seed-images --publish
 ```
 
 It checks the whole file before writing anything, skips every page that already exists and every Settings field
 that already holds text, and never touches Settings > Claims, so a re-run cannot overwrite the client's edits.
+
+`App\Tasks\SeedImagesTask` (`tasks:seed-images`) then attaches the launch photos listed in `app/seed/images.yml`
+(web copies in `app/seed/images/`, Unsplash construction scenes, never TrueGrit jobs) to the page heroes, blocks
+and items, with each photo's alt text stored as the image's Title (SilverStripe prints it as `alt`), and writes the
+footer's photo credits line. It fills only empty image fields and leaves an edited credits line alone; `--force`
+replaces both. A photo already in Files is reused, so a re-run uploads nothing twice.
 `--force` overwrites existing pages and Settings text: never on a site whose content the client has started
 editing. Without `--publish` it writes drafts.
 

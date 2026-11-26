@@ -1,0 +1,417 @@
+// ─── TrueGrit block variants and layouts (Build Phase 4) ─────────────────────
+// The variant templates (templates/App/Elements/*_<Variant>.ss) and layouts carry the Figma section markup, styled
+// by the ported partials (pages/_home.scss, _service.scss, _about.scss, _quote.scss, components/). This file only
+// bridges the CMS to that markup:
+//  - the starter gives every block wrapper (section.block) its own padding and background; the Figma sections
+//    inside these templates own both, so the wrapper is zeroed for them;
+//  - editors type plain HTML (a <ul>, a <p>) where the export has classed elements, so those are styled to match.
+
+// ─── Block wrappers ──────────────────────────────────────────────────────────
+
+$tg-block-variants: (
+  'SectionContentBlock_IndustryBand',
+  'SectionContentBlock_ServiceIntro',
+  'SectionContentBlock_Tags',
+  'SectionContentBlock_Callout',
+  'SectionContentBlock_FeatureImage',
+  'BucketsBlock_ServiceCards',
+  'BucketsBlock_Phases',
+  'BucketsBlock_ServicePhases',
+  'BucketsBlock_Checklist',
+  'BucketsBlock_Steps',
+  'BucketsBlock_ScopeGroups',
+  'BucketsBlock_AudienceCards',
+  'BucketsBlock_Standards',
+  'BucketsBlock_Story',
+  'BucketsBlock_Team',
+  'BucketsBlock_Assurance',
+  'BucketsBlock_Faq',
+  'SpecialListBlock_Services'
+);
+
+@each $variant in $tg-block-variants {
+  .block.#{$variant} {
+    padding-block: 0;
+    background: none;
+  }
+}
+
+// A Section Content block with no style chosen renders a Figma .section too (SectionContentBlock.ss).
+.block.SectionContentBlock:not([class*="SectionContentBlock_"]) {
+  padding-block: 0;
+}
+
+// ─── Heroes ──────────────────────────────────────────────────────────────────
+
+// Hero intros are CMS HTML (paragraphs) inside the export's lede element.
+.home-hero__lede,
+.service-hero__lede,
+.about-hero__text,
+.quote-hero__text {
+  p {
+    margin-bottom: 0;
+  }
+
+  p + p {
+    margin-top: 0.75em;
+  }
+}
+
+// A page with no hero photo (App/Includes/PageHero.ss): the plain charcoal treatment of the export's quote hero,
+// at that hero's height instead of the photo heroes' tall box.
+// Two classes: this file loads before the page partials, whose single-class .service-hero / .about-hero rules set
+// the photo heroes' height. The same applies to the other modifiers below.
+.service-hero.page-hero--plain,
+.about-hero.page-hero--plain,
+.quote-hero.page-hero--plain {
+  min-height: 0;
+  background:
+    repeating-linear-gradient(112deg, transparent 0 13rem, rgb(255 255 255 / 4%) 13rem 13.15rem),
+    linear-gradient(135deg, var(--black) 0 58%, #252525 100%);
+
+  .service-hero__inner,
+  .about-hero__inner {
+    min-height: 0;
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+  }
+}
+
+.quote-hero__title {
+  overflow-wrap: break-word;
+}
+
+// Hero image focus (Page.HeroFocusX) on the <img> heroes. The server-side crops already keep that side; this keeps
+// it when the browser crops the image again to fill the hero box. Centre leaves the export's own position.
+img.hero-focus--left  { object-position: left center !important; }
+img.hero-focus--right { object-position: right center !important; }
+
+// ─── Section heading intro (Phases) ──────────────────────────────────────────
+
+.section-heading__intro p:last-child {
+  margin-bottom: 0;
+}
+
+// ─── Industry band: the block's list and closing line ────────────────────────
+
+.industry-band__body {
+  ul {
+    @extend .industry-tags;
+  }
+
+  p {
+    @extend .industry-band__statement;
+  }
+}
+
+@media (min-width: $tg-lg) {
+  .industry-band.industry-band--no-photo {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Tags block (light version of the industry tags) ─────────────────────────
+
+.tags-block__list {
+  ul {
+    @extend .industry-tags;
+    margin: 0;
+  }
+
+  li {
+    background: var(--white);
+  }
+}
+
+// ─── Service intro ───────────────────────────────────────────────────────────
+
+.service-intro__text p {
+  margin-bottom: 1em;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ─── Service phases: an item's text can be a paragraph and a list ────────────
+
+.service-phase__body {
+  position: relative;
+  z-index: 1;
+
+  p + ul,
+  ul + p {
+    margin-top: 1rem;
+  }
+
+  ul {
+    display: grid;
+    padding: 0;
+    margin: 0;
+    gap: 0.45rem;
+    color: var(--grey-300);
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  li::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--yellow);
+    font-weight: 800;
+    content: "\2713";
+  }
+}
+
+// ─── Scope groups: the item's bulleted list is the ticked list ───────────────
+
+.scope-group__body ul {
+  @extend .scope-group__list;
+}
+
+.scope-groups--single .scope-group {
+  border-bottom: 0;
+}
+
+@media (min-width: $tg-md) {
+  .scope-groups.scope-groups--single {
+    grid-template-columns: 1fr;
+  }
+
+  .scope-groups--single .scope-group__body ul {
+    display: block;
+    column-gap: 3rem;
+    columns: 2;
+  }
+
+  .scope-groups--single .scope-group__body li {
+    margin-bottom: 0.55rem;
+    break-inside: avoid;
+  }
+}
+
+// ─── Audience cards ──────────────────────────────────────────────────────────
+
+.audience-card__body {
+  margin-top: auto;
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 0.75em;
+  }
+}
+
+@media (min-width: $tg-md) {
+  .audience-grid.audience-grid--2,
+  .audience-grid.audience-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: $tg-lg) {
+  .audience-grid.audience-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// ─── Standards, story, steps, service cards: last paragraph sits tight ───────
+
+// An odd number of standards (the hoarding page has five) would leave an empty cell in the two-column grid: the
+// last one spans both columns instead.
+@media (min-width: $tg-md) {
+  .standards-grid .standard-item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+.standard-item p + p,
+.home-phase__body p + p {
+  margin-top: 0.75em;
+}
+
+.about-story__text p:last-child,
+.home-step p:last-child {
+  margin-bottom: 0;
+}
+
+// ─── Team cards: real photos replace the export's placeholder box ────────────
+
+.team-card__photo {
+  aspect-ratio: 1;
+  min-height: 16rem;
+  overflow: hidden;
+  background: var(--grey-100);
+  border-bottom: 1px solid var(--grey-300);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.1);
+  }
+}
+
+.team-card__body p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: $tg-md) {
+  .team-card__photo {
+    border-right: 1px solid var(--grey-300);
+    border-bottom: 0;
+  }
+
+  .team-card.team-card--no-photo {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Exclusions callout: paragraphs and lists ────────────────────────────────
+
+.service-callout__body {
+  color: var(--grey-300);
+
+  p {
+    margin-bottom: 0;
+  }
+
+  > * + * {
+    margin-top: 0.85rem;
+  }
+
+  ul {
+    display: grid;
+    padding-left: 1.25rem;
+    margin-bottom: 0;
+    gap: 0.4rem;
+  }
+
+  li {
+    list-style: square;
+  }
+
+  li::marker {
+    color: var(--yellow);
+  }
+}
+
+// ─── FAQ answers with more than one paragraph ────────────────────────────────
+
+.faq__content p + p,
+.faq__content p + ul,
+.faq__content ul + p {
+  margin-top: 0.85em;
+}
+
+// ─── Quote panel: its text line is the export's "Prefer to talk?" label ──────
+
+.quote-assurance__contact p:last-of-type {
+  margin-bottom: 0.2rem;
+}
+
+// ─── Plain sections (SectionContentBlock.ss, privacy page) ───────────────────
+
+.section-text {
+  max-width: 56rem;
+}
+
+.section-text + .text-link {
+  margin-top: 1.5rem;
+}
+
+// A heading followed by plain text (Services: "Packages for builders and developers") sits closer to it than the
+// export's gap before a grid of cards. Browsers without :has() keep the larger gap.
+.section-heading:has(+ .section-text) {
+  margin-bottom: 1.75rem;
+}
+
+.page-text {
+  h2 {
+    max-width: none;
+    margin-top: 2.5rem;
+    font-size: var(--step-2);
+  }
+}
+
+// Tables in CMS text, e.g. the Services page's phase table: the export's FAQ and checklist rules (black top border,
+// grey row lines, display type for the row headings). Below tablet width each row stacks as a small card.
+.typography table {
+  margin-bottom: 0;
+  border-top: 3px solid var(--black);
+
+  th,
+  td {
+    padding: 1.1rem 1.25rem 1.1rem 0;
+    border-bottom: 1px solid var(--grey-300);
+    color: var(--grey-600);
+    line-height: 1.55;
+  }
+
+  thead th {
+    color: var(--black);
+    font-family: var(--display);
+    font-size: var(--step--2);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  tbody th {
+    color: var(--black);
+    font-family: var(--display);
+    font-size: var(--step-0);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: #{$tg-md - 0.01rem}) {
+  .typography table,
+  .typography tbody,
+  .typography tr,
+  .typography th,
+  .typography td {
+    display: block;
+  }
+
+  .typography thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .typography table {
+    tr {
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--grey-300);
+    }
+
+    th,
+    td {
+      padding: 0;
+      border: 0;
+    }
+
+    td:nth-child(2) {
+      margin: 0.35rem 0 0.6rem;
+      color: var(--black);
+      font-family: var(--display);
+      font-size: var(--step--2);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+  }
+}
