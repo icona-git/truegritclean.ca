@@ -6,7 +6,7 @@
   </div>
   <% end_if %> --%>
   <div class="panel-stack">
-    <% loop $Buckets %>
+    <% loop $ShownBuckets %>
     <div class="panel-card">
       <% if $SecondaryFile %>
       <div class="panel-card__icon">

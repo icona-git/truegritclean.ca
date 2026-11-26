@@ -1,8 +1,11 @@
 <?php
 namespace App\Extensions;
 
+use App\Models\Claims;
 use SilverStripe\Core\Extension;
+use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\FieldGroup;
@@ -32,6 +35,13 @@ class MySiteConfig extends Extension
         'BookingBannerPhoneText'  => 'Varchar(100)',
         // Not rendered by this site's CTA band (the design has no disclaimer); kept so the column stays.
         'BookingBannerDisclaimer' => 'Text',
+        // Claims (App\Models\Claims::CLAIMS): default off; content that depends on one stays hidden until ticked.
+        'ClaimInsured'         => 'Boolean',
+        'ClaimWorkSafeBC'      => 'Boolean',
+        'ClaimHEPA'            => 'Boolean',
+        'ClaimSignedChecklist' => 'Boolean',
+        'ClaimJobPhotos'       => 'Boolean',
+        'ClaimMinimumPrice'    => 'Boolean',
     ];
 
     private static $has_one = [
@@ -96,6 +106,17 @@ class MySiteConfig extends Extension
             TextField::create('YouTubeURL', 'YouTube channel URL')
                 ->setDescription('Full URL. Shown in the site schema alongside the social links above.'),
         ]);
+
+        $claimFields = [
+            LiteralField::create('ClaimsIntro', '<p class="message notice">Tick a box only once the business has confirmed it is true. '
+                . 'While a box is unticked, everything that depends on it stays off the site: trust badges, checklist and FAQ items '
+                . 'that tick it under "Show only when confirmed", and any sentence wrapped in [claim key=...]...[/claim].</p>'),
+        ];
+        foreach (Claims::CLAIMS as $key => [$field, $label]) {
+            $claimFields[] = CheckboxField::create($field, $label)
+                ->setDescription(sprintf('Key for items and sentences: %s', $key));
+        }
+        $fields->addFieldsToTab('Root.Claims', $claimFields);
 
         $fields->addFieldsToTab('Root.ContactBanner', [
             TextField::create('BookingBannerTitle', 'Heading')

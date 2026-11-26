@@ -8,7 +8,7 @@
 
   <%-- ── Tiles: left-bordered columns ─────────────────────────────────────── --%>
   <div class="dark-cols__tiles">
-    <% loop $Buckets %>
+    <% loop $ShownBuckets %>
     <div class="dark-cols__tile">
       <h3 class="dark-cols__tile-heading">$Title</h3>
       <% if $HTML %><div class="dark-cols__tile-body">$HTML</div><% end_if %>

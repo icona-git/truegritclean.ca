@@ -8,7 +8,7 @@
     </div>
 
     <div class="intro__credentials">
-      <% loop $Buckets %>
+      <% loop $ShownBuckets %>
       <div class="credential-item">
         <% if $SecondaryFile %>
         <img src="$SecondaryFile.URL" alt="" aria-hidden="true" width="50" height="50" loading="lazy">

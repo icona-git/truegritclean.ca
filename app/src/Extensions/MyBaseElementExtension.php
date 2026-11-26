@@ -6,6 +6,7 @@ use ReflectionClass;
 use SilverStripe\Core\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\TextField;
 use SilverStripe\Control\Controller;
 use App\Models\BlockStyle;
 
@@ -15,6 +16,8 @@ class MyBaseElementExtension extends Extension
     private static $db = [
         'PaddingTop' => 'Varchar(255)',
         'PaddingBottom' => 'Varchar(255)',
+        // The small capitals line above a section heading in the Figma design ("The process"). Empty: none.
+        'Eyebrow' => 'Varchar(150)',
     ];
 
     private static $has_one = [
@@ -23,6 +26,10 @@ class MyBaseElementExtension extends Extension
 
     public function updateCMSFields( FieldList $fields )
     {
+        $fields->removeByName('Eyebrow');
+        $fields->insertBefore('Title', TextField::create('Eyebrow', 'Eyebrow')
+            ->setDescription('Optional short line shown above the heading, e.g. "The process". Leave empty for none.'));
+
         // User Option to control the padding.
         $src = [
             'padding-top-medium' => 'Medium Padding (3rem)',

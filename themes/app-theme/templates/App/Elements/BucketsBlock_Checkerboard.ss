@@ -6,7 +6,7 @@
   </div>
   <% end_if %>
   <div class="checker-grid">
-    <% loop $Buckets %>
+    <% loop $ShownBuckets %>
     <div class="checker-card">
       <%-- No image, no image column: the card body takes the row. Never a remote placeholder image. --%>
       <% if $Image %>

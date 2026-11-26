@@ -11,7 +11,7 @@
   </div>
   <% end_if %>
   <div class="bucket-grid">
-    <% loop $Buckets %>
+    <% loop $ShownBuckets %>
     <div class="bucket">
       <% if $Image %>
       <div class="bucket__img">

@@ -90,6 +90,24 @@ class MyTask extends BuildTask
             ['Team Grid',                          'App\\Elements\\PersonBlock', 'Grid'],
             ['Person List',                        'App\\Elements\\PersonBlock', 'List'],
             ['Our Counsel',                        'App\\Elements\\PersonBlock', 'OurCounsel'],
+            // truegritclean.ca: one variant per Figma section (design/figma-export). Templates and SCSS
+            // (<BlockClass>_<TemplateName>.ss) arrive in Build Phase 4; until then the block's default template renders.
+            ['Section Content - Industry Band',    'App\\Elements\\SectionContentBlock', 'IndustryBand'],
+            ['Section Content - Service Intro',    'App\\Elements\\SectionContentBlock', 'ServiceIntro'],
+            ['Section Content - Tags',             'App\\Elements\\SectionContentBlock', 'Tags'],
+            ['Section Content - Callout',          'App\\Elements\\SectionContentBlock', 'Callout'],
+            ['Section Content - Feature Image',    'App\\Elements\\SectionContentBlock', 'FeatureImage'],
+            ['Buckets - Service Cards',            'App\\Elements\\BucketsBlock', 'ServiceCards'],
+            ['Buckets - Phases',                   'App\\Elements\\BucketsBlock', 'Phases'],
+            ['Buckets - Service Phases',           'App\\Elements\\BucketsBlock', 'ServicePhases'],
+            ['Buckets - Checklist',                'App\\Elements\\BucketsBlock', 'Checklist'],
+            ['Buckets - Steps',                    'App\\Elements\\BucketsBlock', 'Steps'],
+            ['Buckets - Scope Groups',             'App\\Elements\\BucketsBlock', 'ScopeGroups'],
+            ['Buckets - Audience Cards',           'App\\Elements\\BucketsBlock', 'AudienceCards'],
+            ['Buckets - Standards',                'App\\Elements\\BucketsBlock', 'Standards'],
+            ['Buckets - Story',                    'App\\Elements\\BucketsBlock', 'Story'],
+            ['Buckets - Team',                     'App\\Elements\\BucketsBlock', 'Team'],
+            ['Buckets - Quote Assurance',          'App\\Elements\\BucketsBlock', 'Assurance'],
         ];
         foreach ($defs as [$title, $blockType, $templateName]) {
             $style = BlockStyle::get()->filter(['BlockType' => $blockType, 'TemplateName' => $templateName])->first();

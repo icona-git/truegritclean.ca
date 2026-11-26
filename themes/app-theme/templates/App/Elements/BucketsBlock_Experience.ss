@@ -17,7 +17,7 @@
     <% if $CtaLink %><a href="$CtaLink.URL" class="text-link"<% if $CtaLink.OpenInNew %> target="_blank" rel="noopener noreferrer"<% end_if %>>$CtaLink.Title</a><% end_if %>
   </div>
   <div class="experience-grid">
-    <% loop $Buckets %>
+    <% loop $ShownBuckets %>
     <div class="experience-card">
       <% if $SecondaryFile %>
       <div class="experience-card__icon">

@@ -6,7 +6,7 @@
   </div>
   <% end_if %>
   <div class="text-cards">
-    <% loop $Buckets %>
+    <% loop $ShownBuckets %>
     <div class="text-card">
       <% if $Title && $ShowTitle %><h3>$Title</h3><% end_if %>
       <% if $HTML %><div class="typography">$HTML</div><% end_if %>

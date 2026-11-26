@@ -13,6 +13,7 @@ use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 use SilverStripe\LinkField\Models\Link;
 use SilverStripe\LinkField\Form\LinkField;
+use SilverStripe\Model\List\SS_List;
 use SilverStripe\ORM\FieldType\DBField;
 use App\Models\Bucket;
 
@@ -80,6 +81,15 @@ class BucketsBlock extends BaseElement
             ->setTitle(_t(self::class . '.MainTabLabel', 'Content'));
 
         return $fields;
+    }
+
+    /**
+     * The buckets visitors may see: Buckets() without the items still waiting for a claim
+     * (App\Models\Bucket::IsShown()). Templates and the FAQ schema loop this, never Buckets().
+     */
+    public function ShownBuckets(): SS_List
+    {
+        return $this->Buckets()->sort('Sort')->filterByCallback(fn (Bucket $bucket) => $bucket->IsShown());
     }
 
     #[Override]

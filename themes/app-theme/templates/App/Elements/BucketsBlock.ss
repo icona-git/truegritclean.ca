@@ -8,7 +8,7 @@
   </div>
   <% end_if %>
   <div class="bucket-list">
-    <% loop $Buckets %>
+    <% loop $ShownBuckets %>
     <div class="bucket">
       <% if $Title && $ShowTitle %><h3>$Title</h3><% end_if %>
       <% if $SubTitle %><p class="bucket__subtitle">$SubTitle</p><% end_if %>

@@ -6,6 +6,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\Assets\File;
 use SilverStripe\Assets\Image;
+use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
@@ -33,6 +34,8 @@ class Bucket extends DataObject
         'SubTitle' => 'Varchar(255)',
         'HTML' => 'HTMLText',
         'Sort' => 'Int',
+        // Claim keys (App\Models\Claims) this item waits for, as a JSON array. Empty: always shown.
+        'Claims' => 'Varchar(255)',
     ];
 
     private static $has_one = [
@@ -70,6 +73,9 @@ class Bucket extends DataObject
         $fields->addFieldToTab('Root.Main', HTMLEditorField::create('HTML'));
         $fields->addFieldToTab('Root.Main', LinkField::create('Link', 'Call to Action Link'));
 
+        $fields->addFieldToTab('Root.Main', CheckboxSetField::create('Claims', 'Show only when confirmed', Claims::options())
+            ->setDescription('Leave all unticked for an item that always shows. Tick the claims this item states: it stays off the site until every ticked claim is confirmed in Settings > Claims.'));
+
         $f = UploadField::create('Image', 'Image');
         $f->setFolderName('Buckets');
         $f->setAllowedExtensions(['jpg','jpeg','png','webp']);
@@ -88,6 +94,12 @@ class Bucket extends DataObject
 
         return $fields;
 
+    }
+
+    /** False while any claim this item ticks is unconfirmed in Settings > Claims (App\Models\Claims). */
+    public function IsShown(): bool
+    {
+        return Claims::allConfirmed(Claims::decode($this->Claims));
     }
 
     public function getPreview()

@@ -3,7 +3,7 @@
 
     <%-- ── Left: credential buckets ──────────────────────────────────────── --%>
     <div class="iib-credentials">
-      <% loop $Buckets %>
+      <% loop $ShownBuckets %>
       <div class="iib-credential">
         <% if $SecondaryFile %>
         <img src="$SecondaryFile.URL" alt="" aria-hidden="true" width="50" height="50" loading="lazy">
