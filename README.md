@@ -91,7 +91,10 @@ site: a page, the sitemap (see below), and a real submission through the contact
   are never migrated or reconciled when a site moves.
 - **Settings > Contact Info:** email, phone and service area (footer, CTA band, schema). Leave the street
   address empty: this is a service-area business. Empty lines are hidden.
-- **Settings > Main > Tagline:** shown in the footer under the logo.
+- **Settings > Main > Tagline:** shown in the footer under the logo, and the `slogan` in the schema.
+- **Settings > Main > Logo:** the logo search engines show for the business (the schema's `logo`); visitors see
+  the theme's logo, not this field. Upload a PNG of the monogram, at least 112 x 112 px, once the client's logo
+  is final. Empty leaves `logo` out of the schema.
 - **Settings > Footer:** the exclusions line and the photo credits (keep them in step with the photos used: when a
   stock photo is replaced or removed, take its photographer off the line).
 - **Settings > Claims:** six boxes, all unticked until the business confirms each one is true: insured,
@@ -200,6 +203,23 @@ A refused submission comes back to the form with what the visitor typed and one 
 message has not been sent. Our spam check could not confirm it came from a person. Please try again, or
 phone or email us instead." The wording is in `app/lang/en.yml` (French in `app/lang/fr.yml`), under the
 module's three message keys; a site may reword it, but keep "not sent" and a way to reach the company.
+
+## Schema and llms.txt
+
+`App\Extensions\SEOMetaExtension` builds each page's JSON-LD from the CMS (config in `app/_config/seo.yml`):
+
+- **Every page:** a `ProfessionalService` node (name, URL, phone in `+1-` form, email, slogan, logo, `areaServed`,
+  and an `OfferCatalog` naming every published service page), `WebSite`, `WebPage` and `BreadcrumbList`.
+- **No street address, ever.** `service_area_business: true` keeps the street address and postal code out of the
+  schema even if someone types them into Settings > Contact Info; no template prints them either.
+- **Service pages:** a `Service` node with the same `@id` as its entry in the catalogue.
+- **Any page with an FAQ block:** `FAQPage`, from the FAQ items actually shown. An FAQ held back by
+  Settings > Claims, or a `[claim]` sentence inside an answer, stays out of the schema too.
+
+`/llms.txt` (`App\Control\LlmsTxtController`, route in `app/_config/routes.yml`) is a plain-text summary for AI
+assistants: the home page's meta description, tagline, service area, phone, email, every service page and
+other top-level page with its meta description, and the footer's exclusions line. It is built from the CMS on
+every request and carries no copy of its own, so editing a meta description or a Settings field updates it.
 
 ## Sitemaps
 
