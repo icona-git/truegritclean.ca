@@ -14,7 +14,10 @@
 
 # Settings > Footer > Photo credits: set when the field is empty or still holds the sentence the content seed wrote
 # (app/seed/content.yml), so an edited line is never overwritten. Names only for the photos below.
-credits: ''
+credits: >-
+  Some photos on this site are from Unsplash and show general construction scenes, not TrueGrit jobs. Photos by
+  Daniele Franchi, Albert Stoynov, Chad Montgomery, Brian Wangenheim, Glenov Brankovic, Steffen Lemmerzahl, Lisa Anna,
+  Point3D Commercial Imaging Ltd. and Ceba Solutions on Unsplash.
 
 images:
   - file: home-hero_gISfS1zLq7c.webp
@@ -24,9 +27,10 @@ images:
     field: HeroImage
 
   # The content doc names no About photo; the Figma export used this one (the content doc's second home-hero choice).
+  # Alt text written from the photo.
   - file: about-hero_jq0HpVncJX8.webp
     folder: Hero
-    alt: ''
+    alt: Excavator digging a building foundation on a construction site.
     path: /about/
     field: HeroImage
 
@@ -61,6 +65,7 @@ images:
     bucket: touch-up
     field: Image
 
+  # This copy keeps only the top 940px of the 1920px photo, so the wide feature crop (1920x823) keeps the worker's head.
   - file: post-construction-feature_t9eQm2y1tn8.webp
     folder: Blocks/Images
     alt: Worker grinding concrete on a construction site, with dust in the air.
