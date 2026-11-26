@@ -8,7 +8,8 @@
 #
 # Page keys: a page's "key" is this file's own name for it (parents and links use it). Every other key on a page,
 # block or bucket is a database field. Block and bucket keys become their SeedKey (unique within the page / block).
-# Images are added in Build Phase 4: the comments name each slot's Unsplash photo and alt text from the content doc.
+# Photos are attached by tasks:seed-images from app/seed/images.yml (file, alt text, slot); the comments below name
+# each slot's Unsplash photo as the content doc gives it.
 
 siteconfig:
   Title: TrueGrit Clean Co.
@@ -21,7 +22,7 @@ siteconfig:
     Lower Mainland communities
   FooterExclusions: |-
     We don't handle asbestos, lead, mould remediation, sharps, biohazards, bodily fluids or trauma scenes, or work above ladder height. We're happy to refer you to a certified specialist.
-  # Photographer names are added in Phase 4, once the photos actually used are settled.
+  # tasks:seed-images replaces this sentence with the full credits line (app/seed/images.yml) while nobody has edited it.
   PhotoCredits: |-
     Some photos on this site are from Unsplash and show general construction scenes, not TrueGrit jobs.
   BookingBannerTitle: |-
@@ -44,7 +45,7 @@ pages:
     MetaTitle: Post-Construction Cleaning Vancouver | TrueGrit Clean Co.
     MetaDescription: |-
       Post-construction and renovation cleaning in Vancouver for contractors, developers and homeowners. HEPA dust removal. Written quotes the same day.
-    # Hero image (Phase 4): gISfS1zLq7c or jq0HpVncJX8. Alt: "Black and white interior of a building under construction, light coming through the windows."
+    # Hero image: gISfS1zLq7c or jq0HpVncJX8 (gISfS1zLq7c used; jq0HpVncJX8 went to About). Alt: "Black and white interior of a building under construction, light coming through the windows."
     # The tagline under the H1 is Settings > Tagline; the hero buttons use Settings text and the phone number.
     HeroLabel: Cleaning services · Vancouver, BC
     HeroTitle: Post-Construction Cleaning in Vancouver
@@ -83,7 +84,7 @@ pages:
               <p>Respectful, judgement-free cleanup of cluttered homes, with the scope agreed before we start.</p>
             link: { page: hoarding, text: Learn more }
 
-      # Image (Phase 4): rjnLNuJFins. Alt: "Tower crane over a new building under construction in Burnaby."
+      # Image: rjnLNuJFins. Alt: "Tower crane over a new building under construction in Burnaby."
       - key: home-industry
         class: App\Elements\SectionContentBlock
         style: IndustryBand
@@ -111,19 +112,19 @@ pages:
           <p>Most builds need more than one clean. Book a single phase, or all three as one package.</p>
         cta: { page: post-construction, text: How post-construction cleaning works }
         buckets:
-          # Image (Phase 4): 2ZMe-E2NBZ0. Alt: "Unfinished room with bare drywall and construction dust on the floor."
+          # Image: 2ZMe-E2NBZ0. Alt: "Unfinished room with bare drywall and construction dust on the floor."
           - key: rough
             Title: Rough clean
             ShowTitle: true
             HTML: |-
               <p>While trades are still on site. Debris, packaging and heavy dust removed so finishing trades can get to work.</p>
-          # Image (Phase 4): ITA4ysSN8xA. Alt: "Empty finished room with hardwood floors and white walls."
+          # Image: ITA4ysSN8xA. Alt: "Empty finished room with hardwood floors and white walls."
           - key: final
             Title: Final clean
             ShowTitle: true
             HTML: |-
               <p>After construction wraps up. Every surface, window, cabinet, bathroom and floor, top to bottom, until it's move-in ready.</p>
-          # Image (Phase 4): 5d-aYsO2g7U. Alt: "Close-up of a clean window and frame."
+          # Image: 5d-aYsO2g7U. Alt: "Close-up of a clean window and frame."
           - key: touch-up
             Title: Touch-up clean
             ShowTitle: true
@@ -311,7 +312,8 @@ pages:
     MetaTitle: Post-Construction Cleaning Vancouver | Free Quote
     MetaDescription: |-
       Construction site to move-in ready. Detailed post-construction cleaning for contractors, developers and homeowners in Vancouver.
-    # Hero image (Phase 4): the content doc names none for this page; the Figma service hero used a concrete-grinding photo.
+    # Hero image: the content doc names none for this page, so the hero is the plain charcoal one (the Figma service
+    # hero used the concrete-grinding photo, which is this page's feature photo below).
     HeroLabel: Services · Vancouver, BC
     HeroTitle: Post-Construction Cleaning Vancouver
     HeroContent: |-
@@ -463,7 +465,7 @@ pages:
             HTML: |-
               <p>Finishing a build or major renovation? Move into a home that's actually clean, not just swept.</p>
 
-      # Image (Phase 4): t9eQm2y1tn8. Alt: "Worker grinding concrete on a construction site, with dust in the air."
+      # Image: t9eQm2y1tn8. Alt: "Worker grinding concrete on a construction site, with dust in the air."
       - key: pc-image
         class: App\Elements\SectionContentBlock
         style: FeatureImage
@@ -576,7 +578,7 @@ pages:
               <li>Dust cleaned from rooms beyond the work area, as agreed in the quote</li>
               </ul>
 
-      # Image (Phase 4): Fxv9QVauyD0. Alt: "Room in the middle of a renovation, with paint and drop sheets on the floor."
+      # Image: Fxv9QVauyD0. Alt: "Room in the middle of a renovation, with paint and drop sheets on the floor."
       - key: reno-image
         class: App\Elements\SectionContentBlock
         style: FeatureImage
@@ -712,7 +714,7 @@ pages:
               <li>Light fixtures, vents and registers dusted</li>
               </ul>
 
-      # Image (Phase 4): TSvGSPO_Kqk (alternative hG85jQJq-tw). Alt: "Empty commercial kitchen with stainless steel counters and equipment."
+      # Image: TSvGSPO_Kqk (alternative hG85jQJq-tw). Alt: "Empty commercial kitchen with stainless steel counters and equipment."
       - key: rest-image
         class: App\Elements\SectionContentBlock
         style: FeatureImage

@@ -1,57 +1,26 @@
+<%-- Service page (Figma service.html): breadcrumb strip, service hero with the quote button, then the blocks and the
+     CTA band. The hero shows a photo only when one is set on this page itself, never the parent's: the hoarding
+     page carries no photo by design, and a page without one gets the plain charcoal hero. --%>
 <% include App\Includes\Header %>
-<% include App\Includes\Hero %>
 
 <main id="main-content" tabindex="-1">
+    $Breadcrumbs
 
-  <%-- ── Two-column intro: rail nav left, breadcrumbs + heading + body right ─── --%>
-  <section class="pa-layout">
-    <div class="wrap pa-layout__inner">
+    <% if $HeroImage.exists %>
+    <% include App\Includes\PageHero Variant='service', TextClass='lede', Photo='1', Button='1' %>
+    <% else %>
+    <% include App\Includes\PageHero Variant='service', TextClass='lede', Button='1' %>
+    <% end_if %>
 
-      <div class="pa-layout__content">
-
-        $Breadcrumbs
-
-        <% if $Content %>
-        <div class="typography">
-          $Content
-        </div>
-        <% end_if %>
-
-      </div>
-
-      <aside class="pa-layout__rail">
-        <% include App\Includes\RailNav %>
-      </aside>
-
+    <% if $Content %>
+    <div class="section section--light">
+        <div class="section-shell section-shell--narrow typography">$Content</div>
     </div>
-  </section>
+    <% end_if %>
 
-  <%-- ── Lawyers practising in this area (internal-linking) ────────────────────── --%>
-  <% if $Lawyers %>
-  <section class="pa-lawyers person-aop">
-    <div class="wrap">
-      <div class="person-aop__intro">
-        <h2 class="person-aop__heading">Lawyers Practising in This Area</h2>
-      </div>
-      <div class="person-aop__cards">
-        <% loop $Lawyers.Sort('Sort') %>
-        <div class="person-aop__card">
-          <h3 class="person-aop__card-title"><a href="$Link">$Title</a></h3>
-          <% if $JobTitle %>
-          <p class="person-aop__card-body">$JobTitle</p>
-          <% end_if %>
-          <a href="$Link" class="text-link">View Profile</a>
-        </div>
-        <% end_loop %>
-      </div>
-    </div>
-  </section>
-  <% end_if %>
+    $ElementalArea
 
-  <%-- ── Elemental blocks (full width below the intro) ────────────────────────── --%>
-  $ElementalArea
-
+    <% include App\Includes\BookingBanner %>
 </main>
 
-<% include App\Includes\BookingBanner %>
 <% include App\Includes\Footer %>

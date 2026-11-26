@@ -313,6 +313,12 @@ class SeedTask extends BuildTask
         $isNew = !$page;
         $page = $page ?: $class::create();
         $page->ParentID = $parentId;
+        if ($isNew) {
+            // SiteTree::onBeforeWrite() places a page with no Sort after its siblings with MAX(Sort) + 1, which is
+            // NULL for a parent's first child; that page then jumps to the end of the list on its next write (it
+            // did: Post-Construction sorted last under Services). Append explicitly, in the file's order.
+            $page->Sort = (int) SiteTree::get()->filter('ParentID', $parentId)->max('Sort') + 1;
+        }
         $page->update(array_diff_key($def, array_flip(self::PAGE_KEYS)));
         $page->write();
         $this->pages[$key] = $page;

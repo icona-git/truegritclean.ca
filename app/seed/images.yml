@@ -1,0 +1,83 @@
+# Launch photos for truegritclean.ca, read by App\Tasks\SeedImagesTask (vendor/bin/sake tasks:seed-images).
+#
+# Plan and sources: image-direction/photo-slots.md in the project docs folder above this repo. Every photo is an
+# Unsplash photo of a general construction scene, never a TrueGrit job. The files in app/seed/images/ are web copies
+# (WebP, colour kept; greyscale is applied in the CSS). The alt text is stored as the image's Title, which
+# SilverStripe prints as the alt attribute; it comes from the content doc (content/TrueGrit-Website-Content.md)
+# except where noted.
+#
+# Each entry: file (in app/seed/images/), folder (in Files), alt, and the record that shows it:
+#   path   the page's URL path
+#   block  a block's SeedKey on that page (omit for the page's own HeroImage)
+#   bucket an item's SeedKey in that block
+#   field  the image field: HeroImage (page), BgImage (Section Content block) or Image (item)
+
+# Settings > Footer > Photo credits: set when the field is empty or still holds the sentence the content seed wrote
+# (app/seed/content.yml), so an edited line is never overwritten. Names only for the photos below.
+credits: ''
+
+images:
+  - file: home-hero_gISfS1zLq7c.webp
+    folder: Hero
+    alt: Black and white interior of a building under construction, light coming through the windows.
+    path: /
+    field: HeroImage
+
+  # The content doc names no About photo; the Figma export used this one (the content doc's second home-hero choice).
+  - file: about-hero_jq0HpVncJX8.webp
+    folder: Hero
+    alt: ''
+    path: /about/
+    field: HeroImage
+
+  - file: industry-band_rjnLNuJFins.webp
+    folder: Blocks/Images
+    alt: Tower crane over a new building under construction in Burnaby.
+    path: /
+    block: home-industry
+    field: BgImage
+
+  - file: phase-rough_2ZMe-E2NBZ0.webp
+    folder: Buckets
+    alt: Unfinished room with bare drywall and construction dust on the floor.
+    path: /
+    block: home-phases
+    bucket: rough
+    field: Image
+
+  - file: phase-final_ITA4ysSN8xA.webp
+    folder: Buckets
+    alt: Empty finished room with hardwood floors and white walls.
+    path: /
+    block: home-phases
+    bucket: final
+    field: Image
+
+  - file: phase-touchup_5d-aYsO2g7U.webp
+    folder: Buckets
+    alt: Close-up of a clean window and frame.
+    path: /
+    block: home-phases
+    bucket: touch-up
+    field: Image
+
+  - file: post-construction-feature_t9eQm2y1tn8.webp
+    folder: Blocks/Images
+    alt: Worker grinding concrete on a construction site, with dust in the air.
+    path: /services/post-construction-cleaning/
+    block: pc-image
+    field: BgImage
+
+  - file: renovation-feature_Fxv9QVauyD0.webp
+    folder: Blocks/Images
+    alt: Room in the middle of a renovation, with paint and drop sheets on the floor.
+    path: /services/renovation-cleaning/
+    block: reno-image
+    field: BgImage
+
+  - file: restaurant-feature_TSvGSPO_Kqk.webp
+    folder: Blocks/Images
+    alt: Empty commercial kitchen with stainless steel counters and equipment.
+    path: /services/restaurant-cleaning/
+    block: rest-image
+    field: BgImage

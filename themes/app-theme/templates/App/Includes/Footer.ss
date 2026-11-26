@@ -48,6 +48,10 @@
 
         <div class="site-footer__fine-print">
             <% if $SiteConfig.FooterExclusions %><p>$SiteConfig.FooterExclusions</p><% end_if %>
+            <%-- Credentials line (content doc, footer): each part shows only once its Settings > Claims box is ticked. --%>
+            <% if $SiteConfig.ClaimInsured || $SiteConfig.ClaimWorkSafeBC %>
+            <p class="site-footer__credentials"><% if $SiteConfig.ClaimInsured %>Insured<% end_if %><% if $SiteConfig.ClaimInsured %><% if $SiteConfig.ClaimWorkSafeBC %> &middot; <% end_if %><% end_if %><% if $SiteConfig.ClaimWorkSafeBC %>WorkSafeBC registered<% end_if %></p>
+            <% end_if %>
             <% if $SiteConfig.PhotoCredits %><p>$SiteConfig.PhotoCredits</p><% end_if %>
             <%-- Braces close the lookup: unbraced, a full stop after Title makes the parser render the SiteConfig
                  object itself (HTTP 500 on every page). --%>

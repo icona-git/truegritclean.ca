@@ -1,8 +1,10 @@
 <% include App\Includes\Header %>
-<% include App\Includes\Hero %>
-<% include App\Includes\BreadcrumbBar %>
 
 <main id="main-content" tabindex="-1">
+  <%-- Breadcrumb strip and the Figma quote.html hero (Phase 4). The form layout, the reassurance panel beside it
+       and the numbered field sections are Phase 5. --%>
+  $Breadcrumbs
+  <% include App\Includes\PageHero Variant='quote', TextClass='text' %>
 
   <%-- ContactPage extends UserDefinedForm: $Form is the userforms form built in the CMS (Form Fields tab).
        After a submission userforms blanks $Form and puts the confirmation message in $Content. --%>
