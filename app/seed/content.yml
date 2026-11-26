@@ -1107,7 +1107,7 @@ pages:
       - key: quote-faq
         class: App\Elements\BucketsBlock
         style: Faq
-        Eyebrow: FAQ
+        Eyebrow: Before you send
         Title: Common questions
         ShowTitle: true
         buckets:
