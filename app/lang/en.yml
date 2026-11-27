@@ -9,3 +9,26 @@ en:
     EMPTY: "Your message has not been sent. Our spam check could not confirm it came from a person. Please try again, or phone or email us instead."
     SPAM: "Your message has not been sent. Our spam check could not confirm it came from a person. Please try again, or phone or email us instead."
     VALIDATE_ERROR: "Your message has not been sent. Our spam check could not confirm it came from a person. Please try again, or phone or email us instead."
+
+  # The quote form (App\Pages\ContactPageController): a request that was not sent, back on the form with the visitor's
+  # text kept. CALL_US (or CONTACT_US when Settings has no phone number) follows each message, then PHOTOS_AGAIN when
+  # photos had been chosen (a browser never refills a file input).
+  App\Pages\ContactPageController:
+    SEND_FAILED: "Your quote request has not been sent. Something went wrong on our side. Please try again in a few minutes."
+    THROTTLED:
+      one: "Your quote request has not been sent. We have received several requests from this connection in the last few minutes. Please try again in 1 minute."
+      other: "Your quote request has not been sent. We have received several requests from this connection in the last few minutes. Please try again in {count} minutes."
+    CALL_US: "Or call us at {phone}."
+    CONTACT_US: "Or phone or email us instead."
+    PHOTOS_AGAIN: "Please add your photos again."
+
+  # What the notification email says under Photos (App\Models\EditablePhotosField). The photos travel as attachments;
+  # a photo that could not go with them is named, with the reason.
+  App\Models\EditablePhotosField:
+    ATTACHED:
+      one: "One photo attached to this email:"
+      other: "{count} photos attached to this email:"
+    NOT_ATTACHED: "Not attached:"
+    UNREADABLE: "{name}: could not be opened as a photo. Ask the customer to send it another way."
+    TOO_MANY_PIXELS: "{name}: too large to resize (over 64 megapixels). Ask the customer to send it another way."
+    OVER_EMAIL_LIMIT: "{name}: did not fit in this email with the others. Ask the customer to send it another way."

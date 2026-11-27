@@ -5,5 +5,5 @@
     </svg>
     <strong><%t App\Forms\PhotosUploadField.DROP 'Drop site photos here' %></strong>
     <span class="quote-upload__button"><%t App\Forms\PhotosUploadField.BUTTON 'Add photos' %></span>
-    <small><%t App\Forms\PhotosUploadField.TYPES 'JPG, PNG or HEIC · Multiple files accepted' %></small>
+    <small><%t App\Forms\PhotosUploadField.TYPES 'JPG or PNG · Multiple files accepted' %></small>
 </label>

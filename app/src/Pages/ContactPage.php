@@ -13,6 +13,12 @@ class ContactPage extends UserDefinedForm
     private static $table_name = 'ContactPage';
 
     /**
+     * userforms names its own controller on UserDefinedForm, and pages inherit that setting, so the site's controller
+     * (the submission limit and the failed-send message) has to be named here.
+     */
+    private static $controller_name = ContactPageController::class;
+
+    /**
      * The block style (BlockStyle.TemplateName) whose blocks sit beside the form, in the Figma quote page's
      * reassurance panel. Every other block renders under the form.
      */
@@ -38,6 +44,12 @@ class ContactPage extends UserDefinedForm
             ->setDescription('Shown under the submit button, e.g. when the quote will arrive and the privacy line. '
                 . 'The thank-you message after a submission is the On complete message (Form Options tab).')
             ->setRows(5);
+
+        // Photos and details travel only by email (ContactPageController, EditablePhotosField).
+        $fields->dataFieldByName('DisableSaveSubmissions')?->setDescription(
+            'Keep this ticked. Quote requests are not stored on the website: they arrive by email, with the photos '
+            . 'attached. If an email cannot be sent, the visitor is told to try again or phone.'
+        );
 
         return $fields;
     }

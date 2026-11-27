@@ -50,7 +50,7 @@ function initPhotoField(input) {
       var img = document.createElement('img');
       img.alt = '';
       img.src = url;
-      // HEIC shows only in Safari; elsewhere the file type stands in for the picture.
+      // A photo the browser cannot draw shows its file type instead of the picture.
       img.addEventListener('error', function () { img.replaceWith(placeholder); });
       figure.appendChild(img);
     } else {

@@ -182,21 +182,39 @@ everything again. A block in the Reassurance panel style sits beside the form; e
 
 **Photos.** userforms' file field takes one file, so the form uses the site's own field type, "Photo Upload Field
 (several photos)" (`App\Models\EditablePhotosField`, front end `App\Forms\PhotosUploadField`, script
-`js/src/photos.js`). Up to 10 photos of 10 MB each (both set on the field), JPG, PNG or HEIC, checked in the browser
-and on the server (count, size, extension, content matches extension). Each photo is a draft file in
-`Files > Form-submissions/page-<form>/photos-field-<field>`, which only administrators can open; the Submissions tab and
-the email link each one (the email says a login is needed). Photos are never attached to the email. Deleting a
-submission deletes its photos.
+`js/src/photos.js`). Up to 10 photos of 10 MB each (both set on the field), JPG or PNG, checked in the browser and on
+the server (count, size, extension, content matches extension). HEIC is not accepted: the image libraries cannot read
+it, and an iPhone's Safari converts its photos to JPEG when the page does not ask for HEIC.
+
+**Nothing is stored (since Nov 27, 2026).** The email is the delivery. The quote page has "Disable Saving Submissions
+to Server" ticked (Configuration tab; `fixed_settings` in `app/seed/form.yml`, which `tasks:seed-form` sets on every
+run), so no submission row is written. The photos never reach Files or `assets`: `App\Forms\EmailPhotos` resizes each
+one in memory to a JPEG (longest side 2,000 px, quality 80, EXIF and GPS data dropped, turned upright), and
+`App\Extensions\QuotePhotosEmailExtension` attaches them to each recipient's email. All attachments together stay
+under 15 MB, so the message stays under Mailgun's 25 MB limit: if they would not fit, every photo is shrunk again
+(1,600 px at 70, then 1,280 px at 60), and any photo that still does not fit is named in the email with the reason,
+never dropped silently. PHP deletes the uploads when the request ends. Measured locally: 5 phone-size photos (12 MP)
+gave a 2.1 MB email; 10 very detailed ones gave 5.2 MB.
+
+**Limits and failed sends** (`App\Pages\ContactPageController`). One visitor address may send 3 requests in 10 minutes
+(counted once a request passes the form's checks and the reCAPTCHA check; config `throttle_max`, `throttle_window`).
+The 4th is sent back to the form with a message to wait or phone. If the email cannot be sent, or no recipient gets
+one, the visitor sees the form again with their text kept and a message to try again or call the Settings phone number,
+instead of the thank-you; the failure is logged to `silverstripe.log` without the visitor's details. The wording is in
+`app/lang/en.yml`. The limit reads the visitor's address from PHP: behind a proxy or CDN (Cloudflare's orange cloud)
+that address must be passed on (`SS_TRUSTED_PROXY_IPS`), or every visitor shares one count.
 
 **Server limits.** PHP must accept the photos: `upload_max_filesize` at least 10M, `post_max_size` above the 10
 photos together (110M), `max_file_uploads` 20 (PHP's default), and a web server request limit to match. Plesk's
 defaults (2M / 8M) refuse almost any phone photo. The CMS field shows the server's limits, and the browser refuses a
-selection larger than `post_max_size` before sending it (a post over that limit arrives empty).
+selection larger than `post_max_size` before sending it (a post over that limit arrives empty). Resizing raises PHP's
+`memory_limit` to 512M and the time limit to 180 seconds for that request, so neither may be locked with a Plesk
+`php_admin_value`.
 
 **Mail.** The recipient's From is `website@mg.truegritclean.ca` (userforms requires one; ICONA's Mailgun pattern), and
-the server's `SS_SEND_ALL_EMAILS_FROM` replaces it. Reply-To is the visitor's email. If an email cannot be built or
-sent, userforms still stores the submission and shows the thank-you, and logs the error to `silverstripe.log`
-(`error-log.ERROR`): read it when a quote request seems missing.
+the server's `SS_SEND_ALL_EMAILS_FROM` replaces it. Reply-To is the visitor's email. userforms logs every mail error to
+`silverstripe.log` (`error-log.ERROR`), and the site adds a line starting "Quote form: a quote request was NOT
+delivered" when a visitor was sent back: read it when a quote request seems missing.
 
 ## reCAPTCHA
 

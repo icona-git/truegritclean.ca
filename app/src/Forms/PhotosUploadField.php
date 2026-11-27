@@ -14,7 +14,7 @@ use SilverStripe\Forms\FormField;
  *
  * userforms' own file field takes one file. The input here is named "<Name>[]" with `multiple`, so PHP files every
  * chosen photo under $_FILES[<Name>]; validate() checks each one before userforms accepts the submission, and
- * EditablePhotosField saves them afterwards. Nothing is saved from this class.
+ * EditablePhotosField prepares them for the email afterwards. Nothing is stored, here or anywhere.
  *
  * Checks, all server-side (the browser checks the same limits first, js/src/photos.js, but nothing relies on it):
  * at most MaxFiles photos; each one a real upload, complete, not empty, within MaxFileSize, with an allowed
@@ -28,7 +28,13 @@ class PhotosUploadField extends FormField
     protected int $maxFileSize = 10 * 1024 * 1024;
 
     /** @var string[] lower case, no dot */
-    protected array $allowedExtensions = ['jpg', 'jpeg', 'png', 'heic'];
+    protected array $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+    /**
+     * The same types as content types, added to the input's accept list. An iPhone's Safari reads them and converts
+     * its HEIC photos to JPEG as it uploads them.
+     */
+    private const ACCEPT_TYPES = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png'];
 
     public function setMaxFiles(int $max): static
     {
@@ -74,6 +80,10 @@ class PhotosUploadField extends FormField
         foreach ($this->allowedExtensions as $ext) {
             $accept[] = '.' . $ext;
         }
+        foreach ($this->allowedExtensions as $ext) {
+            $accept[] = self::ACCEPT_TYPES[$ext] ?? null;
+        }
+        $accept = array_values(array_unique(array_filter($accept)));
         $attributes = array_merge(parent::getAttributes(), [
             'type' => 'file',
             'name' => $this->getName() . '[]',
@@ -87,7 +97,7 @@ class PhotosUploadField extends FormField
             'data-max-total' => $this->maxTotalBytes(),
             'data-msg-count' => _t(__CLASS__ . '.TOO_MANY', 'Choose up to {max} photos.', ['max' => $this->maxFiles]),
             'data-msg-size' => _t(__CLASS__ . '.TOO_LARGE_JS', '{name} is larger than {size}.', ['size' => File::format_size($this->maxFileSize)]),
-            'data-msg-type' => _t(__CLASS__ . '.WRONG_TYPE_JS', '{name} is not a JPG, PNG or HEIC photo.'),
+            'data-msg-type' => _t(__CLASS__ . '.WRONG_TYPE_JS', '{name} is not a JPG or PNG photo.'),
             'data-msg-total' => _t(__CLASS__ . '.TOO_MUCH', 'These photos add up to more than {size}. Choose fewer or smaller photos.', ['size' => File::format_size($this->maxTotalBytes())]),
             'data-msg-selected-one' => _t(__CLASS__ . '.SELECTED_ONE', '1 photo selected.'),
             'data-msg-selected' => _t(__CLASS__ . '.SELECTED', '{count} photos selected.'),
