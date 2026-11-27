@@ -9,12 +9,14 @@ use SilverStripe\Core\Validation\ValidationResult;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\ORM\DB;
 use SilverStripe\UserForms\Model\EditableFormField;
 
 /**
  * A userforms field type that takes several photos at once (Form Fields > "Photo Upload Field (several photos)").
- * userforms' own File Upload Field takes one file; the quote form asks for up to 10 site photos (BUILD-HANDOFF.md
- * Phase 5, approach approved by Dave on 2026-11-26). Built in the site's code, no extra package.
+ * userforms' own File Upload Field takes one file; the quote form asks for up to 5 site photos (BUILD-HANDOFF.md
+ * Phase 5, approach approved by Dave on 2026-11-26; 5 rather than 10 since the upload audit of 2026-11-27, with more
+ * photos following by email). Built in the site's code, no extra package.
  *
  *  - Front end: App\Forms\PhotosUploadField, which checks every photo before the submission is accepted.
  *  - Delivery: the photos are never stored on the server (Dave, 2026-11-27). After userforms accepts the submission,
@@ -43,7 +45,7 @@ class EditablePhotosField extends EditableFormField
     ];
 
     private static $defaults = [
-        'MaxFiles' => 10,
+        'MaxFiles' => 5,
         'MaxFileSizeMB' => 10,
     ];
 
@@ -53,8 +55,12 @@ class EditablePhotosField extends EditableFormField
      */
     private static array $allowed_extensions = ['jpg', 'jpeg', 'png'];
 
-    /** PHP refuses more files than max_file_uploads in one request; userforms forms carry no other files. */
-    private const MAX_FILES_LIMIT = 20;
+    /**
+     * The most photos one submission may carry, whatever the CMS field says (Dave, 2026-11-27). Every photo is opened
+     * and resized on the server, so the count is what one request can cost; a visitor with more sends them by email
+     * once the firm replies. A row saved with a higher number is lowered by requireDefaultRecords() at db:build.
+     */
+    public const MAX_FILES_LIMIT = 5;
 
     /** The submission row of the request being processed (see the class comment). */
     private ?SubmittedPhotosField $submittedField = null;
@@ -91,6 +97,28 @@ class EditablePhotosField extends EditableFormField
         return $result;
     }
 
+    /**
+     * Lowers MaxFiles on rows saved before MAX_FILES_LIMIT was 5 (staging's field said 10), in draft and live. Runs at
+     * db:build, so a deploy needs no CMS step. It only ever lowers a number that validate() would now refuse.
+     */
+    public function requireDefaultRecords()
+    {
+        parent::requireDefaultRecords();
+        $table = static::config()->get('table_name');
+        foreach ([$table, $table . '_Live'] as $name) {
+            if (!DB::get_schema()->hasTable($name)) {
+                continue;
+            }
+            DB::prepared_query(
+                sprintf('UPDATE "%s" SET "MaxFiles" = ? WHERE "MaxFiles" > ?', $name),
+                [self::MAX_FILES_LIMIT, self::MAX_FILES_LIMIT]
+            );
+            if (DB::affected_rows() > 0) {
+                DB::alteration_message("$name: MaxFiles lowered to " . self::MAX_FILES_LIMIT, 'changed');
+            }
+        }
+    }
+
     public function getIcon()
     {
         // userforms looks for images/<shortclass>.png in its own module; borrow its file field's icon.
@@ -101,7 +129,7 @@ class EditablePhotosField extends EditableFormField
     public function getFormField()
     {
         $field = PhotosUploadField::create($this->Name, $this->Title ?: false)
-            ->setMaxFiles(max(1, (int) $this->MaxFiles))
+            ->setMaxFiles(min(self::MAX_FILES_LIMIT, max(1, (int) $this->MaxFiles)))
             ->setMaxFileSize(max(1, (int) $this->MaxFileSizeMB) * 1024 * 1024)
             ->setAllowedExtensions(static::config()->get('allowed_extensions'));
         $this->doUpdateFormField($field);

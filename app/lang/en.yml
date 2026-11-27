@@ -18,9 +18,18 @@ en:
     THROTTLED:
       one: "Your quote request has not been sent. We have received several requests from this connection in the last few minutes. Please try again in 1 minute."
       other: "Your quote request has not been sent. We have received several requests from this connection in the last few minutes. Please try again in {count} minutes."
+    # The whole site's limit (not one visitor's): more requests in an hour than the site accepts.
+    SITE_LIMIT:
+      one: "Your quote request has not been sent. We are receiving more requests than usual right now. Please try again in 1 minute."
+      other: "Your quote request has not been sent. We are receiving more requests than usual right now. Please try again in {count} minutes."
     CALL_US: "Or call us at {phone}."
     CONTACT_US: "Or phone or email us instead."
     PHOTOS_AGAIN: "Please add your photos again."
+
+  # The photo field on the form (App\Forms\PhotosUploadField): choosing more photos than the field takes. The same
+  # sentence shows in the browser before sending and from the server.
+  App\Forms\PhotosUploadField:
+    TOO_MANY: "Choose up to {max} photos. You can send more by email once we reply."
 
   # What the notification email says under Photos (App\Models\EditablePhotosField). The photos travel as attachments;
   # a photo that could not go with them is named, with the reason.
@@ -30,5 +39,6 @@ en:
       other: "{count} photos attached to this email:"
     NOT_ATTACHED: "Not attached:"
     UNREADABLE: "{name}: could not be opened as a photo. Ask the customer to send it another way."
-    TOO_MANY_PIXELS: "{name}: too large to resize (over 64 megapixels). Ask the customer to send it another way."
+    TOO_MANY_PIXELS: "{name}: too large to resize (over 51 megapixels). Ask the customer to send it another way."
+    SITE_BUSY: "{name}: not attached, the website was busy when this request arrived. Ask the customer to send it by email."
     OVER_EMAIL_LIMIT: "{name}: did not fit in this email with the others. Ask the customer to send it another way."

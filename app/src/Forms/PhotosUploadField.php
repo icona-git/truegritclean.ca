@@ -22,7 +22,7 @@ use SilverStripe\Forms\FormField;
  */
 class PhotosUploadField extends FormField
 {
-    protected int $maxFiles = 10;
+    protected int $maxFiles = 5;
 
     /** Bytes. */
     protected int $maxFileSize = 10 * 1024 * 1024;
@@ -95,7 +95,7 @@ class PhotosUploadField extends FormField
             'data-max-files' => $this->maxFiles,
             'data-max-size' => $this->maxFileSize,
             'data-max-total' => $this->maxTotalBytes(),
-            'data-msg-count' => _t(__CLASS__ . '.TOO_MANY', 'Choose up to {max} photos.', ['max' => $this->maxFiles]),
+            'data-msg-count' => $this->tooManyMessage(),
             'data-msg-size' => _t(__CLASS__ . '.TOO_LARGE_JS', '{name} is larger than {size}.', ['size' => File::format_size($this->maxFileSize)]),
             'data-msg-type' => _t(__CLASS__ . '.WRONG_TYPE_JS', '{name} is not a JPG or PNG photo.'),
             'data-msg-total' => _t(__CLASS__ . '.TOO_MUCH', 'These photos add up to more than {size}. Choose fewer or smaller photos.', ['size' => File::format_size($this->maxTotalBytes())]),
@@ -103,6 +103,19 @@ class PhotosUploadField extends FormField
             'data-msg-selected' => _t(__CLASS__ . '.SELECTED', '{count} photos selected.'),
         ]);
         return $attributes;
+    }
+
+    /**
+     * Shown by the browser (js/src/photos.js) and by validate() when more than MaxFiles photos are chosen. The limit is
+     * small on purpose (App\Models\EditablePhotosField::MAX_FILES_LIMIT); the rest can follow by email.
+     */
+    public function tooManyMessage(): string
+    {
+        return _t(
+            __CLASS__ . '.TOO_MANY',
+            'Choose up to {max} photos. You can send more by email once we reply.',
+            ['max' => $this->maxFiles]
+        );
     }
 
     /** Largest request PHP accepts, less 1 MB for the form's other fields. */
@@ -169,7 +182,7 @@ class PhotosUploadField extends FormField
                 return;
             }
             if (count($files) > $this->maxFiles) {
-                $result->addFieldError($name, _t(__CLASS__ . '.TOO_MANY', 'Choose up to {max} photos.', ['max' => $this->maxFiles]));
+                $result->addFieldError($name, $this->tooManyMessage());
                 return;
             }
             // One message for the field: SilverStripe shows a field's last message only, so every refused photo is
