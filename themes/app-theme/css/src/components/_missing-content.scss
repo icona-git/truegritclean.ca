@@ -1,0 +1,65 @@
+// ─── Missing content (App\Models\MissingContent) ──────────────────────────────
+// [missing note="..."]stand-in[/missing] in any HTML field: a black label ("Content needed" in yellow, then the
+// note in white) followed by the stand-in text on a highlighter yellow. Yellow appears only as small text on
+// black or as a background behind black text, per the brand rule. Inline, so it works mid-sentence (Privacy's
+// effective date) and as a whole paragraph (About story and bios). Shown on every environment by design.
+
+.content-missing__label {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0 0.35em 0.4em 0;
+  padding: 0.35em 0.65em;
+  color: var(--white);
+  background: var(--black);
+  border-left: 4px solid var(--yellow);
+  font-family: var(--body);
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.45;
+  text-align: left;
+  text-transform: none;
+  vertical-align: baseline;
+}
+
+.content-missing__flag {
+  color: var(--yellow);
+  font-family: var(--display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.content-missing__text {
+  padding: 0.1em 0.25em;
+  color: var(--black);
+  background: #fee6a1; // --yellow mixed 45% with white: a highlighter, readable behind black text
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+// Empty photo slot ($ShowMissingPhotos, local site and staging only): the Figma placeholder box with the same
+// black label. Two classes so it wins over pages/_about.scss whatever the import order.
+.team-card__photo-placeholder.content-missing-photo {
+  background:
+    linear-gradient(135deg, transparent 49.7%, var(--grey-300) 49.8% 50.2%, transparent 50.3%),
+    linear-gradient(45deg, transparent 49.7%, var(--grey-300) 49.8% 50.2%, transparent 50.3%),
+    #fee6a1;
+
+  .content-missing__label {
+    margin: 0;
+    padding: 0.55rem 0.8rem;
+    background: var(--black);
+    border: 0;
+    border-left: 4px solid var(--yellow);
+  }
+
+  // pages/_about.scss styles every span in the box (the export's "[Photo to come]" tag); undo that on the flag.
+  .content-missing__flag {
+    padding: 0;
+    background: none;
+    border: 0;
+  }
+}

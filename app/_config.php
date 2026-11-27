@@ -16,3 +16,6 @@ TinyMCEConfig::get('cms')
 ShortcodeParser::get('default')->register('youtube', ['Page', 'YouTubeShortCode']);
 // [claim key=minimum]...[/claim]: the wrapped text renders only while that claim is ticked in Settings > Claims.
 ShortcodeParser::get('default')->register('claim', [\App\Models\Claims::class, 'shortcode']);
+// [missing note="..."]stand-in text[/missing]: content the client hasn't sent yet, shown highlighted on every
+// environment until an editor replaces it. site/LAUNCH.md counts these before launch.
+ShortcodeParser::get('default')->register('missing', [\App\Models\MissingContent::class, 'shortcode']);

@@ -105,6 +105,12 @@ site: a page, the sitemap (see below), and a real submission through the contact
   depends on it off the site and out of the schema: checklist and FAQ items that tick it under "Show only when
   confirmed", sentences wrapped in `[claim key=minimum]...[/claim]` (`key=checklist+photos` waits for both),
   and the trust badges.
+- **Missing content:** text the business hasn't sent yet is wrapped in `[missing note="what's needed"]stand-in
+  text[/missing]` inside a paragraph. It shows on every environment as a black "Content needed" label with the note,
+  then the stand-in on a yellow highlight, so a stand-in never passes as real copy. To finish one, replace the whole
+  `[missing]...[/missing]` (tag included) with the real text and publish. A team card with no photo shows a
+  "Photo needed" box on the local site and staging; on live it shows the text only. Before launch, LAUNCH.md counts
+  what is left.
 - **Settings > Contact Banner:** the yellow CTA band above the footer: heading and button label on every page;
   the text line and the words before the phone number on the home page only. The button links to the quote
   page (the site's ContactPage).
