@@ -103,9 +103,7 @@ should show on them.
   field that still holds exactly what the seed wrote, publishes only that record, and is safe to run again.
 - **Logo:** a PNG of the monogram, at least 112 x 112 px, in Settings > Main > Logo (the schema's `logo` and
   `image`). The header logo is still the CSS placeholder until the SVG arrives.
-- **On staging:** the phone test (5 photos; the email arrives with 5 JPEG photos attached and is not in spam; the
-  quote page's Submissions tab stays empty and Files gains nothing), and reCAPTCHA proven both ways (a real
-  submission passes, a post with no token is refused).
+- **On staging:** reCAPTCHA refuses a post with no token (a server-side check, no password needed in an outside tool).
 - **Lighthouse** on staging over https, where the server's compression and caching apply: Home, a service page and
   Quote on Mobile, Home on Desktop, aiming for 90+ in all four categories. Dave moved this from the local site to
   staging (Nov 26).
@@ -115,6 +113,11 @@ should show on them.
 
 ## After production is live
 
+Outside tools run here, not behind the staging password (Dave, Nov 27); the order is in the docs repo's
+`staging-2026-11/RUNBOOK-staging.md`, "After launch: testing".
+
+- **Phone test first:** 5 photos from the iPhone. One email arrives with 5 JPEG photos attached, upright, not in spam;
+  the quote page's Submissions tab stays empty and Files gains nothing. It also proves a real visitor passes reCAPTCHA.
 - `public/robots.txt`: add `Sitemap: https://truegritclean.ca/sitemap.xml` (a PR, like any code change).
 - Run the README's sitemap probe against `https://truegritclean.ca`.
 - Search Console: add the property, submit the sitemap, and watch **Last read** until it shows a date.
