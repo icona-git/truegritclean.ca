@@ -376,7 +376,7 @@ img.hero-focus--right { object-position: right center !important; }
   border-color: var(--error);
 }
 
-// A photo the browser cannot draw (HEIC outside Safari) shows its file type in the picture's place.
+// A photo the browser cannot draw shows its file type in the picture's place.
 .upload-preview__file {
   display: grid;
   aspect-ratio: 4 / 3;

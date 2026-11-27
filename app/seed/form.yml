@@ -23,8 +23,14 @@ settings:
     <p>We'll send a written quote the same business day.</p>
     <p>We only use these details to prepare your quote. See our <a href="{page:/privacy/}">Privacy Policy</a>.</p>
 
-# Every submission is stored (Submissions tab) and emailed here. Locally DDEV's Mailpit catches all mail; on staging
-# SS_SEND_ALL_EMAILS_TO redirects it. EmailFrom follows ICONA's sending pattern (a Mailgun subdomain aligned for
+# Set on every run, on an existing form too: the site's code depends on them. Quote requests and their photos are not
+# stored on the server (Dave, 2026-11-27): the email is the delivery (App\Pages\ContactPageController). In the CMS this
+# is the quote page's Configuration tab, "Disable Saving Submissions to Server".
+fixed_settings:
+  DisableSaveSubmissions: true
+
+# Every submission is emailed here, with its photos attached; nothing is stored (fixed_settings above). Locally DDEV's
+# Mailpit catches all mail; on staging SS_SEND_ALL_EMAILS_TO redirects it. EmailFrom follows ICONA's sending pattern (a Mailgun subdomain aligned for
 # SPF/DKIM, not the business's own address, or the mail lands in junk); userforms requires one. On the server
 # SS_SEND_ALL_EMAILS_FROM replaces it, and Mailgun must have mg.truegritclean.ca verified before launch.
 # reply_to: the field whose value becomes Reply-To, so answering the email answers the visitor. The subject carries no
@@ -83,9 +89,9 @@ sections:
         options: ['Yes', 'No', Not sure]
       - { class: EditableTextField, Name: AccessNotes, Title: Access and parking notes, Rows: 4, ExtraClass: field--full }
 
-  # Several photos in one field (App\Models\EditablePhotosField, approved by Dave 2026-11-26): JPG, PNG or HEIC, stored
-  # in a folder only administrators can open, linked from the email. The drop zone's own words are Figma's, in its
-  # template; the helper text is the content doc's.
+  # Several photos in one field (App\Models\EditablePhotosField, approved by Dave 2026-11-26): JPG or PNG, resized and
+  # attached to the email, never stored (2026-11-27). The drop zone's own words are Figma's, in its template; the
+  # helper text is the content doc's.
   - title: Photos
     fields:
       - class: App\Models\EditablePhotosField

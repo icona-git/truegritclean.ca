@@ -34,20 +34,18 @@ SilverStripe\UserForms\Form\UserForm:
 
 ---
 Name: app-userforms-photos
-After:
-  - '#mimeuploadvalidator'
-  - '#app-mimeuploadvalidator'
 ---
-# The quote form's photo field (App\Models\EditablePhotosField) accepts HEIC, the iPhone's own photo format: Files must
-# allow the extension, and the MIME check (MimeUploadValidator) must know which content types a .heic file may carry.
-# Phones usually convert to JPEG when a browser asks; this covers the ones that send the original. Stored as plain
-# files (no thumbnails: the image libraries here cannot read HEIC), protected like every form upload.
-SilverStripe\Assets\File:
-  allowed_extensions:
-    - heic
+# The quote form's photos are never stored (Dave, 2026-11-27): App\Extensions\QuotePhotosEmailExtension attaches the
+# resized copies to each recipient's email. HEIC is not accepted, so Files and the MIME check need nothing extra.
+SilverStripe\UserForms\Control\UserDefinedFormController:
+  extensions:
+    - App\Extensions\QuotePhotosEmailExtension
 
-SilverStripe\MimeValidator\MimeUploadValidator:
-  MimeTypes:
-    heic:
-      - image/heic
-      - image/heif
+# The quote form's limit per visitor address (App\Pages\ContactPageController): times of recent submissions, kept for
+# the length of the window.
+SilverStripe\Core\Injector\Injector:
+  Psr\SimpleCache\CacheInterface.QuoteFormThrottle:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: "QuoteFormThrottle"
+      defaultLifetime: 600

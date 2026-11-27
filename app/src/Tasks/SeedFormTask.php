@@ -24,7 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Builds the quote form on /quote/ from app/seed/form.yml: its sections and fields (userforms Field Groups), the
- * spam check, the email recipient, and the page's button text and the text under the button.
+ * spam check, the email recipient, the page's button text and the text under the button, and the form settings the
+ * site's code relies on (fixed_settings: submissions are not saved).
  *
  *   vendor/bin/sake tasks:seed-form              drafts only
  *   vendor/bin/sake tasks:seed-form --publish    also publishes the page (and with it the form fields)
@@ -33,6 +34,10 @@ use Symfony\Component\Yaml\Yaml;
  * userforms creates itself), a recipient only when the form has none, and a page setting only while it is empty. Once
  * the form exists it belongs to the editor; the task never changes or deletes a field, a recipient or a setting
  * someone filled in. There is no --force: rebuilding a form means deleting its fields in the CMS first.
+ *
+ * The one exception is fixed_settings, which the task sets on every run, on an existing form too: the site's code
+ * depends on them (with saving on, quote requests would be stored on the server). They change the draft; the live
+ * page follows when it is published (--publish, or Publish in the CMS).
  *
  * The whole file is checked before anything is written: an unknown page, field type or field setting, a duplicate or
  * badly formed field name, an option list on a field that takes none (or none on one that needs it), a reply_to that
@@ -100,6 +105,10 @@ class SeedFormTask extends BuildTask
             $this->output->writeln('--- Page settings ---');
             $changed = $this->seedSettings($page, $def['settings'] ?? []);
 
+            $this->output->writeln('--- Fixed settings ---');
+            $fixedChanged = $this->seedFixedSettings($page, $def['fixed_settings'] ?? []);
+            $changed = $fixedChanged || $changed;
+
             $this->output->writeln('--- Fields ---');
             $changed = $this->seedFields($page, $def) || $changed;
 
@@ -110,6 +119,9 @@ class SeedFormTask extends BuildTask
                 $this->output->writeln('--- Publishing ---');
                 $page->publishRecursive();
                 $this->output->writeln("  [published] {$def['page']}");
+            } elseif ($fixedChanged && $page->isPublished()) {
+                $this->output->writeln('  [note] the live page keeps its old settings until the page is published '
+                    . '(re-run with --publish, or Publish in the CMS)');
             }
 
             $this->output->writeln($changed ? 'Done.' : 'Done: nothing to change.');
@@ -131,6 +143,14 @@ class SeedFormTask extends BuildTask
                 throw new RuntimeException("settings: {$page->ClassName} has no field \"{$field}\".");
             }
             $this->resolvePageLinks((string) $value, "settings {$field}");
+        }
+        foreach ($def['fixed_settings'] ?? [] as $field => $value) {
+            if (!DataObject::getSchema()->fieldSpec(get_class($page), (string) $field)) {
+                throw new RuntimeException("fixed_settings: {$page->ClassName} has no field \"{$field}\".");
+            }
+            if (!is_scalar($value)) {
+                throw new RuntimeException("fixed_settings: {$field} must be a single value.");
+            }
         }
 
         $names = [];
@@ -261,6 +281,28 @@ class SeedFormTask extends BuildTask
             $page->setField($field, $this->resolvePageLinks((string) $value, "settings {$field}"));
             $changed = true;
             $this->output->writeln("  [set] {$field}");
+        }
+        if ($changed) {
+            $page->write();
+        }
+        return $changed;
+    }
+
+    /** Sets each fixed setting that differs, on the draft. Returns whether anything changed. */
+    private function seedFixedSettings(UserDefinedForm $page, array $settings): bool
+    {
+        $changed = false;
+        foreach ($settings as $field => $value) {
+            $value = is_bool($value) ? (int) $value : $value;
+            $current = $page->getField($field);
+            $current = is_bool($current) ? (int) $current : $current;
+            if ((string) $current === (string) $value) {
+                $this->output->writeln("  [ok] {$field}: {$value}");
+                continue;
+            }
+            $page->setField($field, $value);
+            $changed = true;
+            $this->output->writeln("  [set] {$field}: {$value}");
         }
         if ($changed) {
             $page->write();

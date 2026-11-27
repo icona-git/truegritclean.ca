@@ -44,7 +44,12 @@ leaves Host-header abuse open.
 - **PHP 8.4** for the subscription (the handler, not just the CLI binary): `composer.lock` needs PHP 8.4.1 or later
   (four Symfony 8.1 packages). Bertha has `/opt/plesk/php/8.4/bin/php`.
 - **Uploads:** `upload_max_filesize` 10M or more, `post_max_size` about 110M, `max_file_uploads` 20, and nginx's
-  request size to match. Plesk's defaults (2M / 8M) refuse almost every phone photo. Details: README, "Quote form".
+  request size to match. Plesk's defaults (2M / 8M) refuse almost every phone photo. The photos are emailed, never
+  stored; resizing raises `memory_limit` (512M) and the time limit for that request, so don't lock either with a
+  `php_admin_value`. Details: README, "Quote form".
+- **Visitor address:** the quote form's limit (3 requests in 10 minutes per address) needs PHP to see the visitor's
+  address. With Cloudflare on DNS only (as now) Plesk passes it on. If the orange cloud is ever turned on, set
+  `SS_TRUSTED_PROXY_IPS` to Cloudflare's ranges first, or every visitor shares one count.
 - **Paths:** the Git deployment path is the project root and the document root is `<project root>/public`.
 - **TLS:** Let's Encrypt on the server.
 - **Mail:** the hello@truegritclean.ca inbox exists, and `mg.truegritclean.ca` is added and verified in Mailgun
@@ -89,13 +94,18 @@ should show on them.
   0, and the team photos are either uploaded or Rebekah has agreed to launch without them (on live, an empty photo
   slot shows the card's text only).
   `for u in $(curl -s https://truegritclean.ca/sitemap.xml/sitemap/SilverStripe-CMS-Model-SiteTree/1 | grep -o '<loc>[^<]*' | sed 's/<loc>//'); do printf '%s %s\n' "$(curl -s "$u" | grep -c 'class="content-missing"')" "$u"; done`
+- **Quote form, a site seeded before Nov 27, 2026** (staging was): submissions must not be saved. Run
+  `vendor/bin/sake tasks:seed-form --publish` (it prints `[set] DisableSaveSubmissions: 1`, or `[ok]` once done), or
+  in the CMS tick the quote page's Configuration tab > "Disable Saving Submissions to Server" and Publish. Then check
+  that Files has no `Form-submissions` folder with photos in it; delete any left from earlier tests.
 - **A site seeded before Nov 27, 2026** (staging was) still holds the old bracket placeholders. After the code
   deploy, `vendor/bin/sake tasks:seed-placeholders --publish` swaps in the highlighted stand-ins; it changes only a
   field that still holds exactly what the seed wrote, publishes only that record, and is safe to run again.
 - **Logo:** a PNG of the monogram, at least 112 x 112 px, in Settings > Main > Logo (the schema's `logo` and
   `image`). The header logo is still the CSS placeholder until the SVG arrives.
-- **On staging:** the phone test (5 photos; the email arrives and is not in spam; the submission is in the CMS),
-  and reCAPTCHA proven both ways (a real submission passes, a post with no token is refused).
+- **On staging:** the phone test (5 photos; the email arrives with 5 JPEG photos attached and is not in spam; the
+  quote page's Submissions tab stays empty and Files gains nothing), and reCAPTCHA proven both ways (a real
+  submission passes, a post with no token is refused).
 - **Lighthouse** on staging over https, where the server's compression and caching apply: Home, a service page and
   Quote on Mobile, Home on Desktop, aiming for 90+ in all four categories. Dave moved this from the local site to
   staging (Nov 26).
