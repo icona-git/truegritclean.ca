@@ -11,7 +11,9 @@ html {
 body {
   margin: 0;
   color: var(--charcoal);
-  background: var(--white);
+  // Charcoal, the footer's colour: on screens wider than the 1980px .site-max column (which carries its
+  // own white), the edges then read as one with the footer and CTA band instead of a white border.
+  background: var(--charcoal);
   font-family: var(--body);
   font-size: 17px;
   line-height: 1.6;
