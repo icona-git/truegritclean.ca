@@ -953,7 +953,8 @@ pages:
     HeroContent: |-
       <p>TrueGrit Clean Co. is a Vancouver construction cleaning company run by partners Rebekah Bergeron-Taillefer and Miguel Paniagua Faz. We clean up after contractors, renovators and developers so their projects are ready for the next stage.</p>
     blocks:
-      # Placeholders until Rebekah sends her story: replace before launch.
+      # Stand-ins until Rebekah sends her story, built only from confirmed facts and highlighted by [missing]
+      # (App\Models\MissingContent). Replace each whole [missing]...[/missing] before launch.
       - key: about-story
         class: App\Elements\BucketsBlock
         style: Story
@@ -964,12 +965,12 @@ pages:
             Title: Who we are
             ShowTitle: true
             HTML: |-
-              <p>[Placeholder: 2–3 sentences from Rebekah. Who you are, how long you've been cleaning, what kind of work you've done.]</p>
+              <p>[missing note="Rebekah to replace: who you are, how long you've been cleaning, what work you've done."]TrueGrit Clean Co. is a two-person crew: Rebekah Bergeron-Taillefer and Miguel Paniagua Faz. We clean construction and renovation sites around Vancouver, through the rough, final and touch-up cleans.[/missing]</p>
           - key: why
             Title: Why we started TrueGrit
             ShowTitle: true
             HTML: |-
-              <p>[Placeholder: Rebekah's story. Why construction cleaning, and what she saw that could be done better.]</p>
+              <p>[missing note="Rebekah to replace: why construction cleaning, and what you saw that could be done better."]We wanted to run a construction cleaning company, not a cleaning company that also does construction. A build runs on inspection dates and possession days, and the cleaning crew should run on them too.[/missing]</p>
 
       - key: about-standards
         class: App\Elements\BucketsBlock
@@ -1021,7 +1022,8 @@ pages:
             ShowTitle: true
             claims: [insured, worksafebc]
 
-      # Bios and photos to come from Rebekah: replace the placeholders before launch.
+      # Bios and photos to come from Rebekah: one-line stand-ins highlighted by [missing]; the empty photo slots
+      # show a "Photo needed" box on the local site and staging. Replace before launch.
       - key: about-team
         class: App\Elements\BucketsBlock
         style: Team
@@ -1034,13 +1036,13 @@ pages:
             ShowTitle: true
             SubTitle: Partner
             HTML: |-
-              <p>[Placeholder bio, 2 sentences + photo]</p>
+              <p>[missing note="Rebekah to send: a 2-sentence bio and a photo."]Rebekah co-founded TrueGrit Clean Co. with Miguel Paniagua Faz in 2025.[/missing]</p>
           - key: miguel
             Title: Miguel Paniagua Faz
             ShowTitle: true
             SubTitle: Partner
             HTML: |-
-              <p>[Placeholder bio, 2 sentences + photo]</p>
+              <p>[missing note="Rebekah to send: a 2-sentence bio and a photo, once Miguel confirms he wants to be featured."]Miguel co-founded TrueGrit Clean Co. with Rebekah Bergeron-Taillefer in 2025.[/missing]</p>
 
       - key: about-faq
         class: App\Elements\BucketsBlock
@@ -1133,7 +1135,7 @@ pages:
               <p>Yes. Quotes are free and there's no obligation.</p>
 
   # ── 9. Privacy Policy ──────────────────────────────────────────────────────
-  # A plain-language template, not legal advice. "[date of launch]" stays visible until launch.
+  # A plain-language template, not legal advice. The effective date stays highlighted by [missing] until launch.
   - key: privacy
     class: Page
     URLSegment: privacy
@@ -1146,7 +1148,7 @@ pages:
     MetaDescription: |-
       How TrueGrit Clean Co. collects, uses and protects the information you send through our quote form, and how to contact us.
     Content: |-
-      <p><em>Effective date: [date of launch]</em></p>
+      <p><em>Effective date: [missing note="Set to the launch date."]date of launch[/missing]</em></p>
       <p><strong>Who we are.</strong> TrueGrit Clean Co. is a cleaning company in Vancouver, British Columbia. This policy explains how we handle personal information collected through truegritclean.ca. We follow British Columbia's <em>Personal Information Protection Act</em> (PIPA).</p>
       <p><strong>What we collect.</strong> When you request a quote, we collect what you enter in the form: your name, company, phone number, email, project address, project details, and any photos you upload. If you call, text or email us, we keep those messages.</p>
       <p><strong>Why we collect it.</strong> We use your information only to prepare and send your quote, to contact you about your project, to schedule and carry out the work, and for our business records. We don't sell or rent your information, and we don't use it for marketing unless you ask us to.</p>

@@ -82,7 +82,16 @@ should show on them.
 - **Rebekah confirms** the claims entered without the bracket note (list in the docs repo's task list, item 11),
   above all **HEPA**: it is in the Home and Renovation meta descriptions, `/llms.txt`, the Services page and the
   Post-Construction and Renovation lists, none of which Settings > Claims controls. Also the Privacy page's hosting
-  and retention lines, its "Effective date: [date of launch]", the About story and the team bios.
+  and retention lines.
+- **No missing content left** (README, "Missing content"). The About story, both team bios and the Privacy effective
+  date are highlighted stand-ins until Rebekah's text arrives; an editor replaces each whole `[missing]...[/missing]`.
+  Gate, against production once it answers (staging needs `-u dave` on both curls): every sitemap page must print
+  0, and the team photos are either uploaded or Rebekah has agreed to launch without them (on live, an empty photo
+  slot shows the card's text only).
+  `for u in $(curl -s https://truegritclean.ca/sitemap.xml/sitemap/SilverStripe-CMS-Model-SiteTree/1 | grep -o '<loc>[^<]*' | sed 's/<loc>//'); do printf '%s %s\n' "$(curl -s "$u" | grep -c 'class="content-missing"')" "$u"; done`
+- **A site seeded before Nov 27, 2026** (staging was) still holds the old bracket placeholders. After the code
+  deploy, `vendor/bin/sake tasks:seed-placeholders --publish` swaps in the highlighted stand-ins; it changes only a
+  field that still holds exactly what the seed wrote, publishes only that record, and is safe to run again.
 - **Logo:** a PNG of the monogram, at least 112 x 112 px, in Settings > Main > Logo (the schema's `logo` and
   `image`). The header logo is still the CSS placeholder until the SVG arrives.
 - **On staging:** the phone test (5 photos; the email arrives and is not in spam; the submission is in the CMS),
