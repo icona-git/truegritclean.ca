@@ -43,11 +43,14 @@ leaves Host-header abuse open.
 
 - **PHP 8.4** for the subscription (the handler, not just the CLI binary): `composer.lock` needs PHP 8.4.1 or later
   (four Symfony 8.1 packages). Bertha has `/opt/plesk/php/8.4/bin/php`.
-- **Uploads:** `upload_max_filesize` 10M or more, `post_max_size` about 110M, `max_file_uploads` 20, and nginx's
-  request size to match. Plesk's defaults (2M / 8M) refuse almost every phone photo. The photos are emailed, never
-  stored; resizing raises `memory_limit` (512M) and the time limit for that request, so don't lock either with a
-  `php_admin_value`. Details: README, "Quote form".
-- **Visitor address:** the quote form's limit (3 requests in 10 minutes per address) needs PHP to see the visitor's
+- **Uploads:** `upload_max_filesize` 10M or more, `post_max_size` 60M or more (5 photos of 10 MB; staging's 110M is
+  fine too), `max_file_uploads` 20, and nginx's request size to match. Plesk's defaults (2M / 8M) refuse almost every
+  phone photo. The photos are emailed, never stored. Resizing raises the time limit for that request (180 seconds),
+  so don't lock `max_execution_time` with a `php_admin_value`. It does not raise `memory_limit`, and need not: with
+  Imagick the memory used to open a photo is outside PHP's limit (up to about 850 MB for the largest photo the form
+  opens, one request at a time for the whole site). Details: README, "Quote form".
+- **Visitor address:** the quote form's limit (3 requests in 10 minutes per address; 20 an hour for the whole site
+  whatever the address) needs PHP to see the visitor's
   address. With Cloudflare on DNS only (as now) Plesk passes it on. If the orange cloud is ever turned on, set
   `SS_TRUSTED_PROXY_IPS` to Cloudflare's ranges first, or every visitor shares one count.
 - **Paths:** the Git deployment path is the project root and the document root is `<project root>/public`.
@@ -116,7 +119,8 @@ should show on them.
 Outside tools run here, not behind the staging password (Dave, Nov 27); the order is in the docs repo's
 `staging-2026-11/RUNBOOK-staging.md`, "After launch: testing".
 
-- **Phone test first:** 5 photos from the iPhone. One email arrives with 5 JPEG photos attached, upright, not in spam;
+- **Phone test first:** 5 photos from the iPhone at the camera's largest setting (the fullest email the form can
+  send). One email arrives with 5 JPEG photos attached, upright, not in spam;
   the quote page's Submissions tab stays empty and Files gains nothing. It also proves a real visitor passes reCAPTCHA.
 - `public/robots.txt`: add `Sitemap: https://truegritclean.ca/sitemap.xml` (a PR, like any code change).
 - Run the README's sitemap probe against `https://truegritclean.ca`.

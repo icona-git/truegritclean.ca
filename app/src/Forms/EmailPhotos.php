@@ -22,6 +22,15 @@ use Throwable;
  *
  * The image library is the one the CMS uses (SilverStripe's Intervention ImageManager: Imagick where the server has it,
  * otherwise GD), with its automatic rotation, so a photo taken sideways arrives upright.
+ *
+ * What a request can cost the server (upload audit, 2026-11-27). Opening a photo takes memory in proportion to its
+ * pixels, not its file size, and with Imagick that memory is outside PHP's memory_limit: a 250 KB JPEG that declares
+ * 8,000 x 8,000 pixels took about 1 GB. Two things keep that bounded:
+ *  - $max_pixels: a photo with more pixels is never opened (it is listed in the email as not attached);
+ *  - one resize at a time for the whole site (a file lock in TEMP_PATH), so the worst case is one such request in
+ *    memory, not one per PHP worker. A request that cannot get its turn within $lock_wait_seconds sends its email
+ *    without photos and says why; the quote request itself is never lost to the wait.
+ * The number of photos per request is capped by App\Models\EditablePhotosField::MAX_FILES_LIMIT.
  */
 class EmailPhotos
 {
@@ -39,12 +48,14 @@ class EmailPhotos
     ];
 
     /**
-     * Photos with more pixels than this are not opened (a 48 MP phone photo is 48.8 million). Decoding one takes about
-     * 5 bytes per pixel with GD, so this cap keeps the request inside the memory set below.
+     * Photos with more pixels than this are not opened. The largest phone photos in normal use are 48 to 50 MP
+     * (8,064 x 6,048 up to 8,192 x 6,144 = 50.3 million). Measured with Imagick: a 48 MP photo that needs turning
+     * upright peaks near 650 MB while it is open, for under a second.
      */
-    private static int $max_pixels = 64_000_000;
+    private static int $max_pixels = 51_000_000;
 
-    private const MEMORY = '512M';
+    /** How long a request waits for its turn to resize before sending its email without photos. */
+    private static int $lock_wait_seconds = 20;
 
     private const SECONDS = 180;
 
@@ -54,6 +65,8 @@ class EmailPhotos
     public const SKIP_TOO_BIG = 'TOO_MANY_PIXELS';
 
     public const SKIP_BUDGET = 'OVER_EMAIL_LIMIT';
+
+    public const SKIP_BUSY = 'SITE_BUSY';
 
     /**
      * @param array<int, array{name: string, tmp_name: string}> $files uploads in PHP's single-file shape, in order
@@ -67,9 +80,66 @@ class EmailPhotos
         if (!$files) {
             return ['attachments' => [], 'skipped' => []];
         }
-        Environment::increaseMemoryLimitTo(self::MEMORY);
+        // No memory_limit raise: Environment::increaseMemoryLimitTo() cannot go above the server's own setting unless
+        // a maximum was declared first, and Imagick's memory is not counted against it either way.
         Environment::increaseTimeLimitTo(self::SECONDS);
 
+        $lock = $this->acquireLock();
+        if ($lock === false) {
+            $this->logger()->error(sprintf(
+                'Quote form: %d photo(s) not attached, another request was still resizing photos after %d seconds.',
+                count($files),
+                (int) static::config()->get('lock_wait_seconds')
+            ));
+            return [
+                'attachments' => [],
+                'skipped' => array_map(fn ($f) => ['name' => $f['name'], 'reason' => self::SKIP_BUSY], array_values($files)),
+            ];
+        }
+        try {
+            return $this->resize($files);
+        } finally {
+            $this->releaseLock($lock);
+        }
+    }
+
+    /**
+     * The site-wide turn to resize: an exclusive lock on a file in SilverStripe's temp folder, which every PHP worker
+     * of the site shares. Returns the open handle, false when the wait ran out, or null when the lock file cannot be
+     * opened at all (logged; the photos are then resized without a turn rather than dropped).
+     *
+     * @return resource|false|null
+     */
+    private function acquireLock()
+    {
+        $handle = @fopen(TEMP_PATH . DIRECTORY_SEPARATOR . 'quote-photos.lock', 'c');
+        if (!$handle) {
+            $this->logger()->error('Quote form: the photo lock file could not be opened in ' . TEMP_PATH . '; resizing without it.');
+            return null;
+        }
+        $deadline = microtime(true) + (int) static::config()->get('lock_wait_seconds');
+        do {
+            if (flock($handle, LOCK_EX | LOCK_NB)) {
+                return $handle;
+            }
+            usleep(200_000);
+        } while (microtime(true) < $deadline);
+        fclose($handle);
+        return false;
+    }
+
+    /** @param resource|null $handle */
+    private function releaseLock($handle): void
+    {
+        if (is_resource($handle)) {
+            flock($handle, LOCK_UN);
+            fclose($handle);
+        }
+    }
+
+    /** build() once this request has its turn. */
+    private function resize(array $files): array
+    {
         $names = $this->attachmentNames($files);
         $skipped = [];
         $readable = [];

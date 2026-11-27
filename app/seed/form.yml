@@ -99,7 +99,7 @@ sections:
         Title: Photos
         RightTitle: Photos help us quote accurately and tell us whether we need a walkthrough first.
         ExtraClass: field--full
-        MaxFiles: 10
+        MaxFiles: 5
         MaxFileSizeMB: 10
 
   - title: Anything else

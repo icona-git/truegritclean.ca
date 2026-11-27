@@ -182,9 +182,11 @@ everything again. A block in the Reassurance panel style sits beside the form; e
 
 **Photos.** userforms' file field takes one file, so the form uses the site's own field type, "Photo Upload Field
 (several photos)" (`App\Models\EditablePhotosField`, front end `App\Forms\PhotosUploadField`, script
-`js/src/photos.js`). Up to 10 photos of 10 MB each (both set on the field), JPG or PNG, checked in the browser and on
-the server (count, size, extension, content matches extension). HEIC is not accepted: the image libraries cannot read
-it, and an iPhone's Safari converts its photos to JPEG when the page does not ask for HEIC.
+`js/src/photos.js`). Up to 5 photos of 10 MB each (both set on the field; 5 is also the most the code allows,
+`EditablePhotosField::MAX_FILES_LIMIT`), JPG or PNG, checked in the browser and on the server (count, size, extension,
+content matches extension). Someone who chooses more is told they can send the rest by email once the firm replies.
+HEIC is not accepted: the image libraries cannot read it, and an iPhone's Safari converts its photos to JPEG when the
+page does not ask for HEIC.
 
 **Nothing is stored (since Nov 27, 2026).** The email is the delivery. The quote page has "Disable Saving Submissions
 to Server" ticked (Configuration tab; `fixed_settings` in `app/seed/form.yml`, which `tasks:seed-form` sets on every
@@ -194,22 +196,33 @@ one in memory to a JPEG (longest side 2,000 px, quality 80, EXIF and GPS data dr
 under 15 MB, so the message stays under Mailgun's 25 MB limit: if they would not fit, every photo is shrunk again
 (1,600 px at 70, then 1,280 px at 60), and any photo that still does not fit is named in the email with the reason,
 never dropped silently. PHP deletes the uploads when the request ends. Measured locally: 5 phone-size photos (12 MP)
-gave a 2.1 MB email; 10 very detailed ones gave 5.2 MB.
+gave a 2.1 MB email.
+
+**What an upload can cost the server** (audit, Nov 27, 2026; test files and scripts in
+`.seed-originals/photo-test/audit/`, not in git). Disguised files are refused and a real photo carrying hidden code
+comes out clean, because only the re-made JPEG is ever sent. The cost that matters is memory: opening a photo takes
+memory by its pixel count, not its file size, and with Imagick that memory is outside PHP's `memory_limit` (a 250 KB
+JPEG declaring 8,000 x 8,000 pixels took about 1 GB). So a photo over 51 megapixels is never opened (config
+`EmailPhotos.max_pixels`; the email names it as not attached), and only one request resizes photos at a time for the
+whole site (a file lock in the temp folder). A request that waits more than 20 seconds for its turn sends its email
+without photos and says so, and logs an error.
 
 **Limits and failed sends** (`App\Pages\ContactPageController`). One visitor address may send 3 requests in 10 minutes
 (counted once a request passes the form's checks and the reCAPTCHA check; config `throttle_max`, `throttle_window`).
-The 4th is sent back to the form with a message to wait or phone. If the email cannot be sent, or no recipient gets
+The 4th is sent back to the form with a message to wait or phone. The whole site accepts 20 requests an hour whatever
+the address (`site_max`, `site_window`), so the inbox cannot be filled with photo emails; the 21st gets the same kind
+of message and an error is logged, because that many is either abuse or a limit to raise. If the email cannot be sent, or no recipient gets
 one, the visitor sees the form again with their text kept and a message to try again or call the Settings phone number,
 instead of the thank-you; the failure is logged to `silverstripe.log` without the visitor's details. The wording is in
 `app/lang/en.yml`. The limit reads the visitor's address from PHP: behind a proxy or CDN (Cloudflare's orange cloud)
 that address must be passed on (`SS_TRUSTED_PROXY_IPS`), or every visitor shares one count.
 
-**Server limits.** PHP must accept the photos: `upload_max_filesize` at least 10M, `post_max_size` above the 10
-photos together (110M), `max_file_uploads` 20 (PHP's default), and a web server request limit to match. Plesk's
-defaults (2M / 8M) refuse almost any phone photo. The CMS field shows the server's limits, and the browser refuses a
-selection larger than `post_max_size` before sending it (a post over that limit arrives empty). Resizing raises PHP's
-`memory_limit` to 512M and the time limit to 180 seconds for that request, so neither may be locked with a Plesk
-`php_admin_value`.
+**Server limits.** PHP must accept the photos: `upload_max_filesize` at least 10M, `post_max_size` above the 5
+photos together (60M or more), `max_file_uploads` 20 (PHP's default), and a web server request limit to match.
+Plesk's defaults (2M / 8M) refuse almost any phone photo. The CMS field shows the server's limits, and the browser
+refuses a selection larger than `post_max_size` before sending it (a post over that limit arrives empty). Resizing
+raises the time limit to 180 seconds for that request, so `max_execution_time` may not be locked with a Plesk
+`php_admin_value`. It does not raise `memory_limit` (see the cost paragraph above).
 
 **Mail.** The recipient's From is `website@mg.truegritclean.ca` (userforms requires one; ICONA's Mailgun pattern), and
 the server's `SS_SEND_ALL_EMAILS_FROM` replaces it. Reply-To is the visitor's email. userforms logs every mail error to
